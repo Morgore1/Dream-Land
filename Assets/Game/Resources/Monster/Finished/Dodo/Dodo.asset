@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40eb199cb4bb3414490c7cf1bb3b72e0, type: 3}
+  m_Name: Dodo
+  m_EditorClassIdentifier: 
+  name: Dodo
+  description: 
+  FrontSprite: {fileID: 21300000, guid: d0629809e6723324c83c056fcb871826, type: 3}
+  frontIdleSprite: {fileID: 21300000, guid: d0629809e6723324c83c056fcb871826, type: 3}
+  attackAnimationFrames:
+  - {fileID: 21300000, guid: d8c978d7bd1f1e74c8765a93d96f716d, type: 3}
+  attackFrameRate: 10
+  hitAnimationFrames:
+  - {fileID: 21300000, guid: d8c978d7bd1f1e74c8765a93d96f716d, type: 3}
+  - {fileID: 21300000, guid: d0629809e6723324c83c056fcb871826, type: 3}
+  - {fileID: 21300000, guid: d8c978d7bd1f1e74c8765a93d96f716d, type: 3}
+  hitFrameRate: 10
+  enterAnimationFrames:
+  - {fileID: 21300000, guid: d0629809e6723324c83c056fcb871826, type: 3}
+  - {fileID: 21300000, guid: d8c978d7bd1f1e74c8765a93d96f716d, type: 3}
+  - {fileID: 21300000, guid: d0629809e6723324c83c056fcb871826, type: 3}
+  - {fileID: 21300000, guid: d8c978d7bd1f1e74c8765a93d96f716d, type: 3}
+  enterAnimationRate: 10
+  Type1: 13
+  Type2: 1
+  maxHp: 20
+  attack: 35
+  defense: 15
+  magicAttack: 35
+  magicDefense: 20
+  speed: 30
+  catchRate: 255
+  learnableMoves:
+  - moveBase: {fileID: 11400000, guid: 9b0022e287165ab47963c9ecc83eaae1, type: 2}
+    level: 0
+  - moveBase: {fileID: 11400000, guid: 47a60144d8042dc4db982ab774defee3, type: 2}
+    level: 0
+  - moveBase: {fileID: 11400000, guid: 2c19ab45f651d6345a4d835f81073b58, type: 2}
+    level: 6

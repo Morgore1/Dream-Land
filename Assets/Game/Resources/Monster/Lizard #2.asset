@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40eb199cb4bb3414490c7cf1bb3b72e0, type: 3}
+  m_Name: Lizard #2
+  m_EditorClassIdentifier: 
+  name: Lizard #2
+  description: 
+  FrontSprite: {fileID: 21300000, guid: 85cda4d90400afb4eaee1b651942fb77, type: 3}
+  frontIdleSprite: {fileID: 0}
+  attackAnimationFrames: []
+  attackFrameRate: 10
+  hitAnimationFrames: []
+  hitFrameRate: 10
+  enterAnimationFrames: []
+  enterAnimationRate: 10
+  Type1: 6
+  Type2: 11
+  maxHp: 60
+  attack: 48
+  defense: 35
+  magicAttack: 55
+  magicDefense: 55
+  speed: 55
+  catchRate: 255
+  learnableMoves:
+  - moveBase: {fileID: 11400000, guid: 45db18dc73e41714cbb42be47332bdff, type: 2}
+    level: 16

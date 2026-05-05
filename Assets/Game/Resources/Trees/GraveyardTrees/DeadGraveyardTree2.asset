@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9adb636963601cc4b9aab81da4189608, type: 3}
+  m_Name: DeadGraveyardTree2
+  m_EditorClassIdentifier: 
+  leafTiles:
+  - offset: {x: 0, y: 2}
+    tile: {fileID: 11400000, guid: 534e5dbe64bd5af4f8bcd40301f7e284, type: 2}
+  - offset: {x: 1, y: 2}
+    tile: {fileID: 11400000, guid: 20690a4e6e1b8a846a6162370bf738a7, type: 2}
+  - offset: {x: 2, y: 2}
+    tile: {fileID: 11400000, guid: 3fabb2dd6dba4fb4c8b4239b8419efc5, type: 2}
+  - offset: {x: 2, y: 1}
+    tile: {fileID: 11400000, guid: e492801224818854d9f9bd76b2100023, type: 2}
+  solidTiles:
+  - offset: {x: 1, y: 1}
+    tile: {fileID: 11400000, guid: 3f8b8fdaff5a5674091ed921bfd238db, type: 2}
+  rootTiles:
+  - offset: {x: 0, y: 1}
+    tile: {fileID: 11400000, guid: 875dc558ab79ba94db70d899925629d4, type: 2}
+  - offset: {x: 0, y: 0}
+    tile: {fileID: 11400000, guid: 8400b20569ef3e64d96f42e602057c45, type: 2}
+  backgroundTiles: []

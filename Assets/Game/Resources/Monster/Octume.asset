@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40eb199cb4bb3414490c7cf1bb3b72e0, type: 3}
+  m_Name: Octume
+  m_EditorClassIdentifier: 
+  name: Octume
+  description: 
+  FrontSprite: {fileID: 21300000, guid: 23960d9bdd804c04db8975af2df8cd2b, type: 3}
+  frontIdleSprite: {fileID: 0}
+  attackAnimationFrames: []
+  attackFrameRate: 10
+  hitAnimationFrames: []
+  hitFrameRate: 10
+  enterAnimationFrames: []
+  enterAnimationRate: 10
+  Type1: 1
+  Type2: 10
+  maxHp: 45
+  attack: 30
+  defense: 15
+  magicAttack: 35
+  magicDefense: 25
+  speed: 35
+  catchRate: 255
+  learnableMoves:
+  - moveBase: {fileID: 11400000, guid: 5967da6f96edafe458dbb21de8d1a366, type: 2}
+    level: 0
+  - moveBase: {fileID: 11400000, guid: a9bf2d0601c8c0d48ba1432061311ac6, type: 2}
+    level: 0
+  - moveBase: {fileID: 11400000, guid: e56f37de6d06e73459cc2bd502ee7b2b, type: 2}
+    level: 3

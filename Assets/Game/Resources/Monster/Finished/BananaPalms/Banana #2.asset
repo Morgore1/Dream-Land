@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40eb199cb4bb3414490c7cf1bb3b72e0, type: 3}
+  m_Name: Banana #2
+  m_EditorClassIdentifier: 
+  name: Menana
+  familyID: 1
+  evolution: {fileID: 11400000, guid: be7f87e469d416b478135ceffd626ae5, type: 2}
+  evolutionRequirement: 2
+  evolutionStage: 2
+  description: 
+  FrontSprite: {fileID: 21300000, guid: c488cab09001ebd499bbf8339614c03d, type: 3}
+  frontIdleSprite: {fileID: 0}
+  attackAnimationFrames:
+  - {fileID: 21300000, guid: 1a3d8a8360f09c84f9b67fa01e92335a, type: 3}
+  attackFrameRate: 10
+  hitAnimationFrames:
+  - {fileID: 21300000, guid: 1a3d8a8360f09c84f9b67fa01e92335a, type: 3}
+  - {fileID: 21300000, guid: 8a232816623574244b31b8792972e08f, type: 3}
+  - {fileID: 21300000, guid: 1a3d8a8360f09c84f9b67fa01e92335a, type: 3}
+  hitFrameRate: 10
+  enterAnimationFrames:
+  - {fileID: 21300000, guid: 8a232816623574244b31b8792972e08f, type: 3}
+  - {fileID: 21300000, guid: 1a3d8a8360f09c84f9b67fa01e92335a, type: 3}
+  - {fileID: 21300000, guid: 8a232816623574244b31b8792972e08f, type: 3}
+  - {fileID: 21300000, guid: 1a3d8a8360f09c84f9b67fa01e92335a, type: 3}
+  enterAnimationRate: 10
+  Type1: 0
+  Type2: 0
+  maxHp: 0
+  attack: 0
+  defense: 0
+  magicAttack: 0
+  magicDefense: 0
+  speed: 0
+  catchRate: 255
+  learnableMoves: []

@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8daa135b4bd5b954d88c5eed7b155ec4, type: 3}
+  m_Name: Mycelium
+  m_EditorClassIdentifier: 
+  name: Mycelium
+  description: 
+  type: 16
+  power: 45
+  accuracy: 100
+  alwaysHits: 0
+  ap: 20
+  priority: 0
+  category: 1
+  effects:
+    boosts: []
+    status: 0
+    volatileStatus: 0
+  secondaries: []
+  target: 0
+  animationFrames:
+  - {fileID: 21300000, guid: 0f9d546531ce9bd42ae56eb2c18314f8, type: 3}
+  - {fileID: 21300000, guid: e5bf55fd369682e46bab5f9c1397f031, type: 3}
+  - {fileID: 21300000, guid: 41951934110cddc4099898d1999137f8, type: 3}
+  - {fileID: 21300000, guid: 2a9e55399016dc64dbf694e8ae89374a, type: 3}
+  - {fileID: 21300000, guid: 2e2926077d7ecd7458ef6e4fbe5d206a, type: 3}
+  - {fileID: 21300000, guid: d89e7fb5ea8f7fd4eb34144094ad7e89, type: 3}
+  - {fileID: 21300000, guid: f1dd9abe05dc2d84f84fffe8e4285782, type: 3}
+  - {fileID: 21300000, guid: 23b3a38344034b843b2ab4e5a71937e6, type: 3}
+  - {fileID: 21300000, guid: 1724910f13e972a4e85b316ddf01036c, type: 3}
+  - {fileID: 21300000, guid: e1d46b11433a79346a0036361e7e867f, type: 3}
+  - {fileID: 21300000, guid: 6fcb3d3d896cd2d4da5babf6a86da95a, type: 3}
+  - {fileID: 21300000, guid: a5db65ddd3a28fb4a8adadae1c91f628, type: 3}
+  - {fileID: 21300000, guid: cf1b173a01f90ee4f8492e992585b375, type: 3}
+  - {fileID: 21300000, guid: 248e02392e7e04a4faad13e85f403fa7, type: 3}
+  - {fileID: 21300000, guid: d4cb2e4aa7365174db11f2612a3b6256, type: 3}
+  - {fileID: 21300000, guid: c132542562c467f41bfdf7fa65d7cb93, type: 3}
+  - {fileID: 21300000, guid: 849a920289fcf2e4e9196a14272cc74e, type: 3}
+  - {fileID: 21300000, guid: 1ae7cdd1c2af6d04283320422150a1a2, type: 3}
+  - {fileID: 21300000, guid: 2c719e28844e104448c50910cc80eef0, type: 3}
+  - {fileID: 21300000, guid: 4950e3438b776ae4cbc5939780598ff3, type: 3}
+  - {fileID: 21300000, guid: a098256b7fd98c340a424a9f679fc501, type: 3}
+  - {fileID: 21300000, guid: ed3bfa1d19cbbba43b5303f085dd8f11, type: 3}
+  - {fileID: 21300000, guid: 7fa8c4fe9d6146544854a5a8c3857aa5, type: 3}
+  - {fileID: 21300000, guid: bda78dab11b755a4da4e751ad54fe070, type: 3}
+  - {fileID: 21300000, guid: b36ae14c9f0e3b94c954cfc5523c6fbd, type: 3}
+  - {fileID: 21300000, guid: a5bd258852ff1ff4a987ffbd99fc4bc2, type: 3}
+  - {fileID: 21300000, guid: 4fe5549e473c25440a7810a528655d45, type: 3}
+  - {fileID: 21300000, guid: d8203908d4da895449c5944a406ec8e0, type: 3}
+  - {fileID: 21300000, guid: 3f575e07c771b534783a72f917204410, type: 3}
+  - {fileID: 21300000, guid: 0c165216b1ff87941a5fa3544f01fc51, type: 3}
+  - {fileID: 21300000, guid: 6a07aa692e40b234b81dde9aae4a9e6a, type: 3}
+  - {fileID: 21300000, guid: 069023f98b208c34e92fe580c74d4515, type: 3}
+  - {fileID: 21300000, guid: 357852f57daacb848a8be48dea20d7ff, type: 3}
+  - {fileID: 21300000, guid: 242970ab5c47c4147aa6da5eeb1d919a, type: 3}
+  - {fileID: 21300000, guid: d49b89de35985a343a16781d98fae090, type: 3}
+  - {fileID: 21300000, guid: ae52c9fbd38629944a7ad4536cae1c3d, type: 3}
+  - {fileID: 21300000, guid: 93c4047d5b33c1942851592759f8dec4, type: 3}
+  - {fileID: 21300000, guid: 7de0ceb40b0c4604582a9f89ad48728c, type: 3}
+  frameRate: 12
+  moveAnimationPrefab: {fileID: 2681595770613045481, guid: 7d051e042ccf51548a6d066e80f9c0ae, type: 3}

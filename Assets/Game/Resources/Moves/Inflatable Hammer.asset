@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8daa135b4bd5b954d88c5eed7b155ec4, type: 3}
+  m_Name: Inflatable Hammer
+  m_EditorClassIdentifier: 
+  name: Inflatable Hammer
+  description: 
+  type: 5
+  power: 120
+  accuracy: 100
+  alwaysHits: 0
+  ap: 5
+  priority: 0
+  category: 0
+  effects:
+    boosts: []
+    status: 0
+    volatileStatus: 0
+  secondaries: []
+  target: 0
+  animationFrames:
+  - {fileID: 21300000, guid: 654ec0e785405a045a7dbd0bb1a809e1, type: 3}
+  - {fileID: 21300000, guid: 62a548b3bbfedd045910ae0dc7b479e1, type: 3}
+  - {fileID: 21300000, guid: aff4547c89a181a40b684578ade7ab11, type: 3}
+  - {fileID: 21300000, guid: f118ca241d9b28f47953af680822a39e, type: 3}
+  - {fileID: 21300000, guid: b6892ddc458b541478fc18fadabb3267, type: 3}
+  - {fileID: 21300000, guid: 7ddae0557a1eeef4998a6f765c337981, type: 3}
+  - {fileID: 21300000, guid: 782e4fd033dad194caf5e7abbaed47d7, type: 3}
+  - {fileID: 21300000, guid: 72deddf660ca99b4a9b3030c21455c76, type: 3}
+  - {fileID: 21300000, guid: eb0e04d513e13934a9e85c9482f0fe02, type: 3}
+  - {fileID: 21300000, guid: 39c8aa65cbfdbbc468955daa5d29684d, type: 3}
+  - {fileID: 21300000, guid: 64cb24fba01f06f4b91d987b620cf40e, type: 3}
+  frameRate: 12
+  moveAnimationPrefab: {fileID: 2681595770613045481, guid: 7d051e042ccf51548a6d066e80f9c0ae, type: 3}

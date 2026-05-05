@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8daa135b4bd5b954d88c5eed7b155ec4, type: 3}
+  m_Name: Dirty Bubble
+  m_EditorClassIdentifier: 
+  name: Dirty Bubble
+  description: 
+  type: 1
+  power: 65
+  accuracy: 95
+  alwaysHits: 0
+  ap: 15
+  priority: 0
+  category: 1
+  effects:
+    boosts: []
+    status: 0
+    volatileStatus: 0
+  secondaries: []
+  target: 0
+  animationFrames:
+  - {fileID: 21300000, guid: e7c69e798f4cb01458123385a1d6f16f, type: 3}
+  - {fileID: 21300000, guid: afbe3a097e4ecee498d4833560995612, type: 3}
+  - {fileID: 21300000, guid: 06ebf32f5385bf4469b07f60d3d6906b, type: 3}
+  - {fileID: 21300000, guid: 467ab1e0dfa70514b935b660b3bdf9f9, type: 3}
+  - {fileID: 21300000, guid: 142bed2c30cc8b645bddce875b92a7bb, type: 3}
+  - {fileID: 21300000, guid: d6cdc71870b2c594391b115d66fa5ba5, type: 3}
+  - {fileID: 21300000, guid: c14340f2bb2c71146805111effa889be, type: 3}
+  - {fileID: 21300000, guid: a3c63497b34ba3149a15bca4d4ace7ef, type: 3}
+  - {fileID: 21300000, guid: 4445d8b9b9d5d364d961fb8bd43fbddd, type: 3}
+  - {fileID: 21300000, guid: 4288175b0c5442c4790eb673540702b3, type: 3}
+  - {fileID: 21300000, guid: 4ac60dc87af1e6d469d1c3457c960b62, type: 3}
+  - {fileID: 21300000, guid: 3945c37eb2e40644da1f2ad652989cf8, type: 3}
+  - {fileID: 21300000, guid: f82bc02d7907e5b4ea4d9e7e65c44f00, type: 3}
+  - {fileID: 21300000, guid: 246a61a529bc9b546a4315c3a5211422, type: 3}
+  - {fileID: 21300000, guid: 6f00702870ff55d409199e132ff4f6c7, type: 3}
+  frameRate: 12
+  moveAnimationPrefab: {fileID: 2681595770613045481, guid: 7d051e042ccf51548a6d066e80f9c0ae, type: 3}

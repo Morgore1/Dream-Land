@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3c253ad5afcf1d48a6ee2f7ee87f122, type: 3}
+  m_Name: WonderlandHouse
+  m_EditorClassIdentifier: 
+  roofTiles:
+  - offset: {x: 0, y: 2}
+    tile: {fileID: 11400000, guid: b5f774b9d5478ca4a8202c528eab82d4, type: 2}
+  - offset: {x: 1, y: 2}
+    tile: {fileID: 11400000, guid: 4a8f11cb4c0e0224896381cc428018da, type: 2}
+  - offset: {x: 2, y: 2}
+    tile: {fileID: 11400000, guid: b0329d9141071f94aae46b151a82aebe, type: 2}
+  solidTiles:
+  - offset: {x: 0, y: 0}
+    tile: {fileID: 11400000, guid: 82c3d3cac1aa15d4bab3015a91614e97, type: 2}
+  - offset: {x: 2, y: 0}
+    tile: {fileID: 11400000, guid: 8a73fb7404b156a49ac8e406f0fba08f, type: 2}
+  - offset: {x: 0, y: 1}
+    tile: {fileID: 11400000, guid: 9f350caff56ca5c4093c980d97d7cf5c, type: 2}
+  - offset: {x: 1, y: 1}
+    tile: {fileID: 11400000, guid: 8b4a6dea1add58242bb17a15715f20b3, type: 2}
+  - offset: {x: 2, y: 1}
+    tile: {fileID: 11400000, guid: fe4adc08db226af46bc0bb3442e63776, type: 2}
+  backgroundTiles: []
+  doorTiles:
+  - offset: {x: 1, y: 0}
+    tile: {fileID: 11400000, guid: d9a893c5e670ae7429ba132601eaa64e, type: 2}

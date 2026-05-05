@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e68ed0d95953604db968adf19c7698a, type: 3}
+  m_Name: EggCreaturePink
+  m_EditorClassIdentifier: 
+  nonCollisionHighTiles:
+  - offset: {x: 0, y: 1}
+    tile: {fileID: 11400000, guid: d2448871c4ee6bf479d42ec6dc04aad8, type: 2}
+  - offset: {x: 1, y: 1}
+    tile: {fileID: 11400000, guid: df7b310180ce5774a95fe05d3eb3a986, type: 2}
+  solidTiles:
+  - offset: {x: 0, y: 0}
+    tile: {fileID: 11400000, guid: 8c6ad0747de83c94f8efd52f725d4715, type: 2}
+  - offset: {x: 1, y: 0}
+    tile: {fileID: 11400000, guid: acaccd5f48c66f74e92d997b577e3b1d, type: 2}
+  nonCollisionLowTiles: []
+  backgroundTiles: []

@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40eb199cb4bb3414490c7cf1bb3b72e0, type: 3}
+  m_Name: Banana #1
+  m_EditorClassIdentifier: 
+  name: Baybana
+  familyID: 1
+  evolution: {fileID: 11400000, guid: 662b203d4c037fa4aa83cede61de3a25, type: 2}
+  evolutionRequirement: 1
+  evolutionStage: 1
+  description: 
+  FrontSprite: {fileID: 21300000, guid: a951be8d66e43494c952a8df60fcfd28, type: 3}
+  frontIdleSprite: {fileID: 0}
+  attackAnimationFrames:
+  - {fileID: 21300000, guid: 8eb050ac22f89474db1f5935ea5d2f17, type: 3}
+  attackFrameRate: 10
+  hitAnimationFrames:
+  - {fileID: 21300000, guid: 8eb050ac22f89474db1f5935ea5d2f17, type: 3}
+  - {fileID: 21300000, guid: eef8fe635fafb584e9d278bed6e5bb5a, type: 3}
+  - {fileID: 21300000, guid: 8eb050ac22f89474db1f5935ea5d2f17, type: 3}
+  hitFrameRate: 10
+  enterAnimationFrames:
+  - {fileID: 21300000, guid: eef8fe635fafb584e9d278bed6e5bb5a, type: 3}
+  - {fileID: 21300000, guid: 8eb050ac22f89474db1f5935ea5d2f17, type: 3}
+  - {fileID: 21300000, guid: eef8fe635fafb584e9d278bed6e5bb5a, type: 3}
+  - {fileID: 21300000, guid: 8eb050ac22f89474db1f5935ea5d2f17, type: 3}
+  enterAnimationRate: 10
+  Type1: 16
+  Type2: 0
+  maxHp: 40
+  attack: 25
+  defense: 35
+  magicAttack: 35
+  magicDefense: 40
+  speed: 20
+  catchRate: 255
+  learnableMoves:
+  - moveBase: {fileID: 11400000, guid: 9b0022e287165ab47963c9ecc83eaae1, type: 2}
+    level: 0
+  - moveBase: {fileID: 11400000, guid: 4e156edd1e50c6e42bc5dda6687b99d8, type: 2}
+    level: 0
+  - moveBase: {fileID: 11400000, guid: 4e593841881663946a30e7a7e003ad04, type: 2}
+    level: 8
+  - moveBase: {fileID: 11400000, guid: 59e0e17acd03dfc42b3589490ca685a7, type: 2}
+    level: 15

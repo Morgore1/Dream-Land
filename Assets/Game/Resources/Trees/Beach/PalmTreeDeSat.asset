@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9adb636963601cc4b9aab81da4189608, type: 3}
+  m_Name: PalmTreeDeSat
+  m_EditorClassIdentifier: 
+  leafTiles:
+  - offset: {x: -1, y: 0}
+    tile: {fileID: 11400000, guid: 35d69dd4564d161409de705240440c1a, type: 2}
+  - offset: {x: -1, y: 1}
+    tile: {fileID: 11400000, guid: 16ef5a024d4a4ba428256c0502ea1bf3, type: 2}
+  - offset: {x: -1, y: 2}
+    tile: {fileID: 11400000, guid: cbae30d95cc653841b30c4a88dcab54d, type: 2}
+  - offset: {x: 0, y: 2}
+    tile: {fileID: 11400000, guid: 01b2e4bf3a174634395bf0010dd389cd, type: 2}
+  - offset: {x: 0, y: 1}
+    tile: {fileID: 11400000, guid: b316eb8e38a6dbd4d93b03b83e00498c, type: 2}
+  - offset: {x: 1, y: 0}
+    tile: {fileID: 11400000, guid: 5aa0c8e950c2b574387cac0d4f75be48, type: 2}
+  - offset: {x: 1, y: 1}
+    tile: {fileID: 11400000, guid: 073a905909fb43b42a47d74248bee34c, type: 2}
+  - offset: {x: 1, y: 2}
+    tile: {fileID: 11400000, guid: 56ee77de5dc161847981294b336144c6, type: 2}
+  solidTiles:
+  - offset: {x: 0, y: 0}
+    tile: {fileID: 11400000, guid: 9ed2c8ea7081f734b9c63fdfcb2fc585, type: 2}
+  rootTiles: []
+  backgroundTiles: []

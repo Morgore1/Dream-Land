@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9adb636963601cc4b9aab81da4189608, type: 3}
+  m_Name: CandylandFernB Short
+  m_EditorClassIdentifier: 
+  leafTiles:
+  - offset: {x: 0, y: 1}
+    tile: {fileID: 11400000, guid: 5bab5fce4df742c4d92186d4de9b972f, type: 2}
+  - offset: {x: 1, y: 1}
+    tile: {fileID: 11400000, guid: 7c8f9d526d28c1f4c9ca7fa5c2861a80, type: 2}
+  solidTiles:
+  - offset: {x: 0, y: 0}
+    tile: {fileID: 11400000, guid: 77772901b1fd6ab438e295a5c6258d08, type: 2}
+  - offset: {x: 1, y: 0}
+    tile: {fileID: 11400000, guid: 5942d8afa90613c4bb01c3dfb5054860, type: 2}
+  rootTiles: []
+  backgroundTiles: []

@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8daa135b4bd5b954d88c5eed7b155ec4, type: 3}
+  m_Name: Slime Attack
+  m_EditorClassIdentifier: 
+  name: Slime Attack
+  description: 
+  type: 16
+  power: 60
+  accuracy: 100
+  alwaysHits: 0
+  ap: 15
+  priority: 0
+  category: 1
+  effects:
+    boosts: []
+    status: 0
+    volatileStatus: 0
+  secondaries: []
+  target: 0
+  animationFrames:
+  - {fileID: 21300000, guid: 2592df7f60144414187e1d1da18a4294, type: 3}
+  - {fileID: 21300000, guid: 31b6653a28c2cb740a646934a4c279f0, type: 3}
+  - {fileID: 21300000, guid: f5755589d2fa6384a9a589a5d5d10448, type: 3}
+  - {fileID: 21300000, guid: 63708d692a6b81f4d910117854024bcd, type: 3}
+  - {fileID: 21300000, guid: 8ebeeefa49d2aa949b5ddf9a3c8fa0e0, type: 3}
+  - {fileID: 21300000, guid: 0dd8ce4017996514a8ae813a61cb73c9, type: 3}
+  - {fileID: 21300000, guid: 75973020a6da4b143a59c23596aeb7fa, type: 3}
+  - {fileID: 21300000, guid: 80aa810062636f0408db6344d8499d9f, type: 3}
+  - {fileID: 21300000, guid: c78ae9d7be86f8e49ad0111b9d9e9273, type: 3}
+  - {fileID: 21300000, guid: 0ca8caace019a62418d1ef6b001c7f9d, type: 3}
+  - {fileID: 21300000, guid: e0c4445f15096ec49bde818aaf319055, type: 3}
+  - {fileID: 21300000, guid: a75502424a744f84baf1330afbaa28a8, type: 3}
+  - {fileID: 21300000, guid: 6e6580ae4d5186048a59e40323ec8d34, type: 3}
+  - {fileID: 21300000, guid: 7c5a7e7fae4206a44ba16440829513fd, type: 3}
+  - {fileID: 21300000, guid: 13c355c9cb754f74096801fd96fd022f, type: 3}
+  - {fileID: 21300000, guid: c6536570e33c03b4297226d491bec250, type: 3}
+  - {fileID: 21300000, guid: ca60467ac735d3d4b90ae67fe657a308, type: 3}
+  - {fileID: 21300000, guid: fdd2fa2406d0bb843903c5695e4e9634, type: 3}
+  - {fileID: 21300000, guid: 3996c41a64d103c48ba24866474bfd35, type: 3}
+  - {fileID: 21300000, guid: 74ce8c577817ca643bca240061dcdc70, type: 3}
+  - {fileID: 21300000, guid: 04b6629dc8104e842b9ca52cf5d2ae2e, type: 3}
+  - {fileID: 21300000, guid: 990aa68b9414fec468da239307596d8a, type: 3}
+  frameRate: 12
+  moveAnimationPrefab: {fileID: 2681595770613045481, guid: 7d051e042ccf51548a6d066e80f9c0ae, type: 3}

@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3c253ad5afcf1d48a6ee2f7ee87f122, type: 3}
+  m_Name: StandardTipi
+  m_EditorClassIdentifier: 
+  roofTiles:
+  - offset: {x: 0, y: 1}
+    tile: {fileID: 11400000, guid: a0fe10a5622f9274da02b1baf7de67d8, type: 2}
+  - offset: {x: -1, y: 1}
+    tile: {fileID: 11400000, guid: dc4daef8bdf953746a8873ab4c300384, type: 2}
+  - offset: {x: 1, y: 1}
+    tile: {fileID: 11400000, guid: 608278baf19e1754e8e729cca157a095, type: 2}
+  - offset: {x: -1, y: 2}
+    tile: {fileID: 11400000, guid: a7c5797ee07acae4893942994ed2d31a, type: 2}
+  - offset: {x: 0, y: 2}
+    tile: {fileID: 11400000, guid: b7266876a3b6a5140ae21048c6e154f2, type: 2}
+  - offset: {x: 1, y: 2}
+    tile: {fileID: 11400000, guid: 277478ad899c11e4d9d7a12238c4c8d1, type: 2}
+  - offset: {x: 0, y: 3}
+    tile: {fileID: 11400000, guid: b1a987cac53f55c478b304db672e6c74, type: 2}
+  solidTiles:
+  - offset: {x: 1, y: 0}
+    tile: {fileID: 11400000, guid: 230749b04469e2f4683b06048ab8cb1c, type: 2}
+  - offset: {x: -1, y: 0}
+    tile: {fileID: 11400000, guid: 55e2e47ca1030444da330bb9af19e0e6, type: 2}
+  backgroundTiles: []
+  doorTiles:
+  - offset: {x: 0, y: 0}
+    tile: {fileID: 11400000, guid: 8df9e66178e42e04a9231dd994936102, type: 2}

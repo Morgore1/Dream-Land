@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13b75c95f34a00d4e8c04f76b73312e6, type: 3}
+  m_Name: TrafficLightLeft 2
+  m_EditorClassIdentifier: 
+  m_AnimatedSprites:
+  - {fileID: -1810507930, guid: aa61d5741d8e1c749979d5849a0ecbe4, type: 3}
+  - {fileID: 773649952, guid: 25f6ed9313aec484aad3869be19363b0, type: 3}
+  - {fileID: -1936447118, guid: 23e807c7cad6d6d4fbf483963eff91d5, type: 3}
+  m_MinSpeed: 0.3
+  m_MaxSpeed: 0.3
+  m_AnimationStartTime: 0
+  m_AnimationStartFrame: 0
+  m_TileColliderType: 0
+  m_TileAnimationFlags: 0

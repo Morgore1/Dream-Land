@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8daa135b4bd5b954d88c5eed7b155ec4, type: 3}
+  m_Name: Sand Toss
+  m_EditorClassIdentifier: 
+  name: Sand Toss
+  description: 
+  type: 12
+  power: 0
+  accuracy: 90
+  alwaysHits: 0
+  ap: 15
+  priority: 0
+  category: 2
+  effects:
+    boosts: []
+    status: 0
+    volatileStatus: 0
+  secondaries: []
+  target: 0
+  animationFrames:
+  - {fileID: 21300000, guid: 78f070be019812c47aa40e53b839bc13, type: 3}
+  - {fileID: 21300000, guid: 2fbefab93e8239c44a841b1754062256, type: 3}
+  - {fileID: 21300000, guid: 29c6d66d793c08948b3b93ef942f181d, type: 3}
+  - {fileID: 21300000, guid: 2e747ce920534874d9f08e5b563952a7, type: 3}
+  - {fileID: 21300000, guid: e51ee788f782a1b4fa01c6dfb86b9de9, type: 3}
+  - {fileID: 21300000, guid: e7db14af9b500d145a3a7a5d0918d165, type: 3}
+  - {fileID: 21300000, guid: b7a4e472b72837d47838b6bff4a34388, type: 3}
+  frameRate: 12
+  moveAnimationPrefab: {fileID: 2681595770613045481, guid: 7d051e042ccf51548a6d066e80f9c0ae, type: 3}

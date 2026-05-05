@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3c253ad5afcf1d48a6ee2f7ee87f122, type: 3}
+  m_Name: BeachRestaurant
+  m_EditorClassIdentifier: 
+  roofTiles:
+  - offset: {x: 1, y: 2}
+    tile: {fileID: 11400000, guid: b3e250e5cc7cc8e45a195621400ad5dc, type: 2}
+  - offset: {x: 2, y: 2}
+    tile: {fileID: 11400000, guid: f49d15d8f2211e74ca8a9d464794bb37, type: 2}
+  - offset: {x: 3, y: 2}
+    tile: {fileID: 11400000, guid: fe62d84fcdbc00243bd4d5ea92d1730a, type: 2}
+  - offset: {x: 4, y: 2}
+    tile: {fileID: 11400000, guid: a6b2a040e077cf548b541e21d54e9e9a, type: 2}
+  solidTiles:
+  - offset: {x: 1, y: 0}
+    tile: {fileID: 11400000, guid: 431d5c786fa4b6e4c8df9dccc36bc859, type: 2}
+  - offset: {x: 1, y: 1}
+    tile: {fileID: 11400000, guid: d3329e70c40507f46a23b816cec3959c, type: 2}
+  - offset: {x: 2, y: 1}
+    tile: {fileID: 11400000, guid: 995ca4fe50e2c1d46a04caa9a8225ae6, type: 2}
+  - offset: {x: 3, y: 1}
+    tile: {fileID: 11400000, guid: 0d6f82ac8753c274a969120797da626b, type: 2}
+  - offset: {x: 3, y: 0}
+    tile: {fileID: 11400000, guid: f278f71ab0f60454b807944a8dce7d7e, type: 2}
+  - offset: {x: 4, y: 1}
+    tile: {fileID: 11400000, guid: db7fd9c36c150da4e9162e87b2b0c81b, type: 2}
+  - offset: {x: 0, y: 1}
+    tile: {fileID: 11400000, guid: af0b6cb5eca4f4847a7a3fe269188c8c, type: 2}
+  backgroundTiles: []
+  doorTiles:
+  - offset: {x: 2, y: 0}
+    tile: {fileID: 11400000, guid: 67dedee5095f291479f68eb5c8e6eec2, type: 2}
+  - offset: {x: 0, y: 0}
+    tile: {fileID: 11400000, guid: b9c6343cb9b0a294d911a71fa6fd6f92, type: 2}
+  - offset: {x: 4, y: 0}
+    tile: {fileID: 11400000, guid: 5ec483ed8c4a96e48b738f531dd5ee1d, type: 2}

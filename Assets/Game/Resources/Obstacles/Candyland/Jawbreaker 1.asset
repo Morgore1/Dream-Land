@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e68ed0d95953604db968adf19c7698a, type: 3}
+  m_Name: Jawbreaker 1
+  m_EditorClassIdentifier: 
+  nonCollisionHighTiles:
+  - offset: {x: 0, y: 1}
+    tile: {fileID: 11400000, guid: 4188cae6a9f594f4ba3365df509c23f5, type: 2}
+  - offset: {x: 1, y: 1}
+    tile: {fileID: 11400000, guid: 0b5e390d6d82aff4e9dad577faf24417, type: 2}
+  solidTiles:
+  - offset: {x: 0, y: 0}
+    tile: {fileID: 11400000, guid: 332d372a06dc85147a5592121787b0b4, type: 2}
+  - offset: {x: 1, y: 0}
+    tile: {fileID: 11400000, guid: a47b24f52cde7d84abaa5a8ede664384, type: 2}
+  nonCollisionLowTiles: []
+  backgroundTiles: []

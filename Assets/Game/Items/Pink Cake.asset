@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 035bf57ec864c9d4eb5c6add4976d661, type: 3}
+  m_Name: Pink Cake
+  m_EditorClassIdentifier: 
+  itemName: Pink Cake
+  icon: {fileID: 21300000, guid: f2314aee43b92dc4995764238f390498, type: 3}
+  itemType: 0
+  description: 

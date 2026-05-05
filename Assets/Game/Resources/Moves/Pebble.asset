@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8daa135b4bd5b954d88c5eed7b155ec4, type: 3}
+  m_Name: Pebble
+  m_EditorClassIdentifier: 
+  name: Pebble
+  description: 
+  type: 12
+  power: 35
+  accuracy: 100
+  alwaysHits: 0
+  ap: 20
+  priority: 0
+  category: 0
+  effects:
+    boosts: []
+    status: 0
+    volatileStatus: 0
+  secondaries: []
+  target: 0
+  animationFrames:
+  - {fileID: 21300000, guid: f5cb76675194f32449844a08a4fe5c84, type: 3}
+  - {fileID: 21300000, guid: 2d6ab468bb2c4e24980bb26f25905b72, type: 3}
+  - {fileID: 21300000, guid: 0c2172b19b6644e4395ad9fccf7c1a92, type: 3}
+  - {fileID: 21300000, guid: c859af067221d944fb6830c284900c30, type: 3}
+  - {fileID: 21300000, guid: 59ebae54c5bee5043a042a5acac0d8c5, type: 3}
+  - {fileID: 21300000, guid: 2cabd7ac8420871449c919b1a0edc409, type: 3}
+  - {fileID: 21300000, guid: 67f13e5318eea354687b3be99fda55b9, type: 3}
+  - {fileID: 21300000, guid: ed675e728242db743a7b91941ee865d5, type: 3}
+  - {fileID: 21300000, guid: 9c371dd4a2532df42a6f6a2f80c39461, type: 3}
+  - {fileID: 21300000, guid: 3f4a8db552486324194c1b5e587684f0, type: 3}
+  - {fileID: 21300000, guid: c7f82a8cbe9f07945bc76199b41d1c60, type: 3}
+  - {fileID: 21300000, guid: 545675bea0a58c64d9d4f3bb46257e2a, type: 3}
+  - {fileID: 21300000, guid: 239c5304abe2de54e9633c09c5a71287, type: 3}
+  - {fileID: 21300000, guid: 2f1499a8462dd6744b39ffb46c0a0b52, type: 3}
+  - {fileID: 21300000, guid: a584f85187fd78844833634fc3a2a161, type: 3}
+  - {fileID: 21300000, guid: ebf07a6b519939f4593641f9b5580d47, type: 3}
+  - {fileID: 21300000, guid: a003a65a5f90d394d84e533aa5cfa8f4, type: 3}
+  - {fileID: 21300000, guid: 26598f99dc95e434f81ef12c7490620b, type: 3}
+  - {fileID: 21300000, guid: ebcc14d82f01317469f7610e69fa1a43, type: 3}
+  - {fileID: 21300000, guid: 31dd1b4f723446345a327dc29e76693f, type: 3}
+  - {fileID: 21300000, guid: af7184e550b7aa4458e31ddd23277bb6, type: 3}
+  - {fileID: 21300000, guid: aae9498b7ef57db46b16afae7e56629f, type: 3}
+  - {fileID: 21300000, guid: a70378e0cb8b13b46aac803a5265f1ed, type: 3}
+  frameRate: 12
+  moveAnimationPrefab: {fileID: 2681595770613045481, guid: 7d051e042ccf51548a6d066e80f9c0ae, type: 3}

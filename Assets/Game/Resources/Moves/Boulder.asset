@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8daa135b4bd5b954d88c5eed7b155ec4, type: 3}
+  m_Name: Boulder
+  m_EditorClassIdentifier: 
+  name: Boulder
+  description: 
+  type: 12
+  power: 80
+  accuracy: 90
+  alwaysHits: 0
+  ap: 15
+  priority: 0
+  category: 0
+  effects:
+    boosts: []
+    status: 0
+    volatileStatus: 0
+  secondaries: []
+  target: 0
+  animationFrames:
+  - {fileID: 21300000, guid: 81e0122877d00c64d84927dbaa1cfaec, type: 3}
+  - {fileID: 21300000, guid: 45c419662389c6e499663e0b145bee9e, type: 3}
+  - {fileID: 21300000, guid: be867e0d639472a47ba8c9f299faa43e, type: 3}
+  - {fileID: 21300000, guid: 64bf75db99500f94bae2f8b654dab186, type: 3}
+  - {fileID: 21300000, guid: d906107bf4e24284b8dc89f91ce8fdc2, type: 3}
+  - {fileID: 21300000, guid: 78aef39f02166dc4499b56afa7228333, type: 3}
+  - {fileID: 21300000, guid: 57deef43019d932498bb48f144662d8b, type: 3}
+  - {fileID: 21300000, guid: fad5fe315c01c3c47a1c9d80bb8b9247, type: 3}
+  - {fileID: 21300000, guid: 22352ff2f1c83d84bb29868c9da5e370, type: 3}
+  - {fileID: 21300000, guid: 4305fb778f932734581bffe18d33c0fa, type: 3}
+  - {fileID: 21300000, guid: 7359efb64b5af854aa655c96c1a20cdb, type: 3}
+  - {fileID: 21300000, guid: 8265f85f780da3749ba4d86ba5896bd1, type: 3}
+  - {fileID: 21300000, guid: e09fdd652202fc448a1d795b98393cee, type: 3}
+  - {fileID: 21300000, guid: 745a1daed418e2c43b2ee610d3142e9e, type: 3}
+  - {fileID: 21300000, guid: 01edd75c7e1551f449a2d351a5626b38, type: 3}
+  - {fileID: 21300000, guid: 0f2a61b2acad9a74f8f6339c92c85398, type: 3}
+  - {fileID: 21300000, guid: c0b328b7c7887bf43badbfef9210fcdb, type: 3}
+  - {fileID: 21300000, guid: c3fc522f223afcc4881b56bdaa8e6826, type: 3}
+  - {fileID: 21300000, guid: 60395b9f8c3b29c48a1a1a930d6d6b9d, type: 3}
+  - {fileID: 21300000, guid: 338beb85f8affae479ecfabfaddcfd81, type: 3}
+  - {fileID: 21300000, guid: 05471ee1c4caf844e961fe55d437fdab, type: 3}
+  - {fileID: 21300000, guid: 4ce22a378db68874e9c7fc4bc38969c5, type: 3}
+  frameRate: 12
+  moveAnimationPrefab: {fileID: 2681595770613045481, guid: 7d051e042ccf51548a6d066e80f9c0ae, type: 3}

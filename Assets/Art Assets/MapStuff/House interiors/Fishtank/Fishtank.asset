@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13b75c95f34a00d4e8c04f76b73312e6, type: 3}
+  m_Name: Fishtank
+  m_EditorClassIdentifier: 
+  m_AnimatedSprites:
+  - {fileID: -1418205585, guid: ca16ad766b101cd4890aa194ba2fb0f2, type: 3}
+  - {fileID: 1830367643, guid: 04c5cee3e6abd6b4cb5ff3fd3d4aa8b0, type: 3}
+  - {fileID: -893659573, guid: a55465542641d484f8e7152f5c26feca, type: 3}
+  - {fileID: 1389626319, guid: 2b2c4604af9d9844a8bd3026e6b20077, type: 3}
+  m_MinSpeed: 1
+  m_MaxSpeed: 1
+  m_AnimationStartTime: 0
+  m_AnimationStartFrame: 0
+  m_TileColliderType: 2
+  m_TileAnimationFlags: 0

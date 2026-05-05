@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3c253ad5afcf1d48a6ee2f7ee87f122, type: 3}
+  m_Name: MediumBeachHouse
+  m_EditorClassIdentifier: 
+  roofTiles:
+  - offset: {x: -2, y: 2}
+    tile: {fileID: 11400000, guid: 92ddb7584a8426d49aa8b799c2c4dff4, type: 2}
+  - offset: {x: -1, y: 2}
+    tile: {fileID: 11400000, guid: e45a2b0c4f4a35b4bba0c888526a5af8, type: 2}
+  - offset: {x: 0, y: 2}
+    tile: {fileID: 11400000, guid: c49e987416f57b241a6ea9af45d164a7, type: 2}
+  - offset: {x: 1, y: 2}
+    tile: {fileID: 11400000, guid: d588131b3b18e394c9aed1da435cadab, type: 2}
+  - offset: {x: 2, y: 2}
+    tile: {fileID: 11400000, guid: 6e7271ea6ba990c45b7fb64bb4adcfb8, type: 2}
+  solidTiles:
+  - offset: {x: -2, y: 0}
+    tile: {fileID: 11400000, guid: 466c12e887a5fd444aeb3920931a4a1c, type: 2}
+  - offset: {x: -1, y: 0}
+    tile: {fileID: 11400000, guid: 93c5b8df3796606469d450bc3d81a455, type: 2}
+  - offset: {x: 1, y: 0}
+    tile: {fileID: 11400000, guid: baabb7f3401f0b648b5e09c89c21700b, type: 2}
+  - offset: {x: 2, y: 0}
+    tile: {fileID: 11400000, guid: 06dbb12fbb7e05348a35a0b6cc5df910, type: 2}
+  - offset: {x: -2, y: 1}
+    tile: {fileID: 11400000, guid: a17b348abbec06f48a11b88775518b28, type: 2}
+  - offset: {x: -1, y: 1}
+    tile: {fileID: 11400000, guid: 9d9041dfab9835449a02348a4d018103, type: 2}
+  - offset: {x: 1, y: 1}
+    tile: {fileID: 11400000, guid: a3e4a07522479e646968eda78806d202, type: 2}
+  - offset: {x: 2, y: 1}
+    tile: {fileID: 11400000, guid: 05246e03476c21342b2d94c18c2eb0b3, type: 2}
+  - offset: {x: 0, y: 1}
+    tile: {fileID: 11400000, guid: c3f0f6c4fce446449b8a875c84e065a8, type: 2}
+  backgroundTiles: []
+  doorTiles:
+  - offset: {x: 0, y: 0}
+    tile: {fileID: 11400000, guid: cd9261057fda7f346a37e5af00ca2540, type: 2}

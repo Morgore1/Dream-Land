@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8daa135b4bd5b954d88c5eed7b155ec4, type: 3}
+  m_Name: Laserbeam
+  m_EditorClassIdentifier: 
+  name: Laserbeam
+  description: 
+  type: 2
+  power: 80
+  accuracy: 90
+  alwaysHits: 0
+  ap: 10
+  priority: 0
+  category: 1
+  effects:
+    boosts: []
+    status: 0
+    volatileStatus: 0
+  secondaries: []
+  target: 0
+  animationFrames:
+  - {fileID: 21300000, guid: 439119b2e216d204cba151e8fae1ee54, type: 3}
+  - {fileID: 21300000, guid: ff58a261554798c45b68616cfd0ee654, type: 3}
+  - {fileID: 21300000, guid: 19cd9fda91a1ab249a7a1a647db03534, type: 3}
+  - {fileID: 21300000, guid: 1cabf7df91563e44f9a10b0679d3371b, type: 3}
+  - {fileID: 21300000, guid: d1ffb35fdfa84114cb938560ed8d3c7f, type: 3}
+  - {fileID: 21300000, guid: 61c9d227ac5e65a4fb616a11c18d581c, type: 3}
+  - {fileID: 21300000, guid: f28b5489d8d05da4d9260117ff6126e6, type: 3}
+  - {fileID: 21300000, guid: 70fbc2e809ab3e6458ce26cc8eb84f1d, type: 3}
+  - {fileID: 21300000, guid: 42316ea9a7fe1004f8f8899c1530c665, type: 3}
+  frameRate: 12
+  moveAnimationPrefab: {fileID: 2681595770613045481, guid: 7d051e042ccf51548a6d066e80f9c0ae, type: 3}

@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3c253ad5afcf1d48a6ee2f7ee87f122, type: 3}
+  m_Name: 90s S Desert
+  m_EditorClassIdentifier: 
+  roofTiles:
+  - offset: {x: 0, y: 2}
+    tile: {fileID: 11400000, guid: 910ffb839e1ba7b429423d7f4b7f9686, type: 2}
+  - offset: {x: 1, y: 2}
+    tile: {fileID: 11400000, guid: b51082b36bc05714185e84f21eb97736, type: 2}
+  - offset: {x: 2, y: 2}
+    tile: {fileID: 11400000, guid: acba37ddbb884c04e8f5ebdb85d0b52a, type: 2}
+  solidTiles:
+  - offset: {x: 0, y: 1}
+    tile: {fileID: 11400000, guid: 1d02d536c5c33ce4c8607c1b6cc72818, type: 2}
+  - offset: {x: 1, y: 1}
+    tile: {fileID: 11400000, guid: ca6a7e2f7665ffa4893b01837c69d8b1, type: 2}
+  - offset: {x: 2, y: 1}
+    tile: {fileID: 11400000, guid: 7a0cde947893e9f409c2cf6d0dbcfdd0, type: 2}
+  - offset: {x: 0, y: 0}
+    tile: {fileID: 11400000, guid: 6d056f1b875bdb94497c86f7b3cf622d, type: 2}
+  - offset: {x: 2, y: 0}
+    tile: {fileID: 11400000, guid: f0ea1c1bb002c5a4ebf357895fbff4a2, type: 2}
+  - offset: {x: 3, y: 1}
+    tile: {fileID: 11400000, guid: 36249a7a47b661b4ba00e5903aeea903, type: 2}
+  backgroundTiles: []
+  doorTiles:
+  - offset: {x: 1, y: 0}
+    tile: {fileID: 11400000, guid: 9a60b6ec32b249745ab428f843a4a891, type: 2}

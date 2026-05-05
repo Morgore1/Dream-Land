@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8daa135b4bd5b954d88c5eed7b155ec4, type: 3}
+  m_Name: Pie
+  m_EditorClassIdentifier: 
+  name: Pie
+  description: 
+  type: 16
+  power: 80
+  accuracy: 90
+  alwaysHits: 0
+  ap: 10
+  priority: 0
+  category: 0
+  effects:
+    boosts: []
+    status: 0
+    volatileStatus: 0
+  secondaries: []
+  target: 0
+  animationFrames:
+  - {fileID: 21300000, guid: 034bb638472307446b99cec746f2163d, type: 3}
+  - {fileID: 21300000, guid: 9c506c00a730b5c48bfed0008e81dd8d, type: 3}
+  - {fileID: 21300000, guid: 686e6ab5a8e144144a7ccd36a2ea192c, type: 3}
+  - {fileID: 21300000, guid: 0cf9e5dddfee89148807a16f257b19ed, type: 3}
+  - {fileID: 21300000, guid: 2d1ec102b9c50f94a8c0d0100b4fb35d, type: 3}
+  - {fileID: 21300000, guid: adf17969fff431b46ae5c9678580058f, type: 3}
+  - {fileID: 21300000, guid: ddf409a02c995c64587aab01b406e224, type: 3}
+  - {fileID: 21300000, guid: c26371f8e199fbc4caeac02aca9f8751, type: 3}
+  - {fileID: 21300000, guid: 2ec37b01a2116d74ab4f4bd7f83062e5, type: 3}
+  - {fileID: 21300000, guid: 31a25f572decbea42b7e1dd848b8a367, type: 3}
+  - {fileID: 21300000, guid: 83ff78ccf7fda3c4c9668b258b265f7e, type: 3}
+  - {fileID: 21300000, guid: 1804c373c4166df44ab21ed9e1ae2a07, type: 3}
+  frameRate: 12
+  moveAnimationPrefab: {fileID: 2681595770613045481, guid: 7d051e042ccf51548a6d066e80f9c0ae, type: 3}

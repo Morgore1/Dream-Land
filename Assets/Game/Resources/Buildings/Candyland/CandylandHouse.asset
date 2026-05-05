@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3c253ad5afcf1d48a6ee2f7ee87f122, type: 3}
+  m_Name: CandylandHouse
+  m_EditorClassIdentifier: 
+  roofTiles:
+  - offset: {x: -1, y: 1}
+    tile: {fileID: 11400000, guid: 8195c026ac63a0845a10cd433d203140, type: 2}
+  - offset: {x: 3, y: 1}
+    tile: {fileID: 11400000, guid: d657c3aff6767f94eb2005fdb73e1619, type: 2}
+  - offset: {x: 0, y: 2}
+    tile: {fileID: 11400000, guid: 529edfc1b11063a438f3855c3a8383aa, type: 2}
+  - offset: {x: 1, y: 2}
+    tile: {fileID: 11400000, guid: 377810b813414cc44bad1421a22ef684, type: 2}
+  - offset: {x: 2, y: 2}
+    tile: {fileID: 11400000, guid: 90d75072419f2bd41bb431900fa70bb6, type: 2}
+  - offset: {x: 1, y: 3}
+    tile: {fileID: 11400000, guid: e5c52ee644ccb474dbb5a78d0776b358, type: 2}
+  solidTiles:
+  - offset: {x: 0, y: 0}
+    tile: {fileID: 11400000, guid: 7a0d856a4da30bd4f8542990c7d0fffe, type: 2}
+  - offset: {x: 2, y: 0}
+    tile: {fileID: 11400000, guid: 276fe08044e834a449ef5f73e43e547d, type: 2}
+  - offset: {x: 0, y: 1}
+    tile: {fileID: 11400000, guid: c911d97da76a91b4fa944aaa78448c73, type: 2}
+  - offset: {x: 1, y: 1}
+    tile: {fileID: 11400000, guid: 9f5d66e6317d869488cacd92a6bd009f, type: 2}
+  - offset: {x: 2, y: 1}
+    tile: {fileID: 11400000, guid: 86b2ab74879a47d4bad60db35734f7bd, type: 2}
+  backgroundTiles: []
+  doorTiles:
+  - offset: {x: 1, y: 0}
+    tile: {fileID: 11400000, guid: d481d1ed2c2296744b5c4212502e9119, type: 2}

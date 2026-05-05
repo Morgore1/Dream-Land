@@ -1,0 +1,205 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa2ad1739098ce044aec09b82d38b093, type: 3}
+  m_Name: Wonderland
+  m_EditorClassIdentifier: 
+  MapWidth: 41
+  MapHeight: 40
+  MaximumWalkers: 45
+  FillPercentage: 0.4
+  WaitTime: 0.01
+  minClusters: 3
+  maxClusters: 6
+  minClusterWidth: 8
+  maxClusterWidth: 20
+  minClusterHeight: 8
+  maxClusterHeight: 20
+  clusterFillPercent: 0.25
+  isShoreline: 0
+  HousePrefabs:
+  - item: {fileID: 11400000, guid: afcd26f241528134ebd022945c3e32f2, type: 2}
+    weight: 1
+  FloorTiles:
+  - item: {fileID: 11400000, guid: f423d89572d99ca428aa48170dd54a05, type: 2}
+    weight: 30
+  - item: {fileID: 11400000, guid: 0889efe4a64e9e44d97fe38738f18eea, type: 2}
+    weight: 10
+  - item: {fileID: 11400000, guid: d0ae1e8139b49fd40b310b19363e3b54, type: 2}
+    weight: 10
+  - item: {fileID: 11400000, guid: b871c57fdaec5fb45bffe3ef95fe80e8, type: 2}
+    weight: 2
+  - item: {fileID: 11400000, guid: ee60905bd34dba4469d80d52e32df1c7, type: 2}
+    weight: 2
+  - item: {fileID: 11400000, guid: 31e6fdcbd05a6024cb1b8a0831804baf, type: 2}
+    weight: 2
+  - item: {fileID: 11400000, guid: eb5e4f2521e85214a9ca849dc788ffb7, type: 2}
+    weight: 2
+  - item: {fileID: 11400000, guid: 389bb191511f2e546bf9c5a1d19dc418, type: 2}
+    weight: 2
+  - item: {fileID: 11400000, guid: 6baa2d5bef510884fbea344b716e8669, type: 2}
+    weight: 2
+  - item: {fileID: 11400000, guid: d95ddfb535af5bc4194d982f24a27593, type: 2}
+    weight: 2
+  - item: {fileID: 11400000, guid: d3519de28eee93c428f480640eb4bf5f, type: 2}
+    weight: 1
+  - item: {fileID: 11400000, guid: ee80d057e67d0de44840281f21644070, type: 2}
+    weight: 1
+  - item: {fileID: 11400000, guid: 4c223757c84451b4bae1a6e8d8b86195, type: 2}
+    weight: 2
+  - item: {fileID: 11400000, guid: 592795c07ff36714ead7ef3f94a6cf64, type: 2}
+    weight: 1
+  - item: {fileID: 11400000, guid: d03873291be7abd4d8af1533397f4986, type: 2}
+    weight: 1
+  - item: {fileID: 11400000, guid: ca28cffbd239ced49be8fdf565560978, type: 2}
+    weight: 2
+  WallTiles:
+  - item: {fileID: 11400000, guid: 3252c1dcba037434b899c62b12e949fd, type: 2}
+    weight: 1
+  - item: {fileID: 11400000, guid: bf71740f3e74fad49acc79f982706aba, type: 2}
+    weight: 1
+  - item: {fileID: 11400000, guid: f5fa618016ce50c49b45fe18f4e89551, type: 2}
+    weight: 1
+  - item: {fileID: 11400000, guid: 9e6556b26769b944e99a77516d4f83a8, type: 2}
+    weight: 1
+  grassByFloor: []
+  TallGrass:
+  - item: {fileID: 11400000, guid: 23b6f8e5fe20ec6468c2c059151140f2, type: 2}
+    weight: 1
+  - item: {fileID: 11400000, guid: d8a5aee59c6433c4283271bd77ed5510, type: 2}
+    weight: 1
+  RoadMiddle: {fileID: 11400000, guid: 6e580daf9a4672a4a951d297ec956d9e, type: 2}
+  Sidewalk: {fileID: 0}
+  EastRoadTunnelEntrance: {fileID: 0}
+  WestRoadTunnelEntrance: {fileID: 0}
+  SouthRoadTunnelEntrance: {fileID: 0}
+  NorthRoadTunnelEntrance: {fileID: 0}
+  RoadTunnel: {fileID: 0}
+  CrossRoad: {fileID: 0}
+  Path: {fileID: 11400000, guid: 6e580daf9a4672a4a951d297ec956d9e, type: 2}
+  EnableNorthSouthRoads: 1
+  EnableEastWestRoads: 1
+  isGateTeleport: 1
+  isNormalStreet: 0
+  EnableSidewalks: 0
+  TransitionUp: {fileID: 0}
+  TransitionDown: {fileID: 0}
+  TransitionLeft: {fileID: 0}
+  TransitionRight: {fileID: 0}
+  CornerNW: {fileID: 0}
+  CornerNE: {fileID: 0}
+  CornerSW: {fileID: 0}
+  CornerSE: {fileID: 0}
+  ObstacleTiles:
+  - item: {fileID: 11400000, guid: 6537a7e24216e174493cc1cc58d2b84d, type: 2}
+    weight: 1
+  - item: {fileID: 11400000, guid: 57be1c199f3d4e34b8e456e80c2cfd54, type: 2}
+    weight: 1
+  - item: {fileID: 11400000, guid: c64c11cb80d9d0745b1609eb41eef6ef, type: 2}
+    weight: 1
+  - item: {fileID: 11400000, guid: 3d2627dad825ebc42980206a2bed5a1f, type: 2}
+    weight: 1
+  AnimatedObstacleTiles:
+  - item: {fileID: 11400000, guid: 8977d6f9ed1196144b15a3a99ffa77a3, type: 2}
+    weight: 1
+  - item: {fileID: 11400000, guid: 2f76b53c7f3a41641b9bbc992506d77d, type: 2}
+    weight: 1
+  - item: {fileID: 11400000, guid: 6b00303a27695e843898ce77cf436dec, type: 2}
+    weight: 1
+  - item: {fileID: 11400000, guid: ebd6f27f7a0a5e442b5273e6f77e9b0e, type: 2}
+    weight: 1
+  - item: {fileID: 11400000, guid: 91f0dbb3988eee140aefacb5b32d1ff6, type: 2}
+    weight: 1
+  - item: {fileID: 11400000, guid: 47b3fb5336028e34faaae8ce66eecca8, type: 2}
+    weight: 1
+  - item: {fileID: 11400000, guid: d0df463a4a3832449834211775a6763f, type: 2}
+    weight: 1
+  - item: {fileID: 11400000, guid: 5ee6f39501b423b4198ecede68a5e336, type: 2}
+    weight: 1
+  BackgroundItemTiles:
+  - item: {fileID: 11400000, guid: edc7e5e33593c7a40b46ddb687cc60af, type: 2}
+    weight: 1
+  - item: {fileID: 11400000, guid: d6ea1e3fa2903994c84a7b99f91dad76, type: 2}
+    weight: 1
+  - item: {fileID: 11400000, guid: f3317393c5ac47148a67b71d2f1a0016, type: 2}
+    weight: 1
+  - item: {fileID: 11400000, guid: 80adae3782a2eca46bb54d6c4ae9c19f, type: 2}
+    weight: 1
+  - item: {fileID: 11400000, guid: bd19925cf77d1d84cb12f4ba5e81c8c0, type: 2}
+    weight: 1
+  - item: {fileID: 11400000, guid: d7704dd4a9fb7fa4687c8aeb0fc392e3, type: 2}
+    weight: 1
+  NPCPrefabs: []
+  ItemPrefabs:
+  - item: {fileID: 1971903203958624188, guid: bef06e37a31494d4fae21ff089be929c, type: 3}
+    weight: 5
+  - item: {fileID: 1971903203958624188, guid: c2efcb9c8e8ee7c4c9457220db9a591e, type: 3}
+    weight: 5
+  - item: {fileID: 1971903203958624188, guid: 1dd0f00bb59e6054996fcbc395813bb7, type: 3}
+    weight: 5
+  - item: {fileID: 1971903203958624188, guid: 178ec18a24dd13b40b4e14e19354071a, type: 3}
+    weight: 5
+  TreePrefabs:
+  - item: {fileID: 11400000, guid: 9add8935265feb74091a251cc9494705, type: 2}
+    weight: 1
+  - item: {fileID: 11400000, guid: 3c982e7e15084264ca67816dd0e6bd77, type: 2}
+    weight: 1
+  MultipleItemObstaclePrefabs:
+  - item: {fileID: 11400000, guid: 9f138406b832ded4fa9497cb0c4eccc9, type: 2}
+    weight: 1
+  - item: {fileID: 11400000, guid: f69e26d5909ff8d488923722e6f1ace4, type: 2}
+    weight: 1
+  - item: {fileID: 11400000, guid: ec4be4b34a94ce34881eea2d0a9bf123, type: 2}
+    weight: 2
+  - item: {fileID: 11400000, guid: 2f1e6e1da52709949b7bfdd82a3f1fd2, type: 2}
+    weight: 2
+  - item: {fileID: 11400000, guid: bec5e1ea15b1a4747bfa4cd2428ea040, type: 2}
+    weight: 1
+  - item: {fileID: 11400000, guid: 7a1b16cf2ce998c4c9e9c81d2e0dc21d, type: 2}
+    weight: 1
+  - item: {fileID: 11400000, guid: 83762989f7d29ba48a17308394d5da2a, type: 2}
+    weight: 1
+  - item: {fileID: 11400000, guid: 9238f8fae52654a43b435b1f1e60a0f3, type: 2}
+    weight: 1
+  - item: {fileID: 11400000, guid: 74509b04bc65a34409865a2c6315af22, type: 2}
+    weight: 1
+  - item: {fileID: 11400000, guid: 7c6d2d30f9aa1bd47a688933f4609db8, type: 2}
+    weight: 1
+  - item: {fileID: 11400000, guid: 48f8268c4e988bb4597b6765054ac27c, type: 2}
+    weight: 2
+  - item: {fileID: 11400000, guid: 5dbe15ac019ed914ea1b0f952006999d, type: 2}
+    weight: 2
+  Tidepools: []
+  WildMonsters:
+  - item:
+      _base: {fileID: 11400000, guid: d6ad54d8c61d266459ee34c3c997e239, type: 2}
+      level: 9
+    weight: 1
+  - item:
+      _base: {fileID: 11400000, guid: ccb44e809f8bac44abab523f19f84443, type: 2}
+      level: 8
+    weight: 1
+  - item:
+      _base: {fileID: 11400000, guid: 3dab1551be146e448b655e06b3587e5e, type: 2}
+      level: 6
+    weight: 1
+  NumberOfTrees: 4
+  NumberOfHouses: 1
+  NumberOfNPCs: 0
+  NumberOfObtainableItems: 8
+  NumberOfObstacles: 5
+  NumberOfAnimatedObstacles: 12
+  NumberOfMTObstacles: 9
+  NumberOfBackgroundItems: 9
+  grassPatchSize: 6
+  grassPatchCount: 4
+  tidepoolCount: 0
+  videoForThisMap: {fileID: 32900000, guid: 427a7cd86285b2243b527af87d08d7b6, type: 3}

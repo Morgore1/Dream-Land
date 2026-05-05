@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3c253ad5afcf1d48a6ee2f7ee87f122, type: 3}
+  m_Name: SmallBeachHouse
+  m_EditorClassIdentifier: 
+  roofTiles:
+  - offset: {x: 0, y: 2}
+    tile: {fileID: 11400000, guid: cc7b23717e92ae84e93cc8f72ec65f72, type: 2}
+  - offset: {x: 1, y: 2}
+    tile: {fileID: 11400000, guid: bbc76544335afc74f83a6f5b806899ec, type: 2}
+  - offset: {x: 2, y: 2}
+    tile: {fileID: 11400000, guid: a08c5afe8ee60594d81926dee67b06d0, type: 2}
+  - offset: {x: 3, y: 1}
+    tile: {fileID: 11400000, guid: f09c05f0f85d72348987476046dcafbd, type: 2}
+  - offset: {x: 3, y: 0}
+    tile: {fileID: 11400000, guid: 3d9e12644db05f148a5e2e15a9617c68, type: 2}
+  solidTiles:
+  - offset: {x: 0, y: 0}
+    tile: {fileID: 11400000, guid: 62ea48f15eafef748a86e0829a4156de, type: 2}
+  - offset: {x: 0, y: 1}
+    tile: {fileID: 11400000, guid: ccfd091c91c522f4cada51c5e81702b0, type: 2}
+  - offset: {x: 1, y: 1}
+    tile: {fileID: 11400000, guid: 3c5077e540c77534da63ff6d8a301cc8, type: 2}
+  - offset: {x: 2, y: 1}
+    tile: {fileID: 11400000, guid: f144c67effe04b64fa487c1a7644b223, type: 2}
+  - offset: {x: 2, y: 0}
+    tile: {fileID: 11400000, guid: ad6b3f815bd3a794588208eaebb7ec85, type: 2}
+  backgroundTiles: []
+  doorTiles:
+  - offset: {x: 1, y: 0}
+    tile: {fileID: 11400000, guid: ea4132e414607dc4eab1a9f976b84be7, type: 2}

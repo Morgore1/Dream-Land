@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8daa135b4bd5b954d88c5eed7b155ec4, type: 3}
+  m_Name: Blood Beam
+  m_EditorClassIdentifier: 
+  name: Blood Beam
+  description: 
+  type: 7
+  power: 70
+  accuracy: 100
+  alwaysHits: 0
+  ap: 10
+  priority: 0
+  category: 1
+  effects:
+    boosts: []
+    status: 0
+    volatileStatus: 0
+  secondaries: []
+  target: 0
+  animationFrames:
+  - {fileID: 21300000, guid: 0f9ed6eff0139c244a46933db7713acd, type: 3}
+  - {fileID: 21300000, guid: 9a2e52c359ac9ad4980fe98c6f9b419d, type: 3}
+  - {fileID: 21300000, guid: 23ed083ed88c928408310e69bc3646fc, type: 3}
+  - {fileID: 21300000, guid: 6e967d44e1c510040b0499c791e0389a, type: 3}
+  - {fileID: 21300000, guid: 38a968b1645ed9c489f446939e7cfeae, type: 3}
+  - {fileID: 21300000, guid: 30bae93aa10548540a7f67a484adcd1b, type: 3}
+  - {fileID: 21300000, guid: c7185bd18b370fb43907115000ffe037, type: 3}
+  - {fileID: 21300000, guid: ae8cc10e2e4edc9488e122be1fc1286b, type: 3}
+  - {fileID: 21300000, guid: b2610d455768b4a47a73168ded17272c, type: 3}
+  - {fileID: 21300000, guid: 803ad4a6bc640594cbb4766d15a0b81c, type: 3}
+  - {fileID: 21300000, guid: b0073e73c7d05d54a9bb18dbeefdef9c, type: 3}
+  - {fileID: 21300000, guid: c5469ae9f2fe4c047bf3962a8b4c7eb2, type: 3}
+  - {fileID: 21300000, guid: 7d91091cfce083b4cba947c9091aa8a2, type: 3}
+  - {fileID: 21300000, guid: 38189504e7bdcfd44b491dd4bc3b48cc, type: 3}
+  - {fileID: 21300000, guid: 322fe14e740603e498dfc9adbddb4b41, type: 3}
+  - {fileID: 21300000, guid: e62fa4fcb1b37b14bb4ef2dd6fa2cbdc, type: 3}
+  - {fileID: 21300000, guid: c6872ceea1b8e8b40aef51fff78c83c9, type: 3}
+  - {fileID: 21300000, guid: 09fc3d3c81f552b4fb85009dbbe5a2a4, type: 3}
+  frameRate: 12
+  moveAnimationPrefab: {fileID: 2681595770613045481, guid: 7d051e042ccf51548a6d066e80f9c0ae, type: 3}

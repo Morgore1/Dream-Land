@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa2ad1739098ce044aec09b82d38b093, type: 3}
+  m_Name: Apple City
+  m_EditorClassIdentifier: 
+  MapWidth: 40
+  MapHeight: 40
+  MaximumWalkers: 75
+  FillPercentage: 0.4
+  WaitTime: 0.01
+  HousePrefabs: []
+  FloorTiles:
+  - {fileID: 11400000, guid: 8fb9388d3b5f91346b1717cdafa5ca67, type: 2}
+  - {fileID: 11400000, guid: d6cb7ef018b0a1b42bf4f8bb2fe39edc, type: 2}
+  - {fileID: 11400000, guid: 8812a7cefedbede43b85e41c356f9a3f, type: 2}
+  - {fileID: 11400000, guid: f4658459ab96a5b4d83a93895f3b980c, type: 2}
+  - {fileID: 11400000, guid: 1315cf7c1753e3f46a49849fcd4e6619, type: 2}
+  - {fileID: 11400000, guid: 1315cf7c1753e3f46a49849fcd4e6619, type: 2}
+  - {fileID: 11400000, guid: 1315cf7c1753e3f46a49849fcd4e6619, type: 2}
+  - {fileID: 11400000, guid: 1315cf7c1753e3f46a49849fcd4e6619, type: 2}
+  - {fileID: 11400000, guid: 1315cf7c1753e3f46a49849fcd4e6619, type: 2}
+  - {fileID: 11400000, guid: 1315cf7c1753e3f46a49849fcd4e6619, type: 2}
+  - {fileID: 11400000, guid: 1315cf7c1753e3f46a49849fcd4e6619, type: 2}
+  - {fileID: 11400000, guid: 1315cf7c1753e3f46a49849fcd4e6619, type: 2}
+  WallTiles:
+  - {fileID: 11400000, guid: a93a7fbfe7b3af74f94c711b3a9cc260, type: 2}
+  - {fileID: 11400000, guid: 26943a4022624ac44bbf7db1b9c27ecb, type: 2}
+  TallGrass: {fileID: 11400000, guid: 23b6f8e5fe20ec6468c2c059151140f2, type: 2}
+  RoadMiddle: {fileID: 11400000, guid: 5b81bdba4eb847248966b08a5678e39a, type: 2}
+  Sidewalk: {fileID: 11400000, guid: d610f86eb9973d749b4c3d29c860f59e, type: 2}
+  EastRoadTunnelEntrance: {fileID: 0}
+  WestRoadTunnelEntrance: {fileID: 0}
+  SouthRoadTunnelEntrance: {fileID: 0}
+  NorthRoadTunnelEntrance: {fileID: 0}
+  RoadTunnel: {fileID: 11400000, guid: e055a6c0f2f1f54498baf4100e4b0df3, type: 2}
+  CrossRoad: {fileID: 11400000, guid: 66a6e03311b69f8458c17942b37ac474, type: 2}
+  Path: {fileID: 0}
+  EnableNorthSouthRoads: 0
+  EnableEastWestRoads: 1
+  isGateTeleport: 0
+  TransitionUp: {fileID: 11400000, guid: c18988d9be8a54c4791db14a41019267, type: 2}
+  TransitionDown: {fileID: 11400000, guid: d45a2f875ee5e4549bfd24064396da13, type: 2}
+  TransitionLeft: {fileID: 11400000, guid: 53fe1dde4a7823141a6954092ccfd4de, type: 2}
+  TransitionRight: {fileID: 11400000, guid: 6cdb185c53972e14f8e966032a6c3121, type: 2}
+  CornerNW: {fileID: 11400000, guid: dab3660357d87094891c5f91a849598d, type: 2}
+  CornerNE: {fileID: 11400000, guid: a0bf9839dc35aa4448110a8f1358cbfc, type: 2}
+  CornerSW: {fileID: 11400000, guid: 12bd06938c18c7347a85cb0f3e27a4dd, type: 2}
+  CornerSE: {fileID: 11400000, guid: 2902c6a2724943f4688f5b2cf8af5164, type: 2}
+  ItemTiles:
+  - {fileID: 11400000, guid: 652514c8e39f4cb499bb1bd5f6eeb0b7, type: 2}
+  - {fileID: 11400000, guid: 96ddaa80534a61343bee6d26094fa6d0, type: 2}
+  - {fileID: 11400000, guid: 701b0fd9ac3d7d247a0be19dddc18ba5, type: 2}
+  - {fileID: 11400000, guid: 5d50920868254b84387c0d2995fc18a3, type: 2}
+  NPCPrefabs:
+  - {fileID: 1166630999506584342, guid: 56f09c9280185ca4b8a95c7ac9c0a17b, type: 3}
+  NumberOfHouses: 3
+  NumberOfNPCs: 6
+  NumberOfItems: 15
+  grassPatchSize: 6
+  grassPatchCount: 6
