@@ -1,4 +1,0 @@
-repository "Dream Land 2025-06-04_18-44-28/Dream Land@2475264298842@cloud"
-  path "/"
-    br "/main"
-    co "/main"
