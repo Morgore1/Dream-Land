@@ -13,6 +13,10 @@ MonoBehaviour:
   m_Name: Dodo
   m_EditorClassIdentifier: 
   name: Dodo
+  familyID: 100
+  evolution: {fileID: 0}
+  evolutionRequirement: 2
+  evolutionStage: 1
   description: 
   FrontSprite: {fileID: 21300000, guid: d0629809e6723324c83c056fcb871826, type: 3}
   frontIdleSprite: {fileID: 21300000, guid: d0629809e6723324c83c056fcb871826, type: 3}

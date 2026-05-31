@@ -145,6 +145,7 @@ public class WalkerGenerator : MonoBehaviour
     private Grid[,] gridHandler;
     private List<WalkerObject> Walkers;
     private int TileCount = 0;
+    private List<WalkerCluster> clusters;
     [SerializeField] private int NumberOfHouses = 5;
     [SerializeField] private int NumberOfTrees = 5;
 
@@ -452,6 +453,7 @@ public class WalkerGenerator : MonoBehaviour
         }
 
         ConnectClusters(clusters);
+        this.clusters = clusters;
     }
     void RunWalkerCluster(RectInt bounds, Vector2Int startPos)
     {
@@ -1096,18 +1098,27 @@ public class WalkerGenerator : MonoBehaviour
         if (tunnels == null || tunnels.Count == 0)
             return;
 
-        // --- Compute a hub position (rough center of all tunnel entrances) ---
-        Vector2 sum = Vector2.zero;
-        foreach (var t in tunnels)
+        // --- Compute a hub position (center of a random cluster) ---
+        Vector2Int hub;
+        if (this.clusters != null && this.clusters.Count > 0)
         {
-            sum += (Vector2)t.pos;
+            int randomIndex = Random.Range(0, this.clusters.Count);
+            hub = this.clusters[randomIndex].center;
         }
-
-        Vector2 average = sum / tunnels.Count;
-        Vector2Int hub = new Vector2Int(
-            Mathf.RoundToInt(average.x),
-            Mathf.RoundToInt(average.y)
-        );
+        else
+        {
+            // fallback to average
+            Vector2 sum = Vector2.zero;
+            foreach (var t in tunnels)
+            {
+                sum += (Vector2)t.pos;
+            }
+            Vector2 average = sum / tunnels.Count;
+            hub = new Vector2Int(
+                Mathf.RoundToInt(average.x),
+                Mathf.RoundToInt(average.y)
+            );
+        }
 
         // Clamp hub so it's safely inside the map
         hub.x = Mathf.Clamp(hub.x, 2, MapWidth - 3);

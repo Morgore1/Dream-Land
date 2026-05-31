@@ -17,6 +17,11 @@ public class MonsterParty : MonoBehaviour
 
     private void Start()
     {
+        InitParty();
+    }
+
+    public void InitParty()
+    {
         foreach (var monster in monsters)
         {
             monster.Init();
@@ -28,15 +33,25 @@ public class MonsterParty : MonoBehaviour
         return monsters.Where(x => x.HP > 0).FirstOrDefault();
     }
 
-    public void AddMonsterToParty(Monster newMonster)
+    public bool AddMonsterToParty(Monster newMonster)
     {
         if (monsters.Count < 6)
         {
             monsters.Add(newMonster);
+            return true;
         }
         else
         {
             // TODO: transfer to storage
+            return false;
+        }
+    }
+
+    public void HealAllMonsters()
+    {
+        foreach (var monster in monsters)
+        {
+            monster.RestoreFullHealth();
         }
     }
     public IEnumerator CombineMonster(Monster target)

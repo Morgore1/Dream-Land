@@ -11,7 +11,7 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum BattleState { Start, ActionSelection, MoveSelection, RunningTurn, Busy, PartyScreen, InventoryScreen, BattleOver }
+public enum BattleState { Start, ActionSelection, MoveSelection, RunningTurn, Busy, PartyScreen, CaptureDecision, InventoryScreen, BattleOver }
 public enum BattleAction { Move, SwitchMonster, UseItem, Run}
 
 public class BattleSystem : MonoBehaviour
@@ -20,6 +20,7 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] BattleUnit enemyUnit;
     [SerializeField] public BattleDialogueBox dialogueBox;
     [SerializeField] PartyScreen partyScreen;
+    [SerializeField] CaptureDecisionUI captureDecisionUI;
     [SerializeField] Image playerImage;
     [SerializeField] Image trainerImage;
     [SerializeField] GameObject dreamCatcherPrefab;
@@ -40,6 +41,12 @@ public class BattleSystem : MonoBehaviour
 
     public BattleState state;
     public BattleState? prevState;
+
+    Monster capturedMonster;
+    List<Monster> compatibleCombineTargets;
+    List<Monster> partySelectionMonsters;
+    bool isSelectingCombineTarget;
+
     int currentAction;
     int currentMove;
     int currentMember;
@@ -84,7 +91,13 @@ public class BattleSystem : MonoBehaviour
         if (isTrainerBattle == false)
         {
             // Wild Monster Battle
-            playerUnit.Setup(playerParty.GetHealthyMonster());
+            var playerMonster = playerParty.GetHealthyMonster();
+            if (playerMonster == null)
+            {
+                Debug.LogError("BattleSystem.SetupBattle: player has no healthy monsters.", this);
+                yield break;
+            }
+            playerUnit.Setup(playerMonster);
             enemyUnit.Setup(wildMonster);
 
             dialogueBox.SetMoveNames(playerUnit.Monster.Moves);
@@ -109,6 +122,11 @@ public class BattleSystem : MonoBehaviour
             trainerImage.gameObject.SetActive(false);
             enemyUnit.gameObject.SetActive(true);
             var enemyMonster = trainerParty.GetHealthyMonster();
+            if (enemyMonster == null)
+            {
+                Debug.LogError("BattleSystem.SetupBattle: trainer has no healthy monsters.", this);
+                yield break;
+            }
             enemyUnit.Setup(enemyMonster);
             yield return dialogueBox.TypeDialogue($"{trainer.Name} sent out {enemyMonster.Base.Name}");
 
@@ -116,6 +134,11 @@ public class BattleSystem : MonoBehaviour
             playerImage.gameObject.SetActive(false);
             playerUnit.gameObject.SetActive(true);
             var playerMonster = playerParty.GetHealthyMonster();
+            if (playerMonster == null)
+            {
+                Debug.LogError("BattleSystem.SetupBattle: player has no healthy monsters.", this);
+                yield break;
+            }
             playerUnit.Setup(playerMonster);
             yield return dialogueBox.TypeDialogue($"Go {playerMonster.Base.Name}!");
             dialogueBox.SetMoveNames(playerUnit.Monster.Moves);
@@ -470,6 +493,11 @@ public class BattleSystem : MonoBehaviour
         {
             HandlePartySelection();
         }
+        else if (state == BattleState.CaptureDecision)
+        {
+            if (captureDecisionUI != null)
+                captureDecisionUI.HandleInput();
+        }
         else if (state == BattleState.InventoryScreen)
         {
             // Let InventoryUI handle input itself
@@ -560,10 +588,31 @@ public class BattleSystem : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)) currentMember--;
         else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) currentMember++;
 
-        currentMember = Mathf.Clamp(currentMember, 0, playerParty.Monsters.Count - 1);
+        var activeParty = partySelectionMonsters ?? playerParty.Monsters;
+        currentMember = Mathf.Clamp(currentMember, 0, activeParty.Count - 1);
         partyScreen.UpdateMemberSelection(currentMember);
 
-        var selectedMonster = playerParty.Monsters[currentMember];
+        var selectedMonster = activeParty[currentMember];
+
+        if (isSelectingCombineTarget)
+        {
+            if (Input.GetKeyDown(KeyCode.Z))
+            {
+                partyScreen.gameObject.SetActive(false);
+                isSelectingCombineTarget = false;
+                partySelectionMonsters = null;
+                StartCoroutine(FinishCombineCapturedMonster(selectedMonster));
+            }
+            else if (Input.GetKeyDown(KeyCode.X))
+            {
+                partyScreen.gameObject.SetActive(false);
+                isSelectingCombineTarget = false;
+                partySelectionMonsters = null;
+                ShowCaptureDecisionMenu();
+            }
+
+            return;
+        }
 
         if (isUsingHealingItem)
         {
@@ -726,8 +775,7 @@ public class BattleSystem : MonoBehaviour
         {
             yield return catcherAnim.Play(dreamCatcherSuccessfulFrames, dreamCatcherFrameRate);
             yield return dialogueBox.TypeDialogue($"{enemyUnit.Monster.Base.Name} was successfully caught!");
-            yield return HandleCapturedMonster(enemyUnit.Monster);
-            BattleOver(true);
+            yield return ShowCaptureDecision(enemyUnit.Monster);
         }
         else
         {
@@ -755,6 +803,128 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
+    IEnumerator ShowCaptureDecision(Monster newMonster)
+    {
+        state = BattleState.CaptureDecision;
+        capturedMonster = newMonster;
+        compatibleCombineTargets = playerParty.Monsters
+            .Where(m =>
+                m.Base.FamilyID == newMonster.Base.FamilyID &&
+                m.Base.Evolution != null &&
+                m.Base.Evolution.FamilyID == newMonster.Base.FamilyID
+            )
+            .ToList();
+
+        if (captureDecisionUI == null)
+            captureDecisionUI = FindObjectOfType<CaptureDecisionUI>();
+
+        if (captureDecisionUI == null)
+        {
+            Debug.LogWarning("CaptureDecisionUI not assigned on BattleSystem and not found in scene.");
+            yield break;
+        }
+
+        captureDecisionUI.gameObject.SetActive(true);
+        captureDecisionUI.Show(newMonster,
+            compatibleCombineTargets.Count > 0,
+            () => StartCoroutine(AddCapturedMonster()),
+            () => StartCoroutine(StartCombineSelection()),
+            () => StartCoroutine(DiscardCapturedMonster()));
+
+        yield return new WaitUntil(() => state != BattleState.CaptureDecision);
+    }
+
+    void ShowCaptureDecisionMenu()
+    {
+        state = BattleState.CaptureDecision;
+        var canCombine = compatibleCombineTargets != null && compatibleCombineTargets.Count > 0;
+
+        if (captureDecisionUI == null)
+            captureDecisionUI = FindObjectOfType<CaptureDecisionUI>();
+
+        if (captureDecisionUI == null)
+        {
+            Debug.LogWarning("CaptureDecisionUI not assigned on BattleSystem and not found in scene.");
+            return;
+        }
+
+        captureDecisionUI.gameObject.SetActive(true);
+        captureDecisionUI.Show(capturedMonster,
+            canCombine,
+            () => StartCoroutine(AddCapturedMonster()),
+            () => StartCoroutine(StartCombineSelection()),
+            () => StartCoroutine(DiscardCapturedMonster()));
+    }
+
+    IEnumerator AddCapturedMonster()
+    {
+        captureDecisionUI.Close();
+        state = BattleState.Busy;
+
+        if (playerParty.AddMonsterToParty(capturedMonster))
+        {
+            yield return dialogueBox.TypeDialogue($"{capturedMonster.Base.Name} has joined your party!");
+            BattleOver(true);
+        }
+        else
+        {
+            yield return dialogueBox.TypeDialogue("Your party is full! Choose another option.");
+            ShowCaptureDecisionMenu();
+        }
+    }
+
+    IEnumerator DiscardCapturedMonster()
+    {
+        captureDecisionUI.Close();
+        state = BattleState.Busy;
+
+        yield return dialogueBox.TypeDialogue($"{capturedMonster.Base.Name} was discarded.");
+        BattleOver(true);
+    }
+
+    IEnumerator StartCombineSelection()
+    {
+        if (compatibleCombineTargets == null || compatibleCombineTargets.Count == 0)
+        {
+            captureDecisionUI.Close();
+            state = BattleState.Busy;
+            yield return dialogueBox.TypeDialogue("No compatible monster available to combine.");
+            ShowCaptureDecisionMenu();
+            yield break;
+        }
+
+        if (compatibleCombineTargets.Count == 1)
+        {
+            var target = compatibleCombineTargets[0];
+            captureDecisionUI.Close();
+            state = BattleState.Busy;
+            yield return dialogueBox.TypeDialogue($"Combine {capturedMonster.Base.Name} with {target.Base.Name}?");
+            yield return playerParty.CombineMonster(target);
+            yield return dialogueBox.TypeDialogue($"{target.Base.Name} gained evolution progress!");
+            BattleOver(true);
+            yield break;
+        }
+
+        captureDecisionUI.Close();
+        isSelectingCombineTarget = true;
+        partySelectionMonsters = compatibleCombineTargets;
+        currentMember = 0;
+        partyScreen.SetPartyData(partySelectionMonsters);
+        partyScreen.gameObject.SetActive(true);
+        partyScreen.UpdateMemberSelection(currentMember);
+        partyScreen.SetMessageText("Select a monster to combine!");
+        state = BattleState.PartyScreen;
+    }
+
+    IEnumerator FinishCombineCapturedMonster(Monster target)
+    {
+        state = BattleState.Busy;
+        yield return dialogueBox.TypeDialogue($"Combining {capturedMonster.Base.Name} with {target.Base.Name}...");
+        yield return playerParty.CombineMonster(target);
+        yield return dialogueBox.TypeDialogue($"{target.Base.Name} gained evolution progress!");
+        BattleOver(true);
+    }
+
     public static int CalculateCaptureResult(Monster monster)
     {
         float maxHP = monster.MaxHp;
@@ -772,7 +942,7 @@ public class BattleSystem : MonoBehaviour
         int shakeCount = 0;
         while (shakeCount < 4)
         {
-            int roll = UnityEngine.Random.Range(0, 65535); // range is 0–65534
+            int roll = UnityEngine.Random.Range(0, 65535); // range is 0ï¿½65534
             if (roll >= b)
                 break;
 

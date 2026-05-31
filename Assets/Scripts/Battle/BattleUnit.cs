@@ -34,12 +34,18 @@ public class BattleUnit : MonoBehaviour
     public void Setup(Monster monster)
     {
         Monster = monster;
-        if (isPlayerUnit)
-            image.sprite = Monster.Base.FrontSprite;
-        else
-            image.sprite = Monster.Base.FrontSprite;
+        if (Monster == null)
+        {
+            Debug.LogError("BattleUnit.Setup called with null Monster.", this);
+            return;
+        }
+        if (Monster.Base == null)
+        {
+            Debug.LogError("BattleUnit.Setup Monster.Base is null.", this);
+            return;
+        }
 
-      
+        image.sprite = Monster.Base.FrontSprite;
 
         hud.gameObject.SetActive(true);
         hud.SetData(monster);

@@ -20,6 +20,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Sprite sprite;
 
     public event Action OnEncountered;
+    public event Action OnEnterProceduralMap;
+    public event Action OnExitProceduralMap;
     public event Action<Collider2D> OnEnterTrainersView;
     public event Action<Collider2D> OnEnterNPCsView;
 
@@ -172,6 +174,8 @@ public class PlayerController : MonoBehaviour
                         destination.y + 0.7f,
                         0f
                     );
+
+                    OnEnterProceduralMap?.Invoke();
                 }
                 
                 else
@@ -220,6 +224,7 @@ public class PlayerController : MonoBehaviour
                 );
 
                 yield return new WaitForSeconds(0.3f);
+                OnExitProceduralMap?.Invoke();
             }
         }
         else

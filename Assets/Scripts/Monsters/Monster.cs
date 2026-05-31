@@ -213,6 +213,19 @@ public class Monster
         HpChanged = true;  // so the UI knows HP was updated
     }
 
+    public void RestoreFullHealth()
+    {
+        HP = MaxHp;
+        Status = null;
+        VolatileStatus = null;
+        StatusTime = 0;
+        VolatileStatusTime = 0;
+        ResetStatboost();
+        StatusChanges.Clear();
+        HpChanged = true;
+        OnStatusChanged?.Invoke();
+    }
+
     public void SetStatus(ConditionID conditionID)
     {
         if (Status != null) return;

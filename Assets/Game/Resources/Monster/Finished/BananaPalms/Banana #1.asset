@@ -19,7 +19,7 @@ MonoBehaviour:
   evolutionStage: 1
   description: 
   FrontSprite: {fileID: 21300000, guid: a951be8d66e43494c952a8df60fcfd28, type: 3}
-  frontIdleSprite: {fileID: 0}
+  frontIdleSprite: {fileID: 21300000, guid: a951be8d66e43494c952a8df60fcfd28, type: 3}
   attackAnimationFrames:
   - {fileID: 21300000, guid: 8eb050ac22f89474db1f5935ea5d2f17, type: 3}
   attackFrameRate: 10
