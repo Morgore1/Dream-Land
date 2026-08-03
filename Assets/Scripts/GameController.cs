@@ -15,10 +15,10 @@ public class GameController : MonoBehaviour
     [Header("Procedural Encounter")]
     [SerializeField] List<TrainerController> proceduralEncounterOpponents = new List<TrainerController>();
     [SerializeField] int proceduralRounds = 1;
-    [SerializeField] float proceduralEncounterTimerSeconds = 10f;
+    [SerializeField] int Energy = 10;
     [SerializeField] int proceduralPlayerLives = 1;
     [SerializeField] int proceduralNpcLives = 1;
-    [SerializeField] TMP_Text proceduralEncounterCountdownText;
+    [SerializeField] TMP_Text energyText;
 
     GameState state;
 
@@ -27,7 +27,6 @@ public class GameController : MonoBehaviour
     int remainingPlayerLives;
     int remainingNpcLives;
     int currentProceduralRound;
-    Coroutine proceduralEncounterTimerCoroutine;
     GameObject proceduralOpponentObject;
 
     public static GameController Instance { get; private set; }
@@ -67,16 +66,16 @@ public class GameController : MonoBehaviour
         var pauseMenu = FindObjectOfType<PauseMenu>();
         pauseMenu.Init(party);
 
-        playerController.OnEnterProceduralMap += StartProceduralEncounterTimer;
-        playerController.OnExitProceduralMap += CancelProceduralEncounterTimer;
+        playerController.OnEnterProceduralMap += EnableEnergyOverlay;
+        playerController.OnExitProceduralMap += DisableEnergyOverlay;
     }
 
     private void OnDestroy()
     {
         if (playerController != null)
         {
-            playerController.OnEnterProceduralMap -= StartProceduralEncounterTimer;
-            playerController.OnExitProceduralMap -= CancelProceduralEncounterTimer;
+            playerController.OnEnterProceduralMap -= EnableEnergyOverlay;
+            playerController.OnExitProceduralMap -= DisableEnergyOverlay;
         }
     }
 
@@ -162,49 +161,41 @@ public class GameController : MonoBehaviour
         worldCamera.gameObject.SetActive(true);
     }
 
-    private void StartProceduralEncounterTimer()
+    private void EnableEnergyOverlay()
     {
-        if (proceduralEncounterOpponents == null || proceduralEncounterOpponents.Count == 0 || proceduralRounds < 1 || proceduralPlayerLives < 1 || proceduralNpcLives < 1)
+        UpdateEnergyText();
+
+        if (energyText != null)
         {
-            Debug.LogWarning("Procedural encounter is not configured correctly.");
-            return;
+            energyText.gameObject.SetActive(true);
         }
-
-        if (isProceduralEncounterActive || proceduralEncounterTimerCoroutine != null)
-            return;
-
-        UpdateCountdownDisplay(proceduralEncounterTimerSeconds);
-        proceduralEncounterTimerCoroutine = StartCoroutine(ProceduralEncounterCountdown());
     }
 
-    private void CancelProceduralEncounterTimer()
+    private void DisableEnergyOverlay()
     {
-        if (proceduralEncounterTimerCoroutine != null)
+        if (energyText != null)
         {
-            StopCoroutine(proceduralEncounterTimerCoroutine);
-            proceduralEncounterTimerCoroutine = null;
+            energyText.gameObject.SetActive(false);
         }
-
-        ClearCountdownDisplay();
     }
 
-    private IEnumerator ProceduralEncounterCountdown()
+    private void UpdateEnergyText()
     {
-        float elapsed = 0f;
-        while (elapsed < proceduralEncounterTimerSeconds)
+        if (energyText != null)
         {
-            elapsed += Time.deltaTime;
-            UpdateCountdownDisplay(proceduralEncounterTimerSeconds - elapsed);
-            yield return null;
+            energyText.text = $"Energy ({Energy})";
         }
-
-        proceduralEncounterTimerCoroutine = null;
-        ClearCountdownDisplay();
-        StartProceduralEncounter();
     }
 
     private void StartProceduralEncounter()
     {
+        if (Energy > 0)
+        {
+            return;
+        }
+
+        DisableEnergyOverlay();
+
         if (proceduralEncounterOpponents == null || proceduralEncounterOpponents.Count == 0)
         {
             Debug.LogWarning("Procedural encounter opponent prefabs are not assigned.");
@@ -301,30 +292,11 @@ public class GameController : MonoBehaviour
         return proceduralEncounterOpponents[index];
     }
 
-    private void UpdateCountdownDisplay(float timeRemaining)
-    {
-        if (proceduralEncounterCountdownText == null)
-            return;
-
-        proceduralEncounterCountdownText.text = $"Encounter in {Mathf.CeilToInt(Mathf.Max(0f, timeRemaining))}s";
-        proceduralEncounterCountdownText.gameObject.SetActive(true);
-    }
-
-    private void ClearCountdownDisplay()
-    {
-        if (proceduralEncounterCountdownText == null)
-            return;
-
-        proceduralEncounterCountdownText.text = string.Empty;
-        proceduralEncounterCountdownText.gameObject.SetActive(false);
-    }
-
+    
     private void EndProceduralEncounter()
     {
         isProceduralEncounterActive = false;
         isProceduralBattle = false;
-        proceduralEncounterTimerCoroutine = null;
-        ClearCountdownDisplay();
 
         state = GameState.FreeRoam;
         battleSystem.gameObject.SetActive(false);
@@ -342,6 +314,11 @@ public class GameController : MonoBehaviour
         if (state == GameState.FreeRoam)
         {
             playerController.HandleUpdate();
+
+            if (Energy <= 0)
+            {
+                StartProceduralEncounter();
+            }
         }
         else if (state == GameState.Battle)
         {

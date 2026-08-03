@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Dreamcatcher
   icon: {fileID: 21300000, guid: 5b64a0e5fbe3b564685e4e1255604d19, type: 3}
-  itemType: 3
+  itemType: 2
+  isConsumable: 0
+  isUsable: 1
   description: 

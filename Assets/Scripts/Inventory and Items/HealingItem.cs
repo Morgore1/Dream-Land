@@ -9,7 +9,7 @@ public class HealingItem : Item
 
     private void OnEnable()
     {
-        itemType = ItemType.Consumable; // Ensure it's treated as consumable
+        isConsumable = true; // Ensure it's treated as consumable
     }
 
     public override void Use(GameObject user)
@@ -36,7 +36,7 @@ public class HealingItem : Item
         if (monster.HP >= monster.MaxHp)
         {
             Debug.Log($"{monster.Base.Name} is already at full HP!");
-            return false; // Don’t consume item
+            return false; // Donï¿½t consume item
         }
 
         int oldHp = monster.HP;

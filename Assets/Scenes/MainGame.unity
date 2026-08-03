@@ -1462,9 +1462,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slots:
   - item: {fileID: 11400000, guid: 16e658289a9485342a581b079bf64158, type: 2}
-    count: 60
-  - item: {fileID: 11400000, guid: ebe84215c71880b44999690df693ae20, type: 2}
-    count: 60
+    count: 1
 --- !u!1 &96839141
 GameObject:
   m_ObjectHideFlags: 0
@@ -3270,8 +3268,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.0012207031, y: 0}
-  m_SizeDelta: {x: -412.93, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &275180990
 MonoBehaviour:
@@ -5018,7 +5016,7 @@ GameObject:
   - component: {fileID: 448643880}
   - component: {fileID: 448643879}
   m_Layer: 5
-  m_Name: Timer
+  m_Name: EnergyText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5038,9 +5036,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 627526080}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 1}
-  m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -15}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 125, y: -25}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &448643879
@@ -5063,7 +5061,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Game starts in 5 seconds
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c3d2bdaab412442418755afaa7703535, type: 2}
   m_sharedMaterial: {fileID: 5290712090072376926, guid: c3d2bdaab412442418755afaa7703535, type: 2}
@@ -5097,7 +5095,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 2
+  m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -7899,10 +7897,10 @@ Camera:
   m_LensShift: {x: 0, y: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.078125
-    y: 0.95842
-    width: 1
-    height: 0.997921
+    x: 0.07818609
+    y: 0.95643157
+    width: 1.0007819
+    height: 0.9958507
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
@@ -9080,7 +9078,7 @@ GameObject:
   - component: {fileID: 627526078}
   - component: {fileID: 627526077}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: InGameOverlay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17052,10 +17050,10 @@ MonoBehaviour:
   proceduralEncounterOpponents:
   - {fileID: 1411161330}
   proceduralRounds: 1
-  proceduralEncounterTimerSeconds: 10
+  Energy: 10
   proceduralPlayerLives: 1
   proceduralNpcLives: 1
-  proceduralEncounterCountdownText: {fileID: 448643879}
+  energyText: {fileID: 448643879}
 --- !u!4 &932373895
 Transform:
   m_ObjectHideFlags: 0
@@ -52645,8 +52643,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.00091552734, y: 0}
-  m_SizeDelta: {x: -412.93, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1197948113
 MonoBehaviour:
@@ -61560,8 +61558,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.0004272461, y: 0}
-  m_SizeDelta: {x: -412.93, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1610761910
 MonoBehaviour:

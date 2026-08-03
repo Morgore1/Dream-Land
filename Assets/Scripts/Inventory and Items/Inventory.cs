@@ -39,14 +39,14 @@ public class Inventory : MonoBehaviour
         item.Use(user);
 
         // Handle removal depending on type
-        if (item.itemType == ItemType.Consumable)
+        if (item.isConsumable)
         {
             if (!(item is HealingItem))
             {
                 slot.count--;
             }
         }
-        else if (item.itemType == ItemType.BattleOnly && inBattle)
+        else if (item.isConsumable && inBattle)
         {
             slot.count--;
         }

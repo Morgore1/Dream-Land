@@ -78,7 +78,7 @@ public class InventoryUI : MonoBehaviour
             var selectedSlot = playerInventory.slots[selectedIndex];
             var selectedItem = selectedSlot.item;
 
-            bool canUse = selectedItem.itemType == ItemType.Consumable || selectedItem.itemType == ItemType.BattleOnly;
+            bool canUse = selectedItem.isUsable;
 
             if ((Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) && canUse)
                 onUseOption = true;
@@ -152,7 +152,7 @@ public class InventoryUI : MonoBehaviour
         itemDescriptionText.text = selectedItem.description;
 
         // Only show "Use" if item can be used
-        bool canUse = selectedItem.itemType == ItemType.Consumable || selectedItem.itemType == ItemType.BattleOnly;
+        bool canUse = selectedItem.isUsable;
         if (canUse)
         {
             useOptionText.text = onUseOption ? "> Use <" : "Use";
