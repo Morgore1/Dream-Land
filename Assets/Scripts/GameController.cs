@@ -186,7 +186,11 @@ public class GameController : MonoBehaviour
             energyText.text = $"Energy ({Energy})";
         }
     }
-
+    public void SpendEnergy(int amount)
+    {   
+        Energy = Mathf.Max(0, Energy - amount);
+        UpdateEnergyText();
+    }
     private void StartProceduralEncounter()
     {
         if (Energy > 0)

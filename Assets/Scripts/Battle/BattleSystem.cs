@@ -754,6 +754,11 @@ public class BattleSystem : MonoBehaviour
             yield break;
         }
 
+        if (GameController.Instance != null)
+        {
+            GameController.Instance.SpendEnergy(1);
+        }
+
         yield return dialogueBox.TypeDialogue($"{player.Name} used {item.itemName}!");
 
 

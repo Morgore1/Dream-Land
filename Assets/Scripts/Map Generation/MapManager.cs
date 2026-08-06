@@ -27,6 +27,13 @@ public class MapManager : MonoBehaviour
 
     public void ToggleMapVisibility(bool showProcedural)
     {
+        bool isProceduralToProcedural = previousMapType == MapType.Procedural && showProcedural;
+
+        if (isProceduralToProcedural && GameController.Instance != null)
+        {
+            GameController.Instance.SpendEnergy(1);
+        }
+
         // Only start transition if going to/from procedural map
         if (screenTransition != null && (previousMapType == MapType.Procedural || showProcedural))
         {
@@ -49,13 +56,13 @@ public class MapManager : MonoBehaviour
     }
     private IEnumerator ToggleMapWithTransition(bool showProcedural)
     {
-        // Play first half of transition (frames 0–7)
+        // Play first half of transition (frames 0ï¿½7)
         yield return screenTransition.PlayFrames(0, 7);
 
         // Actually switch maps
         ApplyMapVisibility(showProcedural);
 
-        // Play second half of transition (frames 8–15)
+        // Play second half of transition (frames 8ï¿½15)
         yield return screenTransition.PlayFrames(8, 15);
     }
     private void ResetAllNPCs(GameObject mapRoot)
