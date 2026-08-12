@@ -8,6 +8,10 @@ public class BattleUnit : MonoBehaviour
 {
     [SerializeField] bool isPlayerUnit;
     [SerializeField] BattleHud hud;
+    [Header("Sound")]
+    [SerializeField] AudioSource sfxSource;
+    [SerializeField] AudioClip hitSfx;
+    [SerializeField] AudioClip faintSfx;
     public bool playIdleOnlyOnce = false;
 
     public bool IsPlayerUnit
@@ -29,6 +33,10 @@ public class BattleUnit : MonoBehaviour
         image = GetComponent<Image>();
         originalPos = image.transform.localPosition;
         originalColor = image.color;
+        if (sfxSource == null)
+        {
+            sfxSource = GetComponent<AudioSource>();
+        }
     }
 
     public void Setup(Monster monster)
@@ -177,6 +185,11 @@ public class BattleUnit : MonoBehaviour
 
         image.color = Color.gray;
 
+        if (sfxSource != null && hitSfx != null)
+        {
+            sfxSource.PlayOneShot(hitSfx);
+        }
+
         if (Monster.Base.hitAnimationFrames != null && Monster.Base.hitAnimationFrames.Count > 0)
         {
             animationCoroutine = StartCoroutine(PlayAnimation(
@@ -201,6 +214,10 @@ public class BattleUnit : MonoBehaviour
     public void PlayFaintAnimation()
     {
         if (animationCoroutine != null) StopCoroutine(animationCoroutine);
+        if (sfxSource != null && faintSfx != null)
+        {
+            sfxSource.PlayOneShot(faintSfx);
+        }
 
         var sequence = DOTween.Sequence();
         sequence.Append(image.transform.DOLocalMoveY(originalPos.y - 150f, 0.5f));
