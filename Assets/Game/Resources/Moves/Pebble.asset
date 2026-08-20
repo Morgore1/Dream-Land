@@ -52,4 +52,5 @@ MonoBehaviour:
   - {fileID: 21300000, guid: aae9498b7ef57db46b16afae7e56629f, type: 3}
   - {fileID: 21300000, guid: a70378e0cb8b13b46aac803a5265f1ed, type: 3}
   frameRate: 12
+  moveSfx: {fileID: 8300000, guid: 1e65e89e980c6584399b20abc9ba5e24, type: 3}
   moveAnimationPrefab: {fileID: 2681595770613045481, guid: 7d051e042ccf51548a6d066e80f9c0ae, type: 3}

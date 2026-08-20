@@ -125,6 +125,11 @@ public class BattleUnit : MonoBehaviour
     }
     public IEnumerator PlayMoveEffect(MoveBase move, Transform battleCanvasTransform)
     {
+        if (sfxSource != null && move.MoveSfx != null)
+        {
+            sfxSource.PlayOneShot(move.MoveSfx);
+        }
+
         if (move.MoveAnimationPrefab == null)
             yield break;
 

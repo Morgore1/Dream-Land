@@ -24,9 +24,11 @@ public class MoveBase : ScriptableObject
 
     [SerializeField] List<Sprite> animationFrames;
     [SerializeField] float frameRate = 12f;
+    [SerializeField] AudioClip moveSfx;
 
     public List<Sprite> AnimationFrames => animationFrames;
     public float FrameRate => frameRate;
+    public AudioClip MoveSfx => moveSfx;
 
     [SerializeField] GameObject moveAnimationPrefab;
     public GameObject MoveAnimationPrefab
