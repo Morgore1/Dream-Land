@@ -12,6 +12,9 @@ public class BattleUnit : MonoBehaviour
     [SerializeField] AudioSource sfxSource;
     [SerializeField] AudioClip hitSfx;
     [SerializeField] AudioClip faintSfx;
+    [SerializeField] AudioClip captureSfx;
+    [SerializeField] AudioClip captureSuccessSfx;
+    [SerializeField] AudioClip captureBreakOutSfx;
     public bool playIdleOnlyOnce = false;
 
     public bool IsPlayerUnit
@@ -228,12 +231,29 @@ public class BattleUnit : MonoBehaviour
         sequence.Append(image.transform.DOLocalMoveY(originalPos.y - 150f, 0.5f));
         sequence.Join(image.DOFade(0f, 0.5f));
     }
+    public void PlayCaptureSuccessSfx()
+    {
+        if (sfxSource != null && captureSuccessSfx != null)
+        {
+            sfxSource.PlayOneShot(captureSuccessSfx);
+        }
+    }
+
     public IEnumerator PlayCaptureAnimation()
     {
         var sequence = DOTween.Sequence();
         sequence.Append(image.DOFade(0, 0.5f));
         sequence.Join(transform.DOLocalMoveY(originalPos.y + 20f, 0.5f));
         sequence.Join(transform.DOScale(new Vector3(0.3f, 0.3f, 1f), 0.5f));
+
+        sequence.OnComplete(() =>
+        {
+            if (sfxSource != null && captureSfx != null)
+            {
+                sfxSource.PlayOneShot(captureSfx);
+            }
+        });
+
         yield return sequence.WaitForCompletion();
     }
 
@@ -243,6 +263,15 @@ public class BattleUnit : MonoBehaviour
         sequence.Append(image.DOFade(1, 0.5f));
         sequence.Join(transform.DOLocalMoveY(originalPos.y, 0.5f));
         sequence.Join(transform.DOScale(new Vector3(1f, 1f, 1f), 0.5f));
+
+        sequence.OnComplete(() =>
+        {
+            if (sfxSource != null && captureBreakOutSfx != null)
+            {
+                sfxSource.PlayOneShot(captureBreakOutSfx);
+            }
+        });
+
         yield return sequence.WaitForCompletion();
     }
 }

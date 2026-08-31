@@ -20,10 +20,35 @@ public class MapManager : MonoBehaviour
     public Tilemap proceduralDoorTileMap;
     public Tilemap interiorDoorTileMap;
 
+    [Header("Map Music")]
+    [SerializeField] private AudioSource mainMapAudio;
+    [SerializeField] private AudioClip mainMapClip;
+    [SerializeField] private AudioSource routeMapAudio;
+    [SerializeField] private AudioClip routeMapClip;
+
     [SerializeField] private SpriteScreenTransition screenTransition;
     public enum MapType { Main, Procedural }
     [HideInInspector]
     public MapType previousMapType = MapType.Main;
+
+    private void Start()
+    {
+        if (MusicManager.Instance == null)
+        {
+            return;
+        }
+
+        if (proceduralMapRoot != null && proceduralMapRoot.activeSelf)
+        {
+            MusicManager.Instance.PlayRouteMapMusic(routeMapAudio);
+            return;
+        }
+
+        if (mainMapRoot != null && mainMapRoot.activeSelf)
+        {
+            MusicManager.Instance.PlayMainMapMusic(mainMapAudio);
+        }
+    }
 
     public void ToggleMapVisibility(bool showProcedural)
     {
@@ -44,6 +69,23 @@ public class MapManager : MonoBehaviour
         // Normal toggle if no transition needed
         ApplyMapVisibility(showProcedural);
     }
+    private void Awake()
+    {
+        if (mainMapAudio != null && mainMapClip != null)
+        {
+            mainMapAudio.clip = mainMapClip;
+            mainMapAudio.loop = true;
+            mainMapAudio.playOnAwake = false;
+        }
+
+        if (routeMapAudio != null && routeMapClip != null)
+        {
+            routeMapAudio.clip = routeMapClip;
+            routeMapAudio.loop = true;
+            routeMapAudio.playOnAwake = false;
+        }
+    }
+
     private void ApplyMapVisibility(bool showProcedural)
     {
         if (mainMapRoot != null) mainMapRoot.SetActive(!showProcedural);
@@ -53,6 +95,18 @@ public class MapManager : MonoBehaviour
         ResetAllNPCs(showProcedural ? proceduralMapRoot : mainMapRoot);
 
         previousMapType = showProcedural ? MapType.Procedural : MapType.Main;
+
+        if (MusicManager.Instance != null)
+        {
+            if (showProcedural)
+            {
+                MusicManager.Instance.PlayRouteMapMusic(routeMapAudio);
+            }
+            else
+            {
+                MusicManager.Instance.PlayMainMapMusic(mainMapAudio);
+            }
+        }
     }
     private IEnumerator ToggleMapWithTransition(bool showProcedural)
     {

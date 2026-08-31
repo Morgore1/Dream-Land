@@ -85,6 +85,11 @@ public class GameController : MonoBehaviour
         battleSystem.gameObject.SetActive(true);
         worldCamera.gameObject.SetActive(false);
 
+        if (MusicManager.Instance != null)
+        {
+            MusicManager.Instance.PlayBattleMusic();
+        }
+
         var playerParty = playerController.GetComponent<MonsterParty>();
         var wildMonster = FindObjectOfType<MapArea>().GetComponent<MapArea>().GetRandomWildMonster();
 
@@ -98,6 +103,11 @@ public class GameController : MonoBehaviour
         battleSystem.gameObject.SetActive(true);
         worldCamera.gameObject.SetActive(false);
 
+        if (MusicManager.Instance != null)
+        {
+            MusicManager.Instance.PlayBattleMusic();
+        }
+
         var playerParty = playerController.GetComponent<MonsterParty>();
 
         var encounterMonsterCopy = new Monster(encounterMonster.Base, encounterMonster.Level);
@@ -110,6 +120,11 @@ public class GameController : MonoBehaviour
         state = GameState.Battle;
         battleSystem.gameObject.SetActive(true);
         worldCamera.gameObject.SetActive(false);
+
+        if (MusicManager.Instance != null)
+        {
+            MusicManager.Instance.PlayBattleMusic();
+        }
 
         this.trainer = trainer;
         var playerParty = playerController.GetComponent<MonsterParty>();
@@ -159,6 +174,19 @@ public class GameController : MonoBehaviour
         state = GameState.FreeRoam;
         battleSystem.gameObject.SetActive(false);
         worldCamera.gameObject.SetActive(true);
+
+        if (MusicManager.Instance != null)
+        {
+            var mapManager = FindObjectOfType<MapManager>();
+            if (mapManager != null && mapManager.previousMapType == MapManager.MapType.Procedural)
+            {
+                MusicManager.Instance.PlayRouteMapMusic();
+            }
+            else
+            {
+                MusicManager.Instance.PlayMainMapMusic();
+            }
+        }
     }
 
     private void EnableEnergyOverlay()

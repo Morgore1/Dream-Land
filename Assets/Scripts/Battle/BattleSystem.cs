@@ -778,6 +778,7 @@ public class BattleSystem : MonoBehaviour
 
         if (shakeCount == 4)
         {
+            enemyUnit.PlayCaptureSuccessSfx();
             yield return catcherAnim.Play(dreamCatcherSuccessfulFrames, dreamCatcherFrameRate);
             yield return dialogueBox.TypeDialogue($"{enemyUnit.Monster.Base.Name} was successfully caught!");
             yield return ShowCaptureDecision(enemyUnit.Monster);
