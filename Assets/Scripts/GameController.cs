@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 public enum GameState { FreeRoam, Battle, Dialogue, Cutscene }
@@ -14,19 +15,19 @@ public class GameController : MonoBehaviour
 
     [Header("Procedural Encounter")]
     [SerializeField] List<TrainerController> proceduralEncounterOpponents = new List<TrainerController>();
-    [SerializeField] int proceduralRounds = 1;
     [SerializeField] int Energy = 10;
     [SerializeField] int proceduralPlayerLives = 1;
-    [SerializeField] int proceduralNpcLives = 1;
     [SerializeField] TMP_Text energyText;
+    [SerializeField] TMP_Text fightText;
+    [SerializeField] TMP_Text livesText;
 
     GameState state;
 
     bool isProceduralEncounterActive;
     bool isProceduralBattle;
     int remainingPlayerLives;
-    int remainingNpcLives;
-    int currentProceduralRound;
+    int currentFight = 1;
+    int maximumEnergy;
     GameObject proceduralOpponentObject;
 
     public static GameController Instance { get; private set; }
@@ -34,6 +35,8 @@ public class GameController : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        maximumEnergy = Energy;
+        remainingPlayerLives = proceduralPlayerLives;
         ConditionsDB.Init();
     }
 
@@ -146,21 +149,24 @@ public class GameController : MonoBehaviour
             if (!won)
             {
                 remainingPlayerLives--;
+                UpdateLivesText();
             }
-            else
-            {
-                remainingNpcLives--;
-            }
+
+            currentFight++;
+            UpdateFightText();
 
             HealPlayerParty();
             isProceduralBattle = false;
 
-            if (remainingPlayerLives > 0 && remainingNpcLives > 0 && currentProceduralRound < proceduralRounds)
+            if (remainingPlayerLives <= 0)
             {
-                StartNextProceduralRound();
+                EndProceduralEncounter();
+                ReturnToMainMenu();
                 return;
             }
 
+            Energy = maximumEnergy;
+            UpdateEnergyText();
             EndProceduralEncounter();
             return;
         }
@@ -192,10 +198,22 @@ public class GameController : MonoBehaviour
     private void EnableEnergyOverlay()
     {
         UpdateEnergyText();
+        UpdateFightText();
+        UpdateLivesText();
 
         if (energyText != null)
         {
             energyText.gameObject.SetActive(true);
+        }
+
+        if (fightText != null)
+        {
+            fightText.gameObject.SetActive(true);
+        }
+
+        if (livesText != null)
+        {
+            livesText.gameObject.SetActive(true);
         }
     }
 
@@ -204,6 +222,16 @@ public class GameController : MonoBehaviour
         if (energyText != null)
         {
             energyText.gameObject.SetActive(false);
+        }
+
+        if (fightText != null)
+        {
+            fightText.gameObject.SetActive(false);
+        }
+
+        if (livesText != null)
+        {
+            livesText.gameObject.SetActive(false);
         }
     }
 
@@ -214,6 +242,23 @@ public class GameController : MonoBehaviour
             energyText.text = $"Energy ({Energy})";
         }
     }
+
+    private void UpdateFightText()
+    {
+        if (fightText != null)
+        {
+            fightText.text = $"Fight ({currentFight})";
+        }
+    }
+
+    private void UpdateLivesText()
+    {
+        if (livesText != null)
+        {
+            livesText.text = $"Lives ({remainingPlayerLives})";
+        }
+    }
+
     public void SpendEnergy(int amount)
     {   
         Energy = Mathf.Max(0, Energy - amount);
@@ -227,7 +272,6 @@ public class GameController : MonoBehaviour
         }
 
         DisableEnergyOverlay();
-
         if (proceduralEncounterOpponents == null || proceduralEncounterOpponents.Count == 0)
         {
             Debug.LogWarning("Procedural encounter opponent prefabs are not assigned.");
@@ -238,29 +282,28 @@ public class GameController : MonoBehaviour
             return;
 
         isProceduralEncounterActive = true;
-        remainingPlayerLives = proceduralPlayerLives;
-        remainingNpcLives = proceduralNpcLives;
-        currentProceduralRound = 0;
-
-        StartNextProceduralRound();
-    }
-
-    private void StartNextProceduralRound()
-    {
-        if (remainingPlayerLives <= 0 || remainingNpcLives <= 0 || currentProceduralRound >= proceduralRounds)
+        if (remainingPlayerLives <= 0)
         {
-            EndProceduralEncounter();
-            return;
+            remainingPlayerLives = proceduralPlayerLives;
+            currentFight = 1;
         }
+        UpdateFightText();
+        UpdateLivesText();
 
-        currentProceduralRound++;
         HealPlayerParty();
-        SpawnProceduralOpponentAndStartRound();
+        SpawnProceduralOpponentAndStartFight();
     }
 
-    private void SpawnProceduralOpponentAndStartRound()
+    private void ReturnToMainMenu()
     {
-        var opponentPrefab = GetProceduralOpponentPrefabForRound();
+        Time.timeScale = 1f;
+        PauseMenu.GameIsPaused = false;
+        SceneManager.LoadScene("MainMenu");
+    }
+
+    private void SpawnProceduralOpponentAndStartFight()
+    {
+        var opponentPrefab = GetProceduralOpponentPrefabForFight();
         if (opponentPrefab == null)
         {
             Debug.LogWarning("Procedural encounter opponent prefab is not assigned for this round.");
@@ -315,12 +358,12 @@ public class GameController : MonoBehaviour
         playerParty.HealAllMonsters();
     }
 
-    private TrainerController GetProceduralOpponentPrefabForRound()
+    private TrainerController GetProceduralOpponentPrefabForFight()
     {
         if (proceduralEncounterOpponents == null || proceduralEncounterOpponents.Count == 0)
             return null;
 
-        int index = Mathf.Clamp(currentProceduralRound - 1, 0, proceduralEncounterOpponents.Count - 1);
+        int index = Mathf.Clamp(currentFight - 1, 0, proceduralEncounterOpponents.Count - 1);
         return proceduralEncounterOpponents[index];
     }
 
@@ -329,6 +372,7 @@ public class GameController : MonoBehaviour
     {
         isProceduralEncounterActive = false;
         isProceduralBattle = false;
+        EnableEnergyOverlay();
 
         state = GameState.FreeRoam;
         battleSystem.gameObject.SetActive(false);
