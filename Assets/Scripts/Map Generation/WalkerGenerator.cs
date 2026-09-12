@@ -242,6 +242,38 @@ public class WalkerGenerator : MonoBehaviour
 
     public void GenerateMapWithPreset(MapPreset preset)
     {
+        if (preset == null)
+        {
+            Debug.LogWarning("GenerateMapWithPreset called with null preset.");
+            return;
+        }
+
+        ApplyPresetData(preset);
+        InitializeGrid(); // reset grid before generation
+        SelectedVideoClip = videoForThisMap;
+
+        Debug.Log("Video selected: " + SelectedVideoClip.name);
+    }
+
+    public void GenerateMapWithSelection(WorldMapManager.MixedMapSelection selection)
+    {
+        if (selection == null || selection.primary == null)
+        {
+            Debug.LogWarning("GenerateMapWithSelection called with invalid selection.");
+            return;
+        }
+
+        MapPreset presetToUse = selection.primary;
+        if (selection.isMixed && selection.secondary != null)
+        {
+            presetToUse = CreateBlendedPreset(selection.primary, selection.secondary, selection.primaryRatio, selection.secondaryRatio);
+        }
+
+        GenerateMapWithPreset(presetToUse);
+    }
+
+    private void ApplyPresetData(MapPreset preset)
+    {
         videoForThisMap = preset.videoForThisMap;
         MapWidth = preset.MapWidth;
         MapHeight = preset.MapHeight;
@@ -315,12 +347,218 @@ public class WalkerGenerator : MonoBehaviour
         grassPatchCount = preset.grassPatchCount;
         tidepoolCount = preset.tidepoolCount;
         puddleCount = preset.puddleCount;
+    }
 
+    private MapPreset CreateBlendedPreset(MapPreset primary, MapPreset secondary, float primaryRatio, float secondaryRatio)
+    {
+        var blendedPreset = ScriptableObject.CreateInstance<MapPreset>();
 
-        InitializeGrid(); // reset grid before generation
-        SelectedVideoClip = videoForThisMap;
+        blendedPreset.MapWidth = primary.MapWidth;
+        blendedPreset.MapHeight = primary.MapHeight;
+        blendedPreset.MaximumWalkers = primary.MaximumWalkers;
+        blendedPreset.FillPercentage = primary.FillPercentage;
+        blendedPreset.WaitTime = primary.WaitTime;
+        blendedPreset.minClusters = primary.minClusters;
+        blendedPreset.maxClusters = primary.maxClusters;
+        blendedPreset.minClusterWidth = primary.minClusterWidth;
+        blendedPreset.maxClusterWidth = primary.maxClusterWidth;
+        blendedPreset.minClusterHeight = primary.minClusterHeight;
+        blendedPreset.maxClusterHeight = primary.maxClusterHeight;
+        blendedPreset.clusterFillPercent = primary.clusterFillPercent;
 
-        Debug.Log("Video selected: " + SelectedVideoClip.name);
+        blendedPreset.isShoreline = primary.isShoreline;
+        blendedPreset.hasRiver = primary.hasRiver;
+        blendedPreset.HousePrefabs = MergeWeighted(primary.HousePrefabs, secondary.HousePrefabs, primaryRatio, secondaryRatio);
+        blendedPreset.FloorTiles = MergeWeighted(primary.FloorTiles, secondary.FloorTiles, primaryRatio, secondaryRatio);
+        blendedPreset.WallTiles = MergeWeighted(primary.WallTiles, secondary.WallTiles, primaryRatio, secondaryRatio);
+        blendedPreset.grassByFloor = MergeGrassByFloor(primary.grassByFloor, secondary.grassByFloor, primaryRatio, secondaryRatio);
+        blendedPreset.TallGrass = MergeWeighted(primary.TallGrass, secondary.TallGrass, primaryRatio, secondaryRatio);
+        blendedPreset.RoadMiddle = primary.RoadMiddle;
+        blendedPreset.Sidewalk = primary.Sidewalk;
+        blendedPreset.EastRoadTunnelEntrance = primary.EastRoadTunnelEntrance;
+        blendedPreset.WestRoadTunnelEntrance = primary.WestRoadTunnelEntrance;
+        blendedPreset.SouthRoadTunnelEntrance = primary.SouthRoadTunnelEntrance;
+        blendedPreset.NorthRoadTunnelEntrance = primary.NorthRoadTunnelEntrance;
+        blendedPreset.RoadTunnel = primary.RoadTunnel;
+        blendedPreset.CrossRoad = primary.CrossRoad;
+        blendedPreset.Path = primary.Path;
+        blendedPreset.EnableNorthSouthRoads = primary.EnableNorthSouthRoads;
+        blendedPreset.EnableEastWestRoads = primary.EnableEastWestRoads;
+        blendedPreset.isGateTeleport = primary.isGateTeleport;
+        blendedPreset.isNormalStreet = primary.isNormalStreet;
+        blendedPreset.EnableSidewalks = primary.EnableSidewalks;
+        blendedPreset.riverHorizontal = primary.riverHorizontal;
+        blendedPreset.riverVertical = primary.riverVertical;
+        blendedPreset.riverCorner = primary.riverCorner;
+        blendedPreset.TransitionUp = primary.TransitionUp;
+        blendedPreset.TransitionDown = primary.TransitionDown;
+        blendedPreset.TransitionLeft = primary.TransitionLeft;
+        blendedPreset.TransitionRight = primary.TransitionRight;
+        blendedPreset.CornerNW = primary.CornerNW;
+        blendedPreset.CornerNE = primary.CornerNE;
+        blendedPreset.CornerSW = primary.CornerSW;
+        blendedPreset.CornerSE = primary.CornerSE;
+        blendedPreset.ObstacleTiles = MergeWeighted(primary.ObstacleTiles, secondary.ObstacleTiles, primaryRatio, secondaryRatio);
+        blendedPreset.AnimatedObstacleTiles = MergeWeighted(primary.AnimatedObstacleTiles, secondary.AnimatedObstacleTiles, primaryRatio, secondaryRatio);
+        blendedPreset.BackgroundItemTiles = MergeWeighted(primary.BackgroundItemTiles, secondary.BackgroundItemTiles, primaryRatio, secondaryRatio);
+        blendedPreset.NPCPrefabs = MergeWeighted(primary.NPCPrefabs, secondary.NPCPrefabs, primaryRatio, secondaryRatio);
+        blendedPreset.ItemPrefabs = MergeWeighted(primary.ItemPrefabs, secondary.ItemPrefabs, primaryRatio, secondaryRatio);
+        blendedPreset.TreePrefabs = MergeWeighted(primary.TreePrefabs, secondary.TreePrefabs, primaryRatio, secondaryRatio);
+        blendedPreset.MultipleItemObstaclePrefabs = MergeWeighted(primary.MultipleItemObstaclePrefabs, secondary.MultipleItemObstaclePrefabs, primaryRatio, secondaryRatio);
+        blendedPreset.Tidepools = MergeWeighted(primary.Tidepools, secondary.Tidepools, primaryRatio, secondaryRatio);
+        blendedPreset.Puddles = MergeWeighted(primary.Puddles, secondary.Puddles, primaryRatio, secondaryRatio);
+
+        blendedPreset.NumberOfTrees = Mathf.RoundToInt(primary.NumberOfTrees * primaryRatio + secondary.NumberOfTrees * secondaryRatio);
+        blendedPreset.NumberOfHouses = Mathf.RoundToInt(primary.NumberOfHouses * primaryRatio + secondary.NumberOfHouses * secondaryRatio);
+        blendedPreset.NumberOfNPCs = Mathf.RoundToInt(primary.NumberOfNPCs * primaryRatio + secondary.NumberOfNPCs * secondaryRatio);
+        blendedPreset.NumberOfObtainableItems = Mathf.RoundToInt(primary.NumberOfObtainableItems * primaryRatio + secondary.NumberOfObtainableItems * secondaryRatio);
+        blendedPreset.NumberOfObstacles = Mathf.RoundToInt(primary.NumberOfObstacles * primaryRatio + secondary.NumberOfObstacles * secondaryRatio);
+        blendedPreset.NumberOfAnimatedObstacles = Mathf.RoundToInt(primary.NumberOfAnimatedObstacles * primaryRatio + secondary.NumberOfAnimatedObstacles * secondaryRatio);
+        blendedPreset.NumberOfMTObstacles = Mathf.RoundToInt(primary.NumberOfMTObstacles * primaryRatio + secondary.NumberOfMTObstacles * secondaryRatio);
+        blendedPreset.NumberOfBackgroundItems = Mathf.RoundToInt(primary.NumberOfBackgroundItems * primaryRatio + secondary.NumberOfBackgroundItems * secondaryRatio);
+        blendedPreset.grassPatchSize = Mathf.RoundToInt(primary.grassPatchSize * primaryRatio + secondary.grassPatchSize * secondaryRatio);
+        blendedPreset.grassPatchCount = Mathf.RoundToInt(primary.grassPatchCount * primaryRatio + secondary.grassPatchCount * secondaryRatio);
+        blendedPreset.tidepoolCount = Mathf.RoundToInt(primary.tidepoolCount * primaryRatio + secondary.tidepoolCount * secondaryRatio);
+        blendedPreset.puddleCount = Mathf.RoundToInt(primary.puddleCount * primaryRatio + secondary.puddleCount * secondaryRatio);
+        blendedPreset.videoForThisMap = primary.videoForThisMap != null ? primary.videoForThisMap : secondary.videoForThisMap;
+
+        return blendedPreset;
+    }
+
+    private static List<WeightedItem<T>> MergeWeighted<T>(List<WeightedItem<T>> primary, List<WeightedItem<T>> secondary, float primaryRatio, float secondaryRatio)
+    {
+        var merged = new List<WeightedItem<T>>();
+
+        if (primary != null && primary.Count > 0)
+        {
+            int totalPrimaryWeight = 0;
+            foreach (var item in primary)
+            {
+                if (item != null)
+                    totalPrimaryWeight += Mathf.Max(1, item.weight);
+            }
+
+            foreach (var item in primary)
+            {
+                if (item == null || item.item == null) continue;
+
+                float ratioShare = totalPrimaryWeight > 0 ? (float)item.weight / totalPrimaryWeight : 0f;
+                int blendedWeight = Mathf.Max(1, Mathf.RoundToInt(ratioShare * 100f * primaryRatio));
+
+                merged.Add(new WeightedItem<T>
+                {
+                    item = item.item,
+                    weight = blendedWeight
+                });
+            }
+        }
+
+        if (secondary != null && secondary.Count > 0)
+        {
+            int totalSecondaryWeight = 0;
+            foreach (var item in secondary)
+            {
+                if (item != null)
+                    totalSecondaryWeight += Mathf.Max(1, item.weight);
+            }
+
+            foreach (var item in secondary)
+            {
+                if (item == null || item.item == null) continue;
+
+                float ratioShare = totalSecondaryWeight > 0 ? (float)item.weight / totalSecondaryWeight : 0f;
+                int blendedWeight = Mathf.Max(1, Mathf.RoundToInt(ratioShare * 100f * secondaryRatio));
+
+                merged.Add(new WeightedItem<T>
+                {
+                    item = item.item,
+                    weight = blendedWeight
+                });
+            }
+        }
+
+        return merged;
+    }
+
+    private static List<GrassByFloor> MergeGrassByFloor(List<GrassByFloor> primary, List<GrassByFloor> secondary, float primaryRatio, float secondaryRatio)
+    {
+        var merged = new List<GrassByFloor>();
+
+        if (primary != null)
+        {
+            foreach (var item in primary)
+            {
+                if (item == null) continue;
+                var copy = new GrassByFloor
+                {
+                    floorTile = item.floorTile,
+                    grassTile = new List<WeightedItem<TileBase>>()
+                };
+
+                if (item.grassTile != null && item.grassTile.Count > 0)
+                {
+                    int totalPrimaryGrassWeight = 0;
+                    foreach (var grass in item.grassTile)
+                    {
+                        if (grass != null)
+                            totalPrimaryGrassWeight += Mathf.Max(1, grass.weight);
+                    }
+
+                    foreach (var grass in item.grassTile)
+                    {
+                        if (grass == null || grass.item == null) continue;
+                        float ratioShare = totalPrimaryGrassWeight > 0 ? (float)grass.weight / totalPrimaryGrassWeight : 0f;
+                        int blendedWeight = Mathf.Max(1, Mathf.RoundToInt(ratioShare * 100f * primaryRatio));
+                        copy.grassTile.Add(new WeightedItem<TileBase>
+                        {
+                            item = grass.item,
+                            weight = blendedWeight
+                        });
+                    }
+                }
+
+                merged.Add(copy);
+            }
+        }
+
+        if (secondary != null)
+        {
+            foreach (var item in secondary)
+            {
+                if (item == null) continue;
+                var copy = new GrassByFloor
+                {
+                    floorTile = item.floorTile,
+                    grassTile = new List<WeightedItem<TileBase>>()
+                };
+
+                if (item.grassTile != null && item.grassTile.Count > 0)
+                {
+                    int totalSecondaryGrassWeight = 0;
+                    foreach (var grass in item.grassTile)
+                    {
+                        if (grass != null)
+                            totalSecondaryGrassWeight += Mathf.Max(1, grass.weight);
+                    }
+
+                    foreach (var grass in item.grassTile)
+                    {
+                        if (grass == null || grass.item == null) continue;
+                        float ratioShare = totalSecondaryGrassWeight > 0 ? (float)grass.weight / totalSecondaryGrassWeight : 0f;
+                        int blendedWeight = Mathf.Max(1, Mathf.RoundToInt(ratioShare * 100f * secondaryRatio));
+                        copy.grassTile.Add(new WeightedItem<TileBase>
+                        {
+                            item = grass.item,
+                            weight = blendedWeight
+                        });
+                    }
+                }
+
+                merged.Add(copy);
+            }
+        }
+
+        return merged;
     }
     public void ClearMap()
     {

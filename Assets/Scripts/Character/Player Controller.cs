@@ -159,13 +159,15 @@ public class PlayerController : MonoBehaviour
 
                     mapManager.ToggleMapVisibility(true);
 
-                    MapPreset preset = WeightedRandom.Pick(teleportData.mapPreset);
+                    WorldMapManager.MixedMapSelection selection =
+                        WorldMapManager.Instance.GetMapSelectionForCurrentPosition(teleportData.mapPreset);
+                    MapPreset preset = selection != null ? selection.primary : WeightedRandom.Pick(teleportData.mapPreset);
 
                     mapManager.SetMapPreset(preset);
 
                     walkerGenerator.lastEntryDirection = lastMoveDir;
                     walkerGenerator.ClearMap();
-                    walkerGenerator.GenerateMapWithPreset(preset);
+                    walkerGenerator.GenerateMapWithSelection(selection ?? new WorldMapManager.MixedMapSelection { primary = preset, isMixed = false });
 
                     
                     Vector2Int destination = teleportData.destination;
@@ -187,8 +189,8 @@ public class PlayerController : MonoBehaviour
 
                     mapManager.ToggleMapVisibility(true);
 
-                    MapPreset preset =
-                        WorldMapManager.Instance.GetMapForCurrentPosition();
+                    WorldMapManager.MixedMapSelection selection = WorldMapManager.Instance.GetMapSelectionForCurrentPosition();
+                    MapPreset preset = selection != null ? selection.primary : WorldMapManager.Instance.GetMapForCurrentPosition();
                     Vector2Int destination = teleportData.destination;
                     transform.position = new Vector3(
                         destination.x + 0.5f,
@@ -200,7 +202,7 @@ public class PlayerController : MonoBehaviour
                     walkerGenerator.lastEntryDirection = lastMoveDir;
                     // Generate map
                     walkerGenerator.ClearMap();
-                    walkerGenerator.GenerateMapWithPreset(preset);
+                    walkerGenerator.GenerateMapWithSelection(selection ?? new WorldMapManager.MixedMapSelection { primary = preset, isMixed = false });
                 }
 
                 yield return new WaitForSeconds(0.5f);

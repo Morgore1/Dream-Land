@@ -17255,7 +17255,7 @@ MonoBehaviour:
   worldCamera: {fileID: 519420031}
   proceduralEncounterOpponents:
   - {fileID: 1411161330}
-  Energy: 1
+  Energy: 10
   proceduralPlayerLives: 1
   energyText: {fileID: 448643879}
   fightText: {fileID: 1842630947}
@@ -135580,6 +135580,7 @@ MonoBehaviour:
       possibleMaps:
       - item: {fileID: 11400000, guid: d5b9d2a2265552f49b0e589ae444aa3c, type: 2}
         weight: 1
+  mixChance: 0.01
 --- !u!1 &2145312784
 GameObject:
   m_ObjectHideFlags: 0
