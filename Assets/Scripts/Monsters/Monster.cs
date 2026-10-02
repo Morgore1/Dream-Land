@@ -8,9 +8,8 @@ using UnityEngine;
 public class Monster
 {
     [SerializeField] MonsterBase _base;
-    [SerializeField] int level;
 
-    public Monster(MonsterBase mBase, int mLevel)
+    public Monster(MonsterBase mBase)
     {
         if (mBase == null)
         {
@@ -19,7 +18,6 @@ public class Monster
         }
 
         _base = mBase;
-        level = mLevel;
 
         Init();
     }
@@ -27,11 +25,6 @@ public class Monster
     public MonsterBase Base {
         get {
             return _base;
-        }
-    }
-    public int Level {
-        get {
-            return level;
         }
     }
     [SerializeField] int evolutionProgress = 0;
@@ -61,13 +54,16 @@ public class Monster
     {
         // Generate Moves
         Moves = new List<Move>();
-        foreach (var move in Base.LearnableMoves)
+        if (Base.LearnableMoves != null)
         {
-            if (move.Level <= Level)
-                Moves.Add(new Move(move.Base));
+            foreach (var move in Base.LearnableMoves)
+            {
+                if (move.Base != null)
+                    Moves.Add(new Move(move.Base));
 
-            if (Moves.Count >= 4)
-                break;
+                if (Moves.Count >= 4)
+                    break;
+            }
         }
 
         CalculateStats();
@@ -83,15 +79,14 @@ public class Monster
     {
         Stats = new Dictionary<Stat, int>
     {
-        { Stat.Attack, Mathf.FloorToInt((Base.Attack * Level) / 100f) + 5 },
-        { Stat.Defense, Mathf.FloorToInt((Base.Defense * Level) / 100f) + 5 },
-        { Stat.MagicAttack, Mathf.FloorToInt((Base.MagicAttack * Level) / 100f) + 5 },
-        { Stat.MagicDefense, Mathf.FloorToInt((Base.MagicDefense * Level) / 100f) + 5 },
-        { Stat.Speed, Mathf.FloorToInt((Base.Speed * Level) / 100f) + 5 }
+        { Stat.Attack, Base.Attack },
+        { Stat.Defense, Base.Defense },
+        { Stat.MagicAttack, Base.MagicAttack },
+        { Stat.MagicDefense, Base.MagicDefense },
+        { Stat.Speed, Base.Speed }
          };
 
-
-        MaxHp = Mathf.FloorToInt((Base.MaxHp * Level) / 100f) + 10 + Level;
+        MaxHp = Base.MaxHp;
     }
 
     void ResetStatboost()
@@ -193,9 +188,9 @@ public class Monster
         float defense = (move.Base.Category == MoveCategory.Magical) ? MagicDefense : Defense;
 
         float modifiers = (UnityEngine.Random.Range(0.9f, 1f) * type * critical);
-        float a = (2 * attacker.Level + 10) / 250f;
-        float d = a * move.Base.Power * ((float)attack / defense) + 2;
-        int damage = Mathf.FloorToInt(d * modifiers);
+        const float fixedDamageScale = 0.1f;
+        float d = fixedDamageScale * move.Base.Power * (attack / Mathf.Max(1f, defense)) + 2;
+        int damage = Mathf.Approximately(type, 0f) ? 0 : Mathf.Max(1, Mathf.FloorToInt(d * modifiers));
 
         UpdateHp(damage);
 

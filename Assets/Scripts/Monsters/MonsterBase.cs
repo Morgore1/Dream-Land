@@ -96,14 +96,11 @@ public class MonsterBase : ScriptableObject
 public class LearnableMove
 {
     [SerializeField] MoveBase moveBase;
-    [SerializeField] int level;
 
     public MoveBase Base
     {
         get { return moveBase; }
     }
-
-    public int Level {  get { return level;} }
 }
 
 public enum MonsterType

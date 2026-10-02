@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class PartyMemberUI : MonoBehaviour
 {
     [SerializeField] Text nameText;
-    [SerializeField] Text levelText;
+    [FormerlySerializedAs("levelText")]
+    [SerializeField] Text stageText;
     [SerializeField] HPBar hpBar;
 
     [SerializeField] Color highlightedColor;
@@ -18,7 +20,7 @@ public class PartyMemberUI : MonoBehaviour
         _monster = monster;
 
         nameText.text = monster.Base.Name;
-        levelText.text = "Lvl " + monster.Level;
+        stageText.text = "Stage " + monster.Base.EvolutionStage;
         hpBar.SetHP((float)monster.HP / monster.MaxHp);
     }
 

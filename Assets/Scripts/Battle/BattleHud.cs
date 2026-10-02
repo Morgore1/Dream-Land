@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class BattleHud : MonoBehaviour
 {
     [SerializeField] Text nameText;
-    [SerializeField] Text levelText;
+    [FormerlySerializedAs("levelText")]
+    [SerializeField] Text stageText;
     [SerializeField] Text statusText;
     [SerializeField] HPBar hpBar;
 
@@ -24,7 +26,7 @@ public class BattleHud : MonoBehaviour
         _monster = monster;
 
         nameText.text = monster.Base.Name;
-        levelText.text = "Lvl " + monster.Level;
+        stageText.text = "Stage " + monster.Base.EvolutionStage;
         hpBar.SetHP((float) monster.HP / monster.MaxHp);
 
         statusColors = new Dictionary<ConditionID, Color>()

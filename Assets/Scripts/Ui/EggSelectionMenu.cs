@@ -138,7 +138,7 @@ public class EggSelectionMenu : MonoBehaviour
         }
 
         MonsterBase selectedMonsterBase = egg.possibleMonsters[Random.Range(0, egg.possibleMonsters.Count)];
-        Monster hatchling = new Monster(selectedMonsterBase, 1);
+        Monster hatchling = new Monster(selectedMonsterBase);
 
         if (!playerParty.AddMonsterToParty(hatchling))
         {

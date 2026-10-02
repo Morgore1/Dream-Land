@@ -122,7 +122,6 @@ public class ItemPickup : MonoBehaviour, Interactable
     public class EncounterMonsterData
     {
         public MonsterBase monsterBase;
-        public int level;
     }
 }
 

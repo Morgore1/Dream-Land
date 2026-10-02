@@ -68,7 +68,7 @@ public class MonsterParty : MonoBehaviour
         if (monster.Base.Evolution == null)
             yield break;
 
-        var newMonster = new Monster(monster.Base.Evolution, monster.Level);
+        var newMonster = new Monster(monster.Base.Evolution);
 
         ReplaceMonster(monster, newMonster);
     }
