@@ -11,6 +11,9 @@ public class MonsterParty : MonoBehaviour
     {
         get
         {
+            if (monsters == null)
+                monsters = new List<Monster>();
+
             return monsters;
         }
     }
@@ -22,9 +25,31 @@ public class MonsterParty : MonoBehaviour
 
     public void InitParty()
     {
-        foreach (var monster in monsters)
+        foreach (var monster in Monsters)
         {
-            monster.Init();
+            if (monster != null)
+                monster.Init();
+        }
+    }
+
+    public void SetParty(List<Monster> newParty)
+    {
+        Monsters.Clear();
+        if (newParty == null)
+            return;
+
+        foreach (var monster in newParty)
+        {
+            if (monster == null)
+                continue;
+
+            if (Monsters.Count >= 6)
+            {
+                Debug.LogWarning("Monster party cannot contain more than six monsters.", this);
+                break;
+            }
+
+            Monsters.Add(monster);
         }
     }
 

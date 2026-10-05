@@ -5,6 +5,16 @@ using UnityEngine.Tilemaps;
 using UnityEngine.SceneManagement;
 using TMPro;
 
+[System.Serializable]
+public class ProceduralTrainerRoundSettings
+{
+    [SerializeField] List<MonsterBase> monsterPool = new List<MonsterBase>();
+    [SerializeField, Range(0f, 1f)] float replacementChance;
+
+    public List<MonsterBase> MonsterPool => monsterPool;
+    public float ReplacementChance => replacementChance;
+}
+
 public enum GameState { FreeRoam, Battle, Dialogue, Cutscene }
 
 public class GameController : MonoBehaviour
@@ -14,7 +24,10 @@ public class GameController : MonoBehaviour
     [SerializeField] Camera worldCamera;
 
     [Header("Procedural Encounter")]
-    [SerializeField] List<TrainerController> proceduralEncounterOpponents = new List<TrainerController>();
+    [SerializeField] TrainerController proceduralOpponent;
+    [SerializeField] List<ProceduralTrainerRoundSettings> proceduralRounds = new List<ProceduralTrainerRoundSettings>();
+    // Retained to migrate scenes/prefabs serialized with the previous multi-opponent setup.
+    [SerializeField, HideInInspector] List<TrainerController> proceduralEncounterOpponents = new List<TrainerController>();
     [SerializeField] int Energy = 10;
     [SerializeField] int proceduralPlayerLives = 1;
     [SerializeField] TMP_Text energyText;
@@ -25,10 +38,31 @@ public class GameController : MonoBehaviour
 
     bool isProceduralEncounterActive;
     bool isProceduralBattle;
+    bool proceduralRosterInitialized;
+    bool proceduralConfigurationWarningLogged;
     int remainingPlayerLives;
     int currentFight = 1;
     int maximumEnergy;
+    int roundProgressAwarded;
     GameObject proceduralOpponentObject;
+    MonsterParty proceduralTrainerParty;
+    readonly List<ProceduralTrainerRosterMember> proceduralTrainerRoster = new List<ProceduralTrainerRosterMember>();
+
+    const int MaxTrainerPartySize = 6;
+    const int MaxRoundEvolutionProgress = 6;
+
+    [System.Serializable]
+    class ProceduralTrainerRosterMember
+    {
+        public MonsterBase Base;
+        public int EvolutionProgress;
+
+        public ProceduralTrainerRosterMember(MonsterBase monsterBase, int evolutionProgress)
+        {
+            Base = monsterBase;
+            EvolutionProgress = Mathf.Max(0, evolutionProgress);
+        }
+    }
 
     public static GameController Instance { get; private set; }
 
@@ -138,13 +172,19 @@ public class GameController : MonoBehaviour
 
     void EndBattle(bool won)
     {
+        HealPlayerParty();
+
         if (isProceduralBattle)
         {
+            CaptureProceduralRoster();
+            AwardProceduralBattleProgress();
+
             if (proceduralOpponentObject != null)
             {
                 Destroy(proceduralOpponentObject);
                 proceduralOpponentObject = null;
             }
+            proceduralTrainerParty = null;
 
             if (!won)
             {
@@ -155,7 +195,6 @@ public class GameController : MonoBehaviour
             currentFight++;
             UpdateFightText();
 
-            HealPlayerParty();
             isProceduralBattle = false;
 
             if (remainingPlayerLives <= 0)
@@ -272,9 +311,15 @@ public class GameController : MonoBehaviour
         }
 
         DisableEnergyOverlay();
-        if (proceduralEncounterOpponents == null || proceduralEncounterOpponents.Count == 0)
+        var configuredOpponent = GetProceduralOpponent();
+        if (configuredOpponent == null || configuredOpponent.GetComponent<MonsterParty>() == null)
         {
-            Debug.LogWarning("Procedural encounter opponent prefabs are not assigned.");
+            if (!proceduralConfigurationWarningLogged)
+            {
+                Debug.LogWarning("Procedural encounter requires a trainer prefab with TrainerController and MonsterParty on the same GameObject. Assign the new opponent field or retain an entry in the legacy opponent list.", this);
+                proceduralConfigurationWarningLogged = true;
+            }
+            RestoreEnergyAfterSkippedRound();
             return;
         }
 
@@ -286,6 +331,8 @@ public class GameController : MonoBehaviour
         {
             remainingPlayerLives = proceduralPlayerLives;
             currentFight = 1;
+            proceduralTrainerRoster.Clear();
+            proceduralRosterInitialized = false;
         }
         UpdateFightText();
         UpdateLivesText();
@@ -303,11 +350,37 @@ public class GameController : MonoBehaviour
 
     private void SpawnProceduralOpponentAndStartFight()
     {
-        var opponentPrefab = GetProceduralOpponentPrefabForFight();
+        var opponentPrefab = GetProceduralOpponent();
         if (opponentPrefab == null)
         {
-            Debug.LogWarning("Procedural encounter opponent prefab is not assigned for this round.");
-            EndProceduralEncounter();
+            RestoreEnergyAfterSkippedRound();
+            return;
+        }
+
+        var roundSettings = GetProceduralRoundSettingsForFight();
+        if (!InitializeProceduralRoster())
+        {
+            RestoreEnergyAfterSkippedRound();
+            return;
+        }
+
+        if (roundSettings != null)
+        {
+            PrepareProceduralRoundRoster(roundSettings);
+        }
+
+        // An empty authored team can still start if the configured pool supplies a monster.
+        if (proceduralTrainerRoster.Count == 0 && roundSettings != null)
+        {
+            var validPool = GetValidMonsterPool(roundSettings);
+            if (validPool.Count > 0)
+                proceduralTrainerRoster.Add(new ProceduralTrainerRosterMember(validPool[Random.Range(0, validPool.Count)], 0));
+        }
+
+        if (proceduralTrainerRoster.Count == 0)
+        {
+            Debug.LogError("Procedural trainer has no monsters. Add an initial monster to its MonsterParty or configure a non-empty round pool.", this);
+            RestoreEnergyAfterSkippedRound();
             return;
         }
 
@@ -320,21 +393,29 @@ public class GameController : MonoBehaviour
             Debug.LogWarning("Procedural encounter opponent prefab does not contain TrainerController.");
             Destroy(proceduralOpponentObject);
             proceduralOpponentObject = null;
-            EndProceduralEncounter();
+            RestoreEnergyAfterSkippedRound();
             return;
         }
 
-        var trainerParty = proceduralOpponentObject.GetComponent<MonsterParty>() ?? proceduralOpponentObject.GetComponentInChildren<MonsterParty>();
+        var trainerParty = proceduralOpponentObject.GetComponent<MonsterParty>();
         if (trainerParty == null)
         {
-            Debug.LogWarning("Procedural encounter opponent prefab does not contain MonsterParty.");
+            Debug.LogWarning("Procedural opponent must have TrainerController and MonsterParty on the same GameObject so BattleSystem can resolve the trainer.", this);
             Destroy(proceduralOpponentObject);
             proceduralOpponentObject = null;
-            EndProceduralEncounter();
+            RestoreEnergyAfterSkippedRound();
             return;
         }
 
-        trainerParty.InitParty();
+        var battleMonsters = new List<Monster>();
+        foreach (var member in proceduralTrainerRoster)
+        {
+            var monster = new Monster(member.Base);
+            monster.EvolutionProgress = member.EvolutionProgress;
+            battleMonsters.Add(monster);
+        }
+        trainerParty.SetParty(battleMonsters);
+        proceduralTrainerParty = trainerParty;
         proceduralOpponentObject.SetActive(false);
 
         StartProceduralBattle(trainerController, trainerParty);
@@ -358,16 +439,234 @@ public class GameController : MonoBehaviour
         playerParty.HealAllMonsters();
     }
 
-    private TrainerController GetProceduralOpponentPrefabForFight()
+    private TrainerController GetProceduralOpponent()
     {
-        if (proceduralEncounterOpponents == null || proceduralEncounterOpponents.Count == 0)
-            return null;
+        if (proceduralOpponent != null)
+            return proceduralOpponent;
 
-        int index = Mathf.Clamp(currentFight - 1, 0, proceduralEncounterOpponents.Count - 1);
-        return proceduralEncounterOpponents[index];
+        if (proceduralEncounterOpponents != null)
+        {
+            foreach (var legacyOpponent in proceduralEncounterOpponents)
+            {
+                if (legacyOpponent != null)
+                    return legacyOpponent;
+            }
+        }
+
+        return null;
     }
 
-    
+    private ProceduralTrainerRoundSettings GetProceduralRoundSettingsForFight()
+    {
+        if (proceduralRounds == null || proceduralRounds.Count == 0)
+            return null;
+
+        int index = Mathf.Clamp(currentFight - 1, 0, proceduralRounds.Count - 1);
+        return proceduralRounds[index];
+    }
+
+    private bool InitializeProceduralRoster()
+    {
+        if (proceduralRosterInitialized)
+            return true;
+
+        var opponentPrefab = GetProceduralOpponent();
+        var initialParty = opponentPrefab != null ? opponentPrefab.GetComponent<MonsterParty>() : null;
+        if (initialParty == null)
+            return false;
+
+        proceduralTrainerRoster.Clear();
+        foreach (var monster in initialParty.Monsters)
+        {
+            if (monster == null || monster.Base == null)
+                continue;
+
+            if (proceduralTrainerRoster.Count >= MaxTrainerPartySize)
+            {
+                Debug.LogWarning("Procedural trainer's authored party has more than six monsters; extra members are ignored.", this);
+                break;
+            }
+
+            var member = new ProceduralTrainerRosterMember(monster.Base, monster.EvolutionProgress);
+            NormalizeRosterMember(member);
+            proceduralTrainerRoster.Add(member);
+        }
+
+        proceduralRosterInitialized = true;
+        return true;
+    }
+
+    private void PrepareProceduralRoundRoster(ProceduralTrainerRoundSettings roundSettings)
+    {
+        roundProgressAwarded = 0;
+
+        var pool = GetValidMonsterPool(roundSettings);
+        int numberOfPicks = Random.Range(0, 3);
+        for (int i = 0; i < numberOfPicks && pool.Count > 0; i++)
+        {
+            var selectedBase = pool[Random.Range(0, pool.Count)];
+            var existingMember = proceduralTrainerRoster.Find(member => member.Base == selectedBase);
+
+            if (existingMember != null)
+            {
+                if (AwardEvolutionProgress(existingMember))
+                    roundProgressAwarded++;
+            }
+            else if (proceduralTrainerRoster.Count < MaxTrainerPartySize)
+            {
+                proceduralTrainerRoster.Add(new ProceduralTrainerRosterMember(selectedBase, 0));
+            }
+        }
+
+        if (proceduralTrainerRoster.Count == MaxTrainerPartySize
+            && (roundSettings.ReplacementChance >= 1f
+                || Random.value < Mathf.Clamp01(roundSettings.ReplacementChance)))
+        {
+            TryReplaceLowestProgressMember(pool);
+        }
+    }
+
+    private List<MonsterBase> GetValidMonsterPool(ProceduralTrainerRoundSettings roundSettings)
+    {
+        var pool = new List<MonsterBase>();
+        if (roundSettings == null || roundSettings.MonsterPool == null)
+            return pool;
+
+        foreach (var monsterBase in roundSettings.MonsterPool)
+        {
+            if (monsterBase != null)
+                pool.Add(monsterBase);
+        }
+
+        return pool;
+    }
+
+    private void TryReplaceLowestProgressMember(List<MonsterBase> pool)
+    {
+        var replacementCandidates = pool.FindAll(monsterBase =>
+            !proceduralTrainerRoster.Exists(member => member.Base == monsterBase));
+
+        if (replacementCandidates.Count == 0 || proceduralTrainerRoster.Count == 0)
+            return;
+
+        int lowestProgress = int.MaxValue;
+        var replacementIndices = new List<int>();
+        for (int i = 0; i < proceduralTrainerRoster.Count; i++)
+        {
+            int progress = proceduralTrainerRoster[i].EvolutionProgress;
+            if (progress < lowestProgress)
+            {
+                lowestProgress = progress;
+                replacementIndices.Clear();
+                replacementIndices.Add(i);
+            }
+            else if (progress == lowestProgress)
+            {
+                replacementIndices.Add(i);
+            }
+        }
+
+        int indexToReplace = replacementIndices[Random.Range(0, replacementIndices.Count)];
+        var replacement = replacementCandidates[Random.Range(0, replacementCandidates.Count)];
+        proceduralTrainerRoster[indexToReplace] = new ProceduralTrainerRosterMember(replacement, 0);
+    }
+
+    private void CaptureProceduralRoster()
+    {
+        if (proceduralTrainerParty == null)
+            return;
+
+        proceduralTrainerRoster.Clear();
+        foreach (var monster in proceduralTrainerParty.Monsters)
+        {
+            if (monster == null || monster.Base == null)
+                continue;
+
+            if (proceduralTrainerRoster.Count >= MaxTrainerPartySize)
+                break;
+
+            var member = new ProceduralTrainerRosterMember(monster.Base, monster.EvolutionProgress);
+            NormalizeRosterMember(member);
+            proceduralTrainerRoster.Add(member);
+        }
+    }
+
+    private void AwardProceduralBattleProgress()
+    {
+        int pointsToAward = Random.Range(1, 4);
+        int remainingBudget = Mathf.Max(0, MaxRoundEvolutionProgress - roundProgressAwarded);
+        pointsToAward = Mathf.Min(pointsToAward, remainingBudget);
+
+        for (int i = 0; i < pointsToAward; i++)
+        {
+            var eligibleMembers = proceduralTrainerRoster.FindAll(CanReceiveEvolutionProgress);
+            if (eligibleMembers.Count == 0)
+                break;
+
+            var member = eligibleMembers[Random.Range(0, eligibleMembers.Count)];
+            if (AwardEvolutionProgress(member))
+                roundProgressAwarded++;
+        }
+    }
+
+    private bool CanReceiveEvolutionProgress(ProceduralTrainerRosterMember member)
+    {
+        return member != null
+            && member.Base != null
+            && member.Base.EvolutionRequirement > 0
+            && member.EvolutionProgress < member.Base.EvolutionRequirement;
+    }
+
+    private bool AwardEvolutionProgress(ProceduralTrainerRosterMember member)
+    {
+        if (!CanReceiveEvolutionProgress(member))
+            return false;
+
+        member.EvolutionProgress++;
+        if (member.EvolutionProgress >= member.Base.EvolutionRequirement)
+        {
+            if (member.Base.Evolution != null)
+            {
+                member.Base = member.Base.Evolution;
+                member.EvolutionProgress = 0;
+            }
+            else
+            {
+                member.EvolutionProgress = member.Base.EvolutionRequirement;
+            }
+        }
+
+        return true;
+    }
+
+    private void NormalizeRosterMember(ProceduralTrainerRosterMember member)
+    {
+        if (member == null || member.Base == null)
+            return;
+
+        int requirement = member.Base.EvolutionRequirement;
+        if (requirement <= 0)
+        {
+            member.EvolutionProgress = 0;
+            Debug.LogWarning($"Monster '{member.Base.Name}' has a non-positive evolution requirement; trainer evolution progress was reset.", this);
+            return;
+        }
+
+        member.EvolutionProgress = Mathf.Clamp(member.EvolutionProgress, 0, requirement);
+        if (member.Base.Evolution != null && member.EvolutionProgress >= requirement)
+        {
+            member.Base = member.Base.Evolution;
+            member.EvolutionProgress = 0;
+        }
+    }
+
+    private void RestoreEnergyAfterSkippedRound()
+    {
+        Energy = maximumEnergy;
+        UpdateEnergyText();
+        EndProceduralEncounter();
+    }
+
     private void EndProceduralEncounter()
     {
         isProceduralEncounterActive = false;
@@ -383,6 +682,7 @@ public class GameController : MonoBehaviour
             Destroy(proceduralOpponentObject);
             proceduralOpponentObject = null;
         }
+        proceduralTrainerParty = null;
     }
 
     private void Update()

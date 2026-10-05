@@ -140,7 +140,14 @@ MonoBehaviour:
   WildMonsters:
   - item:
       _base: {fileID: 11400000, guid: ccb44e809f8bac44abab523f19f84443, type: 2}
-      level: 8
+      evolutionProgress: 0
+    weight: 1
+  - item:
+      _base: {fileID: 11400000, guid: d6ad54d8c61d266459ee34c3c997e239, type: 2}
+      evolutionProgress: 0
+    weight: 1
+  - item:
+      _base: {fileID: 11400000, guid: 3dab1551be146e448b655e06b3587e5e, type: 2}
       evolutionProgress: 0
     weight: 1
   NumberOfTrees: 5

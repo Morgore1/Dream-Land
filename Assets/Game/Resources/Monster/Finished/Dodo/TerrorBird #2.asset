@@ -13,6 +13,10 @@ MonoBehaviour:
   m_Name: TerrorBird #2
   m_EditorClassIdentifier: 
   name: Terrorbird
+  familyID: 100
+  evolution: {fileID: 0}
+  evolutionRequirement: 4
+  evolutionStage: 2
   description: 
   FrontSprite: {fileID: 21300000, guid: 270bfefcec279e54f9ef77041d05ac19, type: 3}
   frontIdleSprite: {fileID: 21300000, guid: 270bfefcec279e54f9ef77041d05ac19, type: 3}
@@ -30,13 +34,16 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 270bfefcec279e54f9ef77041d05ac19, type: 3}
   - {fileID: 21300000, guid: 8f4cc31df2b2b2d4dbf9af0f421dae08, type: 3}
   enterAnimationRate: 10
-  Type1: 0
-  Type2: 0
-  maxHp: 0
-  attack: 0
-  defense: 0
-  magicAttack: 0
-  magicDefense: 0
-  speed: 0
+  Type1: 13
+  Type2: 1
+  maxHp: 40
+  attack: 70
+  defense: 30
+  magicAttack: 70
+  magicDefense: 40
+  speed: 90
   catchRate: 255
-  learnableMoves: []
+  learnableMoves:
+  - moveBase: {fileID: 11400000, guid: 9b0022e287165ab47963c9ecc83eaae1, type: 2}
+  - moveBase: {fileID: 11400000, guid: 47a60144d8042dc4db982ab774defee3, type: 2}
+  - moveBase: {fileID: 11400000, guid: 2c19ab45f651d6345a4d835f81073b58, type: 2}

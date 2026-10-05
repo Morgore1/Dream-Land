@@ -15,11 +15,11 @@ MonoBehaviour:
   name: Menana
   familyID: 1
   evolution: {fileID: 11400000, guid: be7f87e469d416b478135ceffd626ae5, type: 2}
-  evolutionRequirement: 2
+  evolutionRequirement: 4
   evolutionStage: 2
   description: 
   FrontSprite: {fileID: 21300000, guid: c488cab09001ebd499bbf8339614c03d, type: 3}
-  frontIdleSprite: {fileID: 0}
+  frontIdleSprite: {fileID: 21300000, guid: c488cab09001ebd499bbf8339614c03d, type: 3}
   attackAnimationFrames:
   - {fileID: 21300000, guid: 1a3d8a8360f09c84f9b67fa01e92335a, type: 3}
   attackFrameRate: 10
@@ -34,13 +34,17 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 8a232816623574244b31b8792972e08f, type: 3}
   - {fileID: 21300000, guid: 1a3d8a8360f09c84f9b67fa01e92335a, type: 3}
   enterAnimationRate: 10
-  Type1: 0
+  Type1: 16
   Type2: 0
-  maxHp: 0
-  attack: 0
-  defense: 0
-  magicAttack: 0
-  magicDefense: 0
-  speed: 0
+  maxHp: 80
+  attack: 50
+  defense: 70
+  magicAttack: 70
+  magicDefense: 80
+  speed: 40
   catchRate: 255
-  learnableMoves: []
+  learnableMoves:
+  - moveBase: {fileID: 11400000, guid: 9b0022e287165ab47963c9ecc83eaae1, type: 2}
+  - moveBase: {fileID: 11400000, guid: 4e156edd1e50c6e42bc5dda6687b99d8, type: 2}
+  - moveBase: {fileID: 11400000, guid: 4e593841881663946a30e7a7e003ad04, type: 2}
+  - moveBase: {fileID: 11400000, guid: 59e0e17acd03dfc42b3589490ca685a7, type: 2}

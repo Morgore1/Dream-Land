@@ -17891,9 +17891,15 @@ MonoBehaviour:
   playerController: {fileID: 70933826}
   battleSystem: {fileID: 1023744748}
   worldCamera: {fileID: 519420031}
-  proceduralEncounterOpponents:
-  - {fileID: 1411161330}
-  Energy: 10
+  proceduralOpponent: {fileID: 1411161330}
+  proceduralRounds:
+  - monsterPool:
+    - {fileID: 11400000, guid: 3dab1551be146e448b655e06b3587e5e, type: 2}
+    - {fileID: 11400000, guid: ccb44e809f8bac44abab523f19f84443, type: 2}
+    - {fileID: 11400000, guid: d6ad54d8c61d266459ee34c3c997e239, type: 2}
+    replacementChance: 0
+  proceduralEncounterOpponents: []
+  Energy: 2
   proceduralPlayerLives: 1
   energyText: {fileID: 448643879}
   fightText: {fileID: 1842630947}
@@ -56065,7 +56071,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7145524171405402992, guid: 3767230a7c718fc4ea958ad91d5747d9, type: 3}
       propertyPath: monsters.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7145524171405402992, guid: 3767230a7c718fc4ea958ad91d5747d9, type: 3}
       propertyPath: monsters.Array.data[0]._base
@@ -137270,7 +137276,7 @@ MonoBehaviour:
       possibleMaps:
       - item: {fileID: 11400000, guid: d5b9d2a2265552f49b0e589ae444aa3c, type: 2}
         weight: 1
-  mixChance: 0.01
+  mixChance: 0.05
 --- !u!1 &2145312784
 GameObject:
   m_ObjectHideFlags: 0

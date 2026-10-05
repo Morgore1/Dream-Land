@@ -13,6 +13,10 @@ MonoBehaviour:
   m_Name: Pelican #2
   m_EditorClassIdentifier: 
   name: Pellickin
+  familyID: 
+  evolution: {fileID: 0}
+  evolutionRequirement: 2
+  evolutionStage: 0
   description: 
   FrontSprite: {fileID: 21300000, guid: 33d6f6660079ec148b3a54b6f4247a5b, type: 3}
   frontIdleSprite: {fileID: 21300000, guid: 33d6f6660079ec148b3a54b6f4247a5b, type: 3}
@@ -30,7 +34,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 33d6f6660079ec148b3a54b6f4247a5b, type: 3}
   - {fileID: 21300000, guid: 31311157f23d7b34fbb39a96fca20235, type: 3}
   enterAnimationRate: 10
-  Type1: 0
+  Type1: 5
   Type2: 0
   maxHp: 0
   attack: 0

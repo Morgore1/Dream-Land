@@ -15,7 +15,7 @@ MonoBehaviour:
   name: Dodo
   familyID: 100
   evolution: {fileID: 0}
-  evolutionRequirement: 2
+  evolutionRequirement: 3
   evolutionStage: 1
   description: 
   FrontSprite: {fileID: 21300000, guid: d0629809e6723324c83c056fcb871826, type: 3}
@@ -45,8 +45,5 @@ MonoBehaviour:
   catchRate: 255
   learnableMoves:
   - moveBase: {fileID: 11400000, guid: 9b0022e287165ab47963c9ecc83eaae1, type: 2}
-    level: 0
   - moveBase: {fileID: 11400000, guid: 47a60144d8042dc4db982ab774defee3, type: 2}
-    level: 0
   - moveBase: {fileID: 11400000, guid: 2c19ab45f651d6345a4d835f81073b58, type: 2}
-    level: 6
