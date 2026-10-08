@@ -38,8 +38,8 @@ MonoBehaviour:
   Type2: 12
   maxHp: 35
   attack: 45
-  defense: 45
-  magicAttack: 35
+  defense: 30
+  magicAttack: 30
   magicDefense: 25
   speed: 15
   catchRate: 255

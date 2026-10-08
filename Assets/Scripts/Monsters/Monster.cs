@@ -32,7 +32,30 @@ public class Monster
     public int EvolutionProgress
     {
         get => evolutionProgress;
-        set => evolutionProgress = value;
+        set
+        {
+            int progress = Mathf.Max(0, value);
+            if (_base != null)
+            {
+                if (_base.EvolutionRequirement <= 0)
+                    progress = 0;
+                else
+                    progress = Mathf.Min(progress, _base.EvolutionRequirement);
+            }
+
+            if (evolutionProgress == progress)
+                return;
+
+            float hpRatio = MaxHp > 0 ? (float)HP / MaxHp : 1f;
+            bool shouldPreserveHp = Stats != null;
+            evolutionProgress = progress;
+
+            if (shouldPreserveHp && _base != null)
+            {
+                RecalculateStats(hpRatio);
+                Debug.Log($"{Base.Name} evolution progress increased to {evolutionProgress}. Stats: HP {MaxHp}, Attack {Attack}, Defense {Defense}, Magic Attack {MagicAttack}, Magic Defense {MagicDefense}, Speed {Speed}.");
+            }
+        }
     }
 
     public int HP { get; set; }
@@ -52,6 +75,14 @@ public class Monster
 
     public void Init()
     {
+        if (Base != null)
+        {
+            if (Base.EvolutionRequirement <= 0)
+                evolutionProgress = 0;
+            else
+                evolutionProgress = Mathf.Clamp(evolutionProgress, 0, Base.EvolutionRequirement);
+        }
+
         // Generate Moves
         Moves = new List<Move>();
         if (Base.LearnableMoves != null)
@@ -77,16 +108,42 @@ public class Monster
 
     void CalculateStats()
     {
+        float multiplier = 1f + 0.15f * evolutionProgress;
         Stats = new Dictionary<Stat, int>
-    {
-        { Stat.Attack, Base.Attack },
-        { Stat.Defense, Base.Defense },
-        { Stat.MagicAttack, Base.MagicAttack },
-        { Stat.MagicDefense, Base.MagicDefense },
-        { Stat.Speed, Base.Speed }
-         };
+        {
+            { Stat.Attack, ScaleBaseStat(Base.Attack, multiplier) },
+            { Stat.Defense, ScaleBaseStat(Base.Defense, multiplier) },
+            { Stat.MagicAttack, ScaleBaseStat(Base.MagicAttack, multiplier) },
+            { Stat.MagicDefense, ScaleBaseStat(Base.MagicDefense, multiplier) },
+            { Stat.Speed, ScaleBaseStat(Base.Speed, multiplier) }
+        };
 
-        MaxHp = Base.MaxHp;
+        MaxHp = Mathf.Max(1, ScaleBaseStat(Base.MaxHp, multiplier));
+    }
+
+    void RecalculateStats(float hpRatio)
+    {
+        bool wasFainted = HP <= 0;
+        CalculateStats();
+
+        if (wasFainted)
+        {
+            HP = 0;
+        }
+        else
+        {
+            HP = Mathf.Clamp(Mathf.RoundToInt(hpRatio * MaxHp), 1, MaxHp);
+        }
+
+        HpChanged = true;
+    }
+
+    int ScaleBaseStat(int baseStat, float multiplier)
+    {
+        if (baseStat <= 0)
+            return baseStat;
+
+        return Mathf.Max(1, Mathf.RoundToInt(baseStat * multiplier));
     }
 
     void ResetStatboost()

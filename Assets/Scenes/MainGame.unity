@@ -8590,10 +8590,10 @@ Camera:
   m_LensShift: {x: 0, y: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.046698872
-    y: 0.7105005
-    width: 1.8035427
-    height: 1.6486752
+    x: 0.03125
+    y: 0.3841667
+    width: 0.39999998
+    height: 0.4
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
@@ -16948,11 +16948,13 @@ MonoBehaviour:
   - eggName: JNO
     button: {fileID: 429103836}
     buttonLabel: {fileID: 514222753}
-    possibleMonsters: []
+    possibleMonsters:
+    - {fileID: 11400000, guid: d6ad54d8c61d266459ee34c3c997e239, type: 2}
   - eggName: peabody
     button: {fileID: 1396914401}
     buttonLabel: {fileID: 1163731189}
-    possibleMonsters: []
+    possibleMonsters:
+    - {fileID: 11400000, guid: ccb44e809f8bac44abab523f19f84443, type: 2}
   autoOpenOnStart: 1
 --- !u!4 &843162385
 Transform:

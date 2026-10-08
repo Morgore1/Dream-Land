@@ -81,19 +81,32 @@ public class MonsterParty : MonoBehaviour
     }
     public IEnumerator CombineMonster(Monster target)
     {
+        if (target == null || target.Base == null || target.Base.EvolutionRequirement <= 0)
+        {
+            Debug.LogWarning("Cannot award evolution progress to a monster with an invalid evolution requirement.", this);
+            yield break;
+        }
+
         target.EvolutionProgress += 1;
 
-        if (target.EvolutionProgress >= target.Base.EvolutionRequirement)
+        if (target.Base.Evolution != null
+            && target.EvolutionProgress >= target.Base.EvolutionRequirement)
         {
             yield return EvolveMonster(target);
         }
     }
     public IEnumerator EvolveMonster(Monster monster)
     {
-        if (monster.Base.Evolution == null)
+        if (monster == null || monster.Base == null || monster.Base.Evolution == null)
             yield break;
 
+        float hpRatio = monster.MaxHp > 0 ? (float)monster.HP / monster.MaxHp : 1f;
+        bool wasFainted = monster.HP <= 0;
         var newMonster = new Monster(monster.Base.Evolution);
+        newMonster.HP = wasFainted
+            ? 0
+            : Mathf.Clamp(Mathf.RoundToInt(hpRatio * newMonster.MaxHp), 1, newMonster.MaxHp);
+        newMonster.HpChanged = true;
 
         ReplaceMonster(monster, newMonster);
     }
