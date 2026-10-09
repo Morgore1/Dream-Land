@@ -50,6 +50,12 @@ public class PauseMenu : MonoBehaviour
         {
             if (inPartyScreen)
             {
+                if (partyScreenOOB != null && partyScreenOOB.IsDetailsOpen)
+                {
+                    partyScreenOOB.HideMonsterDetails();
+                    return;
+                }
+
                 partyScreenOOB.gameObject.SetActive(false);
                 PartyScreenUI.SetActive(false);
 
@@ -153,6 +159,22 @@ public class PauseMenu : MonoBehaviour
     // -------- Party Navigation --------
     void HandlePartySelection()
     {
+        if (partyScreenOOB != null && partyScreenOOB.IsDetailsOpen)
+        {
+            if (Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown(KeyCode.Escape))
+                partyScreenOOB.HideMonsterDetails();
+
+            return;
+        }
+
+        if (playerParty == null || playerParty.Monsters.Count == 0)
+        {
+            if (Input.GetKeyDown(KeyCode.X))
+                ExitPartyScreen();
+
+            return;
+        }
+
         if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
             currentMember += 2;
         else if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
@@ -168,6 +190,11 @@ public class PauseMenu : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Z))
         {
             Monster chosen = playerParty.Monsters[currentMember];
+            if (chosen == null || chosen.Base == null)
+            {
+                partyScreenOOB.SetMessageText("No monster in this slot.");
+                return;
+            }
 
             if (pendingHealingItem != null)
             {
@@ -206,18 +233,23 @@ public class PauseMenu : MonoBehaviour
             }
             else
             {
-                Debug.Log("Selected monster (normal party view): " + chosen.Base.Name);
+                partyScreenOOB.ShowMonsterDetails(chosen);
             }
         }
         else if (Input.GetKeyDown(KeyCode.X))
         {
-            // Exit party screen
-            partyScreenOOB.gameObject.SetActive(false);
-            PartyScreenUI.SetActive(false);
-            pauseMenuUI.SetActive(true);
-            inPartyScreen = false;
-            HighlightText();
+            ExitPartyScreen();
         }
+    }
+
+    void ExitPartyScreen()
+    {
+        partyScreenOOB.HideMonsterDetails();
+        partyScreenOOB.gameObject.SetActive(false);
+        PartyScreenUI.SetActive(false);
+        pauseMenuUI.SetActive(true);
+        inPartyScreen = false;
+        HighlightText();
     }
     public void ReturnFromInventory()
     {
@@ -231,6 +263,12 @@ public class PauseMenu : MonoBehaviour
 
     public void OpenPartyForHealing(HealingItem item, Inventory sourceInventory)
     {
+        if (playerParty == null)
+        {
+            Debug.LogError("PauseMenu: No MonsterParty set for healing.");
+            return;
+        }
+
         pendingHealingItem = item;
         currentInventory = sourceInventory;
 
@@ -242,9 +280,11 @@ public class PauseMenu : MonoBehaviour
         PartyScreenUI.SetActive(true);
         partyScreenOOB.SetPartyData(playerParty.Monsters);
         partyScreenOOB.gameObject.SetActive(true);
+        partyScreenOOB.HideMonsterDetails();
 
         currentMember = 0;
-        partyScreenOOB.UpdateMemberSelection(currentMember);
+        if (playerParty.Monsters.Count > 0)
+            partyScreenOOB.UpdateMemberSelection(currentMember);
         inPartyScreen = true;
     }
 
@@ -271,9 +311,11 @@ public class PauseMenu : MonoBehaviour
         PartyScreenUI.SetActive(true);
         partyScreenOOB.SetPartyData(playerParty.Monsters);
         partyScreenOOB.gameObject.SetActive(true);
+        partyScreenOOB.HideMonsterDetails();
 
         currentMember = 0;
-        partyScreenOOB.UpdateMemberSelection(currentMember);
+        if (playerParty.Monsters.Count > 0)
+            partyScreenOOB.UpdateMemberSelection(currentMember);
         inPartyScreen = true;
     }
 
