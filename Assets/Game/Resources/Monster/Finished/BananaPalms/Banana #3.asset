@@ -44,3 +44,5 @@ MonoBehaviour:
   speed: 0
   catchRate: 255
   learnableMoves: []
+  moveSlots: []
+  initialUnlockedMoveSlots: 3

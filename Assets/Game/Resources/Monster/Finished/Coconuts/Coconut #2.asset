@@ -36,12 +36,12 @@ MonoBehaviour:
   enterAnimationRate: 10
   Type1: 16
   Type2: 12
-  maxHp: 70
-  attack: 90
-  defense: 90
-  magicAttack: 70
-  magicDefense: 50
-  speed: 30
+  maxHp: 60
+  attack: 60
+  defense: 60
+  magicAttack: 40
+  magicDefense: 30
+  speed: 40
   catchRate: 255
   learnableMoves:
   - moveBase: {fileID: 11400000, guid: 9b0022e287165ab47963c9ecc83eaae1, type: 2}

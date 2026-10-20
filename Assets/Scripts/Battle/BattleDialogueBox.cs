@@ -85,6 +85,14 @@ public class BattleDialogueBox : MonoBehaviour
             moveTexts[i].color = (i == selectedMove) ? highlightedColor : Color.black;
         }
 
+        if (move == null || move.Base == null)
+        {
+            apText.text = "AP -";
+            typeText.text = "-";
+            apText.color = Color.black;
+            return;
+        }
+
         apText.text = $"AP {move.AP}/{move.Base.AP}";
         typeText.text = move.Base.Type.ToString();
         apText.color = (move.AP == 0) ? Color.red : Color.black;
@@ -94,7 +102,9 @@ public class BattleDialogueBox : MonoBehaviour
     {
         for (int i = 0; i < moveTexts.Count; ++i)
         {
-            moveTexts[i].text = (i < moves.Count) ? moves[i].Base.Name : "-";
+            moveTexts[i].text = moves != null && i < moves.Count && moves[i] != null && moves[i].Base != null
+                ? moves[i].Base.Name
+                : "-";
         }
     }
 }

@@ -102,7 +102,8 @@ public class MonsterParty : MonoBehaviour
 
         float hpRatio = monster.MaxHp > 0 ? (float)monster.HP / monster.MaxHp : 1f;
         bool wasFainted = monster.HP <= 0;
-        var newMonster = new Monster(monster.Base.Evolution);
+        var newMonster = new Monster(monster.Base.Evolution, false);
+        newMonster.InheritMovesAndUnlockSlot(monster);
         newMonster.HP = wasFainted
             ? 0
             : Mathf.Clamp(Mathf.RoundToInt(hpRatio * newMonster.MaxHp), 1, newMonster.MaxHp);

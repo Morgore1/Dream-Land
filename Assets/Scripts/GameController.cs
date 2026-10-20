@@ -38,10 +38,12 @@ public class GameController : MonoBehaviour
 
     bool isProceduralEncounterActive;
     bool isProceduralBattle;
+    bool battleCompletionHandled;
     bool proceduralRosterInitialized;
     bool proceduralConfigurationWarningLogged;
     int remainingPlayerLives;
     int currentFight = 1;
+    int proceduralRewardFightNumber;
     int maximumEnergy;
     int roundProgressAwarded;
     GameObject proceduralOpponentObject;
@@ -118,6 +120,7 @@ public class GameController : MonoBehaviour
 
     void StartBattle()
     {
+        BeginNonProceduralBattle();
         state = GameState.Battle;
         battleSystem.gameObject.SetActive(true);
         worldCamera.gameObject.SetActive(false);
@@ -136,6 +139,7 @@ public class GameController : MonoBehaviour
     }
     public void StartItemEncounterBattle(Monster encounterMonster)
     {
+        BeginNonProceduralBattle();
         state = GameState.Battle;
         battleSystem.gameObject.SetActive(true);
         worldCamera.gameObject.SetActive(false);
@@ -154,6 +158,7 @@ public class GameController : MonoBehaviour
     TrainerController trainer;
     public void StartTrainerBattle(TrainerController trainer)
     {
+        BeginNonProceduralBattle();
         state = GameState.Battle;
         battleSystem.gameObject.SetActive(true);
         worldCamera.gameObject.SetActive(false);
@@ -172,9 +177,29 @@ public class GameController : MonoBehaviour
 
     void EndBattle(bool won)
     {
+        if (battleCompletionHandled)
+            return;
+
+        battleCompletionHandled = true;
+        bool completedProceduralBattle = isProceduralBattle;
+        int completedFightNumber = proceduralRewardFightNumber;
+        isProceduralBattle = false;
+        proceduralRewardFightNumber = 0;
+
+        if (completedProceduralBattle && won && completedFightNumber > 0)
+        {
+            int reward = completedFightNumber > int.MaxValue / 10
+                ? int.MaxValue
+                : completedFightNumber * 10;
+            int newBalance = RewardPointsProfile.AddPoints(reward);
+            Debug.Log($"Procedural fight {completedFightNumber} victory: earned {reward} reward points. Balance: {newBalance}.");
+        }
+
+        Debug.Log($"Reward points balance after battle: {RewardPointsProfile.Balance}.");
+
         HealPlayerParty();
 
-        if (isProceduralBattle)
+        if (completedProceduralBattle)
         {
             CaptureProceduralRoster();
             AwardProceduralBattleProgress();
@@ -194,8 +219,6 @@ public class GameController : MonoBehaviour
 
             currentFight++;
             UpdateFightText();
-
-            isProceduralBattle = false;
 
             if (remainingPlayerLives <= 0)
             {
@@ -424,6 +447,8 @@ public class GameController : MonoBehaviour
     private void StartProceduralBattle(TrainerController trainerController, MonsterParty trainerParty)
     {
         isProceduralBattle = true;
+        proceduralRewardFightNumber = currentFight;
+        battleCompletionHandled = false;
         state = GameState.Battle;
         battleSystem.gameObject.SetActive(true);
         worldCamera.gameObject.SetActive(false);
@@ -431,6 +456,13 @@ public class GameController : MonoBehaviour
         var playerParty = playerController.GetComponent<MonsterParty>();
 
         battleSystem.StartTrainerBattle(playerParty, trainerParty);
+    }
+
+    private void BeginNonProceduralBattle()
+    {
+        isProceduralBattle = false;
+        proceduralRewardFightNumber = 0;
+        battleCompletionHandled = false;
     }
 
     private void HealPlayerParty()

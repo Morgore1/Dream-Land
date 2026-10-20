@@ -170,8 +170,40 @@ public class BattleSystem : MonoBehaviour
 
         if (playerAction == BattleAction.Move)
         {
-            playerUnit.Monster.CurrentMove = playerUnit.Monster.Moves[currentMove];
+            playerUnit.Monster.CurrentMove = playerUnit.Monster.Moves != null
+                && currentMove >= 0
+                && currentMove < playerUnit.Monster.Moves.Count
+                && playerUnit.Monster.Moves[currentMove] != null
+                && playerUnit.Monster.Moves[currentMove].AP > 0
+                    ? playerUnit.Monster.Moves[currentMove]
+                    : null;
             enemyUnit.Monster.CurrentMove = enemyUnit.Monster.GetRandomMove();
+
+            if (playerUnit.Monster.CurrentMove == null && enemyUnit.Monster.CurrentMove == null)
+            {
+                yield return dialogueBox.TypeDialogue("Neither monster has a usable move.");
+                ActionSelection();
+                yield break;
+            }
+
+            if (playerUnit.Monster.CurrentMove == null)
+            {
+                yield return dialogueBox.TypeDialogue($"{playerUnit.Monster.Base.Name} has no usable moves!");
+                yield return RunMove(enemyUnit, playerUnit, enemyUnit.Monster.CurrentMove);
+                yield return RunAfterTurn(enemyUnit);
+                if (state == BattleState.BattleOver) yield break;
+                ActionSelection();
+                yield break;
+            }
+
+            if (enemyUnit.Monster.CurrentMove == null)
+            {
+                yield return RunMove(playerUnit, enemyUnit, playerUnit.Monster.CurrentMove);
+                yield return RunAfterTurn(playerUnit);
+                if (state == BattleState.BattleOver) yield break;
+                ActionSelection();
+                yield break;
+            }
 
             int playerMovePriority = playerUnit.Monster.CurrentMove.Base.Priority;
             int enemyMovePriority = enemyUnit.Monster.CurrentMove.Base.Priority;
@@ -269,6 +301,9 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator RunMove(BattleUnit sourceUnit, BattleUnit targetUnit, Move move)
     {
+        if (move == null || move.Base == null)
+            yield break;
+
         bool canRunMove = sourceUnit.Monster.OnBeforeMove();
         if (!canRunMove)
         {
@@ -548,6 +583,22 @@ public class BattleSystem : MonoBehaviour
 
         void HandleMoveSelection()
         {
+            if (playerUnit.Monster.Moves == null || playerUnit.Monster.Moves.Count == 0)
+            {
+                if (Input.GetKeyDown(KeyCode.Z))
+                {
+                    dialogueBox.EnableMoveSelector(false);
+                    dialogueBox.EnableDialogueText(true);
+                    StartCoroutine(RunTurns(BattleAction.Move));
+                }
+                else if (Input.GetKeyDown(KeyCode.X))
+                {
+                    dialogueBox.EnableMoveSelector(false);
+                    dialogueBox.EnableDialogueText(true);
+                    ActionSelection();
+                }
+                return;
+            }
 
             if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
                 currentMove += 2;
@@ -565,7 +616,9 @@ public class BattleSystem : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Z))
             {
                 var move = playerUnit.Monster.Moves[currentMove];
-                if (move.AP == 0) return;
+                bool hasUsableMove = playerUnit.Monster.Moves.Any(candidate =>
+                    candidate != null && candidate.Base != null && candidate.AP > 0);
+                if ((move == null || move.Base == null || move.AP <= 0) && hasUsableMove) return;
 
                 dialogueBox.EnableMoveSelector(false);
                 dialogueBox.EnableDialogueText(true);

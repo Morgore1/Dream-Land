@@ -2,14 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class Move
 {
-    public MoveBase Base { get; set; }
-    public int AP { get; set;}
+    [SerializeField] MoveBase moveBase;
+    [SerializeField] int ap;
+
+    public MoveBase Base
+    {
+        get => moveBase;
+        set => moveBase = value;
+    }
+
+    public int AP
+    {
+        get => ap;
+        set => ap = value;
+    }
 
     public Move(MoveBase pBase)
     {
-        Base = pBase;
-        AP = pBase.AP;
+        moveBase = pBase;
+        ap = pBase.AP;
     }
 }

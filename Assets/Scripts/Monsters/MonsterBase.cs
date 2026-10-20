@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 
 
@@ -52,7 +53,10 @@ public class MonsterBase : ScriptableObject
 
     [SerializeField] int catchRate = 255;
 
-    [SerializeField] List<LearnableMove> learnableMoves;
+    [SerializeField, HideInInspector] List<LearnableMove> learnableMoves;
+    [SerializeField] List<MonsterMoveSlot> moveSlots = new List<MonsterMoveSlot>();
+    [SerializeField, Range(0, 4), Tooltip("Starting unlocked move slots for evolving forms. Forms with no evolution automatically use all four slots.")]
+    int initialUnlockedMoveSlots = 3;
 
     public string Name {
         get { return name; }
@@ -89,7 +93,58 @@ public class MonsterBase : ScriptableObject
     public List<LearnableMove> LearnableMoves 
         { get { return learnableMoves; } }
 
+    public int InitialUnlockedMoveSlots => evolution == null ? 4 : Mathf.Clamp(initialUnlockedMoveSlots, 0, 4);
+
+    public List<MoveBase> GetMoveCandidates(int slotIndex)
+    {
+        if (slotIndex < 0 || slotIndex >= 4)
+            return new List<MoveBase>();
+
+        if (moveSlots != null && moveSlots.Count > 0)
+        {
+            if (slotIndex >= moveSlots.Count || moveSlots[slotIndex] == null)
+                return new List<MoveBase>();
+
+            if (moveSlots[slotIndex].Candidates == null)
+                return new List<MoveBase>();
+
+            return moveSlots[slotIndex].Candidates
+                .Where(candidate => candidate != null)
+                .ToList();
+        }
+
+        // Existing assets use a shared learnset. Keep them playable until their
+        // four slot-specific candidate pools are authored in the Inspector.
+        if (learnableMoves == null)
+            return new List<MoveBase>();
+
+        return learnableMoves
+            .Where(learnableMove => learnableMove != null && learnableMove.Base != null)
+            .Select(learnableMove => learnableMove.Base)
+            .ToList();
+    }
+
+    private void OnValidate()
+    {
+        initialUnlockedMoveSlots = Mathf.Clamp(initialUnlockedMoveSlots, 0, 4);
+
+        int slotCount = InitialUnlockedMoveSlots;
+        for (int i = 0; i < slotCount; i++)
+        {
+            if (GetMoveCandidates(i).Count == 0)
+                Debug.LogWarning($"{name} has no valid move candidates configured for unlocked slot {i + 1}.", this);
+        }
+    }
+
     public int CatchRate => catchRate;
+}
+
+[System.Serializable]
+public class MonsterMoveSlot
+{
+    [SerializeField] List<MoveBase> candidates = new List<MoveBase>();
+
+    public List<MoveBase> Candidates => candidates;
 }
 
 [System.Serializable]

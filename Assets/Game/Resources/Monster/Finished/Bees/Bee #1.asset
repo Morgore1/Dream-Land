@@ -13,6 +13,10 @@ MonoBehaviour:
   m_Name: Bee #1
   m_EditorClassIdentifier: 
   name: Larbi
+  familyID: 
+  evolution: {fileID: 0}
+  evolutionRequirement: 2
+  evolutionStage: 0
   description: 
   FrontSprite: {fileID: 21300000, guid: 408dfe2a49a0ea54eb392cc75ecf5778, type: 3}
   frontIdleSprite: {fileID: 21300000, guid: 408dfe2a49a0ea54eb392cc75ecf5778, type: 3}
@@ -30,13 +34,13 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 408dfe2a49a0ea54eb392cc75ecf5778, type: 3}
   - {fileID: 21300000, guid: 6d8182880eebc75449e4a337b75294c6, type: 3}
   enterAnimationRate: 10
-  Type1: 0
+  Type1: 16
   Type2: 0
-  maxHp: 0
-  attack: 0
-  defense: 0
-  magicAttack: 0
-  magicDefense: 0
-  speed: 0
+  maxHp: 30
+  attack: 10
+  defense: 10
+  magicAttack: 30
+  magicDefense: 30
+  speed: 20
   catchRate: 255
   learnableMoves: []

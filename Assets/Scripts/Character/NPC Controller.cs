@@ -9,6 +9,8 @@ public class NPCController : MonoBehaviour, Interactable
     [SerializeField] GameObject exclamation;
     [SerializeField] GameObject Fov;
     [SerializeField] bool isEncounter;
+    [SerializeField] ShopDefinition shop;
+    [SerializeField] ShopMenu shopMenu;
 
     float idleTimer = 0f;
     NPCState state;
@@ -70,6 +72,17 @@ public class NPCController : MonoBehaviour, Interactable
     {
         state = NPCState.Idle;
         idleTimer = 0f;
+    }
+
+    public void OpenShop()
+    {
+        if (shop == null || shopMenu == null)
+        {
+            Debug.LogWarning($"{name} has no shop definition or shop menu assigned.", this);
+            return;
+        }
+
+        shopMenu.Open(shop);
     }
 
     public void Interact(Transform initiator)

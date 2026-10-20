@@ -8,8 +8,15 @@ using UnityEngine;
 public class Monster
 {
     [SerializeField] MonsterBase _base;
+    [SerializeField] int unlockedMoveSlots;
+    [SerializeField] bool movesInitialized;
 
     public Monster(MonsterBase mBase)
+        : this(mBase, true)
+    {
+    }
+
+    public Monster(MonsterBase mBase, bool initializeMoves)
     {
         if (mBase == null)
         {
@@ -19,7 +26,7 @@ public class Monster
 
         _base = mBase;
 
-        Init();
+        Initialize(initializeMoves);
     }
 
     public MonsterBase Base {
@@ -59,7 +66,13 @@ public class Monster
     }
 
     public int HP { get; set; }
-    public List<Move> Moves { get; set; }
+    [SerializeField] List<Move> moves;
+    public List<Move> Moves
+    {
+        get => moves;
+        set => moves = value;
+    }
+    public int UnlockedMoveSlots => unlockedMoveSlots;
     public Move CurrentMove { get; set; }
     public Dictionary<Stat, int> Stats { get; private set; }
 
@@ -75,35 +88,89 @@ public class Monster
 
     public void Init()
     {
-        if (Base != null)
-        {
-            if (Base.EvolutionRequirement <= 0)
-                evolutionProgress = 0;
-            else
-                evolutionProgress = Mathf.Clamp(evolutionProgress, 0, Base.EvolutionRequirement);
-        }
+        Initialize(true);
+    }
 
-        // Generate Moves
-        Moves = new List<Move>();
-        if (Base.LearnableMoves != null)
-        {
-            foreach (var move in Base.LearnableMoves)
-            {
-                if (move.Base != null)
-                    Moves.Add(new Move(move.Base));
+    void Initialize(bool initializeMoves)
+    {
+        if (Base == null)
+            return;
 
-                if (Moves.Count >= 4)
-                    break;
-            }
+        bool wasInitialized = movesInitialized;
+        float hpRatio = MaxHp > 0 ? (float)HP / MaxHp : 1f;
+
+        if (Base.EvolutionRequirement <= 0)
+            evolutionProgress = 0;
+        else
+            evolutionProgress = Mathf.Clamp(evolutionProgress, 0, Base.EvolutionRequirement);
+
+        if (Moves == null)
+            Moves = new List<Move>();
+
+        if (!movesInitialized && initializeMoves)
+        {
+            unlockedMoveSlots = Base.InitialUnlockedMoveSlots;
+            Moves.Clear();
+            for (int slotIndex = 0; slotIndex < unlockedMoveSlots; slotIndex++)
+                AddRandomMoveForSlot(slotIndex);
+
+            movesInitialized = true;
         }
 
         CalculateStats();
-        HP = MaxHp;
+        if (wasInitialized)
+        {
+            HP = HP <= 0 ? 0 : Mathf.Clamp(Mathf.RoundToInt(hpRatio * MaxHp), 1, MaxHp);
+        }
+        else
+        {
+            HP = MaxHp;
+        }
 
         StatusChanges = new Queue<string>();
         ResetStatboost();
         Status = null;
         VolatileStatus = null;
+    }
+
+    void AddRandomMoveForSlot(int slotIndex)
+    {
+        var candidates = Base.GetMoveCandidates(slotIndex);
+        if (candidates.Count == 0)
+        {
+            Debug.LogWarning($"{Base.Name} has no move candidates for unlocked slot {slotIndex + 1}.");
+            return;
+        }
+
+        Moves.Add(new Move(candidates[UnityEngine.Random.Range(0, candidates.Count)]));
+    }
+
+    public void InheritMovesAndUnlockSlot(Monster source)
+    {
+        if (source == null || Base == null || source.Moves == null)
+            return;
+
+        int expectedSlots = Mathf.Min(4, source.unlockedMoveSlots + 1);
+        if (Base.InitialUnlockedMoveSlots != expectedSlots)
+        {
+            Debug.LogWarning($"{Base.Name} is configured for {Base.InitialUnlockedMoveSlots} initial move slots, but evolution from {source.Base.Name} expects {expectedSlots}. The evolved monster will use the expected count.");
+        }
+
+        unlockedMoveSlots = expectedSlots;
+        Moves = source.Moves
+            .Where(move => move != null && move.Base != null)
+            .Select(move =>
+            {
+                var inheritedMove = new Move(move.Base);
+                inheritedMove.AP = move.AP;
+                return inheritedMove;
+            })
+            .ToList();
+
+        if (unlockedMoveSlots > source.unlockedMoveSlots)
+            AddRandomMoveForSlot(source.unlockedMoveSlots);
+
+        movesInitialized = true;
     }
 
     void CalculateStats()
@@ -310,10 +377,14 @@ public class Monster
     }
     public Move GetRandomMove()
     {
-        var movesWithAP = Moves.Where(x => x.AP > 0).ToList();
+        if (Moves == null)
+            return null;
 
-        int r = UnityEngine.Random.Range(0, Moves.Count);
-        return movesWithAP[r];
+        var movesWithAP = Moves.Where(move => move != null && move.Base != null && move.AP > 0).ToList();
+        if (movesWithAP.Count == 0)
+            return null;
+
+        return movesWithAP[UnityEngine.Random.Range(0, movesWithAP.Count)];
     }
 
     public bool OnBeforeMove() 

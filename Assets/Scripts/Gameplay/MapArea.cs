@@ -18,8 +18,6 @@ public class MapArea : MonoBehaviour
             return null;
         }
 
-        var wildMonster = WeightedRandom.Pick(mapPreset.WildMonsters);
-        wildMonster.Init();
-        return wildMonster;
+        return WeightedRandom.Pick(mapPreset.WildMonsters);
     }
 }

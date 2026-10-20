@@ -114,7 +114,6 @@ public class ItemPickup : MonoBehaviour, Interactable
             }
 
             var chosen = monsters[Random.Range(0, monsters.Count)];
-            chosen.Init(); // make sure stats, moves, HP, etc. are rolled
             return chosen;
         }
     }
