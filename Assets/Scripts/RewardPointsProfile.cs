@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -8,14 +9,26 @@ using UnityEngine;
 public static class RewardPointsProfile
 {
     const string SaveKey = "DreamLand.RewardPoints.Profile";
-    const int CurrentVersion = 1;
+    const int CurrentVersion = 2;
 
     [Serializable]
     sealed class SaveData
     {
         public int version = CurrentVersion;
         public int balance;
+        public List<string> ownedUnlockIds = new List<string>();
     }
+
+    public enum PurchaseResult
+    {
+        Success,
+        InvalidOffer,
+        AlreadyOwned,
+        InsufficientPoints,
+        SaveFailed
+    }
+
+    public static event Action<string> UnlockOwnershipChanged;
 
     static SaveData data;
 
@@ -26,6 +39,46 @@ public static class RewardPointsProfile
             EnsureLoaded();
             return data.balance;
         }
+    }
+
+    public static bool IsUnlockOwned(string unlockId)
+    {
+        EnsureLoaded();
+        unlockId = NormalizeUnlockId(unlockId);
+        return !string.IsNullOrEmpty(unlockId) && data.ownedUnlockIds.Contains(unlockId);
+    }
+
+    /// <summary>
+    /// Atomically deducts the cost and records ownership in one profile save.
+    /// Unlock IDs are global, so the same unlock can be listed in multiple shops.
+    /// </summary>
+    public static PurchaseResult TryPurchaseUnlock(string unlockId, int cost)
+    {
+        EnsureLoaded();
+        unlockId = NormalizeUnlockId(unlockId);
+
+        if (string.IsNullOrEmpty(unlockId) || cost <= 0)
+            return PurchaseResult.InvalidOffer;
+
+        if (data.ownedUnlockIds.Contains(unlockId))
+            return PurchaseResult.AlreadyOwned;
+
+        if (data.balance < cost)
+            return PurchaseResult.InsufficientPoints;
+
+        var updatedData = new SaveData
+        {
+            version = CurrentVersion,
+            balance = data.balance - cost,
+            ownedUnlockIds = new List<string>(data.ownedUnlockIds) { unlockId }
+        };
+
+        if (!TrySave(updatedData))
+            return PurchaseResult.SaveFailed;
+
+        data = updatedData;
+        UnlockOwnershipChanged?.Invoke(unlockId);
+        return PurchaseResult.Success;
     }
 
     /// <summary>Adds positive points and immediately writes the profile.</summary>
@@ -66,7 +119,7 @@ public static class RewardPointsProfile
         try
         {
             var loadedData = JsonUtility.FromJson<SaveData>(PlayerPrefs.GetString(SaveKey));
-            if (loadedData == null || loadedData.version != CurrentVersion)
+            if (loadedData == null || (loadedData.version != 1 && loadedData.version != CurrentVersion))
             {
                 Debug.LogWarning("Reward points profile is invalid or has an unsupported version; starting with zero points.");
                 data = new SaveData();
@@ -74,6 +127,10 @@ public static class RewardPointsProfile
             }
 
             loadedData.balance = Math.Max(0, loadedData.balance);
+            if (loadedData.ownedUnlockIds == null)
+                loadedData.ownedUnlockIds = new List<string>();
+
+            loadedData.version = CurrentVersion;
             data = loadedData;
         }
         catch (Exception exception)
@@ -85,7 +142,26 @@ public static class RewardPointsProfile
 
     static void Save()
     {
-        PlayerPrefs.SetString(SaveKey, JsonUtility.ToJson(data));
-        PlayerPrefs.Save();
+        TrySave(data);
+    }
+
+    static bool TrySave(SaveData saveData)
+    {
+        try
+        {
+            PlayerPrefs.SetString(SaveKey, JsonUtility.ToJson(saveData));
+            PlayerPrefs.Save();
+            return true;
+        }
+        catch (Exception exception)
+        {
+            Debug.LogError($"Could not save reward points profile. {exception.Message}");
+            return false;
+        }
+    }
+
+    static string NormalizeUnlockId(string unlockId)
+    {
+        return string.IsNullOrWhiteSpace(unlockId) ? null : unlockId.Trim();
     }
 }

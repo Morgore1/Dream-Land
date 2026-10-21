@@ -9,7 +9,7 @@ public class PauseMenu : MonoBehaviour
 
     [Header("UI References")]
     public GameObject pauseMenuUI;       // Assign Panel in Inspector
-    public Button[] buttons;             // Assign TMP buttons (Inventory, Party, Save, Quit)
+    public Button[] buttons;             // Assign in order: Inventory, Party, Save, Restart, Quit
     [SerializeField] PartyScreenOOB partyScreenOOB;
     public GameObject PartyScreenUI;
     [SerializeField] private GameObject inventoryCanvas; // your canvas
@@ -152,7 +152,8 @@ public class PauseMenu : MonoBehaviour
             case 0: OpenInventory(); break;
             case 1: OpenParty(); break;
             case 2: SaveGame(); break;
-            case 3: QuitGame(); break;
+            case 3: RestartToEggSelection(); break;
+            case 4: QuitGame(); break;
         }
     }
 
@@ -322,6 +323,15 @@ public class PauseMenu : MonoBehaviour
     void SaveGame()
     {
         Debug.Log("Game saved!");
+    }
+
+    /// <summary>Restarts the current game scene, returning to its egg-selection screen.</summary>
+    public void RestartToEggSelection()
+    {
+        Time.timeScale = 1f;
+        GameIsPaused = false;
+        Scene activeScene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(activeScene.buildIndex);
     }
 
     void QuitGame()

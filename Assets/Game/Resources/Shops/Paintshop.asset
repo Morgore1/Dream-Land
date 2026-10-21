@@ -12,8 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a86fe9f03583f435fb2583792d3b75fe, type: 3}
   m_Name: Paintshop
   m_EditorClassIdentifier: 
-  shopName: 
+  shopName: Paint Shop
   offers:
-  - displayName: Paint
+  - unlockId: 
+    displayName: Paint
     description: Colored paint
+    image: {fileID: 0}
+    rewardPointCost: 10
+  - unlockId: egg.extra_choice
+    displayName: Additional Egg Choice
+    description: Unlock an additional egg choice in the egg selection menu.
+    image: {fileID: 0}
     rewardPointCost: 10

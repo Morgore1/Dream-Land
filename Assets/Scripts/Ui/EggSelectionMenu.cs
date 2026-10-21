@@ -10,6 +10,8 @@ public class EggSelectionMenu : MonoBehaviour
     public class EggOption
     {
         public string eggName;
+        [Tooltip("Optional permanent unlock ID. Leave blank for an egg that's always available.")]
+        public string requiredUnlockId;
         public Button button;
         public TextMeshProUGUI buttonLabel;
         public List<MonsterBase> possibleMonsters = new List<MonsterBase>();
@@ -63,27 +65,42 @@ public class EggSelectionMenu : MonoBehaviour
             CloseAll();
     }
 
+    private void OnEnable()
+    {
+        RewardPointsProfile.UnlockOwnershipChanged += OnUnlockOwnershipChanged;
+    }
+
+    private void OnDisable()
+    {
+        RewardPointsProfile.UnlockOwnershipChanged -= OnUnlockOwnershipChanged;
+    }
+
     private void SetupEggButtons()
     {
+        if (eggOptions == null)
+            return;
+
         foreach (var egg in eggOptions)
         {
-            if (egg.button == null)
+            if (egg == null || egg.button == null)
                 continue;
-
-            egg.button.onClick.RemoveAllListeners();
 
             if (egg.buttonLabel == null)
                 egg.buttonLabel = egg.button.GetComponentInChildren<TextMeshProUGUI>();
 
-            if (egg.buttonLabel != null)
-                egg.buttonLabel.text = egg.eggName;
-
             egg.button.onClick.AddListener(() => HatchEgg(egg));
         }
+
+        RefreshEggOptions();
     }
 
     public void OpenSelection()
     {
+        if (canvasRoot != null && !canvasRoot.activeSelf)
+            canvasRoot.SetActive(true);
+
+        RefreshEggOptions();
+
         if (selectionPanel != null)
             selectionPanel.SetActive(true);
 
@@ -121,7 +138,18 @@ public class EggSelectionMenu : MonoBehaviour
 
     private void HatchEgg(EggOption egg)
     {
-        if (egg == null || egg.possibleMonsters == null || egg.possibleMonsters.Count == 0)
+        if (egg == null)
+            return;
+
+        if (!IsEggUnlocked(egg))
+        {
+            Debug.LogWarning($"Egg choice '{egg.eggName}' is locked.", this);
+            RefreshEggOptions();
+            return;
+        }
+
+        List<MonsterBase> validCandidates = GetValidCandidates(egg);
+        if (validCandidates.Count == 0)
         {
             Debug.LogWarning("Egg is missing possible monsters.");
             return;
@@ -137,7 +165,7 @@ public class EggSelectionMenu : MonoBehaviour
             }
         }
 
-        MonsterBase selectedMonsterBase = egg.possibleMonsters[Random.Range(0, egg.possibleMonsters.Count)];
+        MonsterBase selectedMonsterBase = validCandidates[Random.Range(0, validCandidates.Count)];
         Monster hatchling = new Monster(selectedMonsterBase);
 
         if (!playerParty.AddMonsterToParty(hatchling))
@@ -168,6 +196,53 @@ public class EggSelectionMenu : MonoBehaviour
 
         if (resultMonsterSprite != null)
             resultMonsterSprite.sprite = selectedMonsterBase.FrontSprite;
+    }
+
+    private void RefreshEggOptions()
+    {
+        if (eggOptions == null)
+            return;
+
+        foreach (EggOption egg in eggOptions)
+        {
+            if (egg == null || egg.button == null)
+                continue;
+
+            bool unlocked = IsEggUnlocked(egg);
+            bool hasCandidates = GetValidCandidates(egg).Count > 0;
+
+            if (egg.buttonLabel != null)
+                egg.buttonLabel.text = unlocked ? egg.eggName : $"{egg.eggName} (Locked)";
+
+            egg.button.interactable = unlocked && hasCandidates;
+        }
+    }
+
+    private static bool IsEggUnlocked(EggOption egg)
+    {
+        return egg != null
+            && (string.IsNullOrWhiteSpace(egg.requiredUnlockId)
+                || RewardPointsProfile.IsUnlockOwned(egg.requiredUnlockId));
+    }
+
+    private static List<MonsterBase> GetValidCandidates(EggOption egg)
+    {
+        var candidates = new List<MonsterBase>();
+        if (egg == null || egg.possibleMonsters == null)
+            return candidates;
+
+        foreach (MonsterBase candidate in egg.possibleMonsters)
+        {
+            if (candidate != null)
+                candidates.Add(candidate);
+        }
+
+        return candidates;
+    }
+
+    private void OnUnlockOwnershipChanged(string unlockId)
+    {
+        RefreshEggOptions();
     }
 
     private IEnumerator TypeTextCoroutine(TextMeshProUGUI textObject, string message)
