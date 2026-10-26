@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Cactus #2
   m_EditorClassIdentifier: 
   name: Cactboy
-  familyID: 
+  familyID: 3
   evolution: {fileID: 0}
-  evolutionRequirement: 2
-  evolutionStage: 0
+  evolutionRequirement: 7
+  evolutionStage: 2
   description: 
   FrontSprite: {fileID: 21300000, guid: 3069690d0dbf8ea47bd78d45aef9a118, type: 3}
   frontIdleSprite: {fileID: 21300000, guid: 3069690d0dbf8ea47bd78d45aef9a118, type: 3}
@@ -34,13 +34,23 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 3069690d0dbf8ea47bd78d45aef9a118, type: 3}
   - {fileID: 21300000, guid: abd5a636041f5b546ae870ef6aa58566, type: 3}
   enterAnimationRate: 10
-  Type1: 16
-  Type2: 0
-  maxHp: 0
-  attack: 0
-  defense: 0
-  magicAttack: 0
-  magicDefense: 0
-  speed: 0
+  Type1: 4
+  Type2: 7
+  maxHp: 95
+  attack: 110
+  defense: 120
+  magicAttack: 100
+  magicDefense: 80
+  speed: 80
   catchRate: 255
   learnableMoves: []
+  moveSlots:
+  - candidates:
+    - {fileID: 11400000, guid: b7bfc4b0b7b56914ebb5ac1bc19593c3, type: 2}
+  - candidates:
+    - {fileID: 11400000, guid: 2c19ab45f651d6345a4d835f81073b58, type: 2}
+  - candidates:
+    - {fileID: 11400000, guid: cb92a47476cfec446b27dc11ab4e3be2, type: 2}
+  - candidates:
+    - {fileID: 11400000, guid: 64c5cedb749f5fc4093e8e2a77712dc1, type: 2}
+  initialUnlockedMoveSlots: 4

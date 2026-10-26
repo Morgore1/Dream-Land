@@ -13,9 +13,13 @@ MonoBehaviour:
   m_Name: FireSlug #1
   m_EditorClassIdentifier: 
   name: Sluggy
+  familyID: 5
+  evolution: {fileID: 11400000, guid: 8bd988ceca8ad6a4b903cedfc376091d, type: 2}
+  evolutionRequirement: 5
+  evolutionStage: 1
   description: 
   FrontSprite: {fileID: 21300000, guid: 1722d376be199604fb14d83a4713f1ea, type: 3}
-  frontIdleSprite: {fileID: 0}
+  frontIdleSprite: {fileID: 21300000, guid: 1722d376be199604fb14d83a4713f1ea, type: 3}
   attackAnimationFrames:
   - {fileID: 21300000, guid: 868ebee5338c0be4d8ad0830f8f9a985, type: 3}
   attackFrameRate: 10
@@ -30,17 +34,23 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 1722d376be199604fb14d83a4713f1ea, type: 3}
   - {fileID: 21300000, guid: 868ebee5338c0be4d8ad0830f8f9a985, type: 3}
   enterAnimationRate: 10
-  Type1: 3
-  Type2: 0
-  maxHp: 20
-  attack: 40
-  defense: 15
-  magicAttack: 30
-  magicDefense: 15
-  speed: 60
+  Type1: 2
+  Type2: 3
+  maxHp: 45
+  attack: 45
+  defense: 45
+  magicAttack: 45
+  magicDefense: 45
+  speed: 45
   catchRate: 255
   learnableMoves:
   - moveBase: {fileID: 11400000, guid: 74eef6bbb74a267429e4dd63ebe2c07c, type: 2}
-    level: 1
   - moveBase: {fileID: 11400000, guid: 0c731dd9f52596d4bb21f40c85921bfa, type: 2}
-    level: 1
+  moveSlots:
+  - candidates:
+    - {fileID: 11400000, guid: eaef44a87f4c37b40bcc2ad85a133c75, type: 2}
+  - candidates:
+    - {fileID: 11400000, guid: 2c19ab45f651d6345a4d835f81073b58, type: 2}
+  - candidates:
+    - {fileID: 11400000, guid: 098b18e517ca47d4d8535245cd0038a3, type: 2}
+  initialUnlockedMoveSlots: 3

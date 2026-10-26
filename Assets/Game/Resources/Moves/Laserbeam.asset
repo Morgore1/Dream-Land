@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Laserbeam
   description: 
-  type: 2
-  power: 80
-  accuracy: 90
-  alwaysHits: 0
+  type: 8
+  power: 95
+  accuracy: 100
+  alwaysHits: 1
   ap: 10
-  priority: 0
+  priority: 1
   category: 1
   effects:
     boosts: []
@@ -38,4 +38,5 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 70fbc2e809ab3e6458ce26cc8eb84f1d, type: 3}
   - {fileID: 21300000, guid: 42316ea9a7fe1004f8f8899c1530c665, type: 3}
   frameRate: 12
+  moveSfx: {fileID: 0}
   moveAnimationPrefab: {fileID: 2681595770613045481, guid: 7d051e042ccf51548a6d066e80f9c0ae, type: 3}

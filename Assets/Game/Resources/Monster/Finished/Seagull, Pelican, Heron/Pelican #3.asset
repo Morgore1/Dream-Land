@@ -13,6 +13,10 @@ MonoBehaviour:
   m_Name: Pelican #3
   m_EditorClassIdentifier: 
   name: Heron
+  familyID: 7
+  evolution: {fileID: 0}
+  evolutionRequirement: 7
+  evolutionStage: 3
   description: 
   FrontSprite: {fileID: 21300000, guid: fa5f810eff4589c4aa7954f5f466bd7b, type: 3}
   frontIdleSprite: {fileID: 21300000, guid: fa5f810eff4589c4aa7954f5f466bd7b, type: 3}
@@ -30,13 +34,23 @@ MonoBehaviour:
   - {fileID: 21300000, guid: fa5f810eff4589c4aa7954f5f466bd7b, type: 3}
   - {fileID: 21300000, guid: 25e7f60a6009d00428b065bde7d25fcb, type: 3}
   enterAnimationRate: 10
-  Type1: 0
-  Type2: 0
-  maxHp: 0
-  attack: 0
-  defense: 0
-  magicAttack: 0
-  magicDefense: 0
-  speed: 0
+  Type1: 1
+  Type2: 7
+  maxHp: 125
+  attack: 140
+  defense: 100
+  magicAttack: 65
+  magicDefense: 80
+  speed: 70
   catchRate: 255
   learnableMoves: []
+  moveSlots:
+  - candidates:
+    - {fileID: 11400000, guid: 732c0598d8e31f94ba13598b7eea1569, type: 2}
+  - candidates:
+    - {fileID: 11400000, guid: 8e04dd228aa6a8c43a85b693cafed7e7, type: 2}
+  - candidates:
+    - {fileID: 11400000, guid: 47a60144d8042dc4db982ab774defee3, type: 2}
+  - candidates:
+    - {fileID: 11400000, guid: 31125551a5b5c0d4f85271ac06dca429, type: 2}
+  initialUnlockedMoveSlots: 4

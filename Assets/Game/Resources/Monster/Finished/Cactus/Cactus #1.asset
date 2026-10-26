@@ -13,6 +13,10 @@ MonoBehaviour:
   m_Name: Cactus #1
   m_EditorClassIdentifier: 
   name: Cacty
+  familyID: 3
+  evolution: {fileID: 11400000, guid: e422eeecba5c78f42851b75babcea23e, type: 2}
+  evolutionRequirement: 5
+  evolutionStage: 1
   description: 
   FrontSprite: {fileID: 21300000, guid: 599e3030ffe69bf43b22a7afbe336efc, type: 3}
   frontIdleSprite: {fileID: 21300000, guid: 599e3030ffe69bf43b22a7afbe336efc, type: 3}
@@ -30,19 +34,24 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 599e3030ffe69bf43b22a7afbe336efc, type: 3}
   - {fileID: 21300000, guid: e62dfb762a823254daf066f9ef807816, type: 3}
   enterAnimationRate: 10
-  Type1: 16
-  Type2: 0
-  maxHp: 40
-  attack: 35
-  defense: 30
-  magicAttack: 35
+  Type1: 4
+  Type2: 7
+  maxHp: 55
+  attack: 45
+  defense: 40
+  magicAttack: 30
   magicDefense: 35
-  speed: 25
+  speed: 35
   catchRate: 255
   learnableMoves:
   - moveBase: {fileID: 11400000, guid: 994b43036e7d85646babdd9e593ce82a, type: 2}
-    level: 0
   - moveBase: {fileID: 11400000, guid: 4e156edd1e50c6e42bc5dda6687b99d8, type: 2}
-    level: 0
   - moveBase: {fileID: 11400000, guid: b7bfc4b0b7b56914ebb5ac1bc19593c3, type: 2}
-    level: 9
+  moveSlots:
+  - candidates:
+    - {fileID: 11400000, guid: b7bfc4b0b7b56914ebb5ac1bc19593c3, type: 2}
+  - candidates:
+    - {fileID: 11400000, guid: 2c19ab45f651d6345a4d835f81073b58, type: 2}
+  - candidates:
+    - {fileID: 11400000, guid: cb92a47476cfec446b27dc11ab4e3be2, type: 2}
+  initialUnlockedMoveSlots: 3

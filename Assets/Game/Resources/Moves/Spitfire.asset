@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Spitfire
   description: 
-  type: 3
+  type: 2
   power: 85
   accuracy: 85
   alwaysHits: 0
@@ -40,4 +40,5 @@ MonoBehaviour:
   - {fileID: 21300000, guid: da79eb6706004f34b8a91a4c7d13597d, type: 3}
   - {fileID: 21300000, guid: 19ddcbade45978a45b60035b7bc6fdf3, type: 3}
   frameRate: 12
+  moveSfx: {fileID: 0}
   moveAnimationPrefab: {fileID: 2681595770613045481, guid: 7d051e042ccf51548a6d066e80f9c0ae, type: 3}

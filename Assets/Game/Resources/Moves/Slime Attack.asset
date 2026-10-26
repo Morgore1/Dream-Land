@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Slime Attack
   description: 
-  type: 16
+  type: 4
   power: 60
   accuracy: 100
   alwaysHits: 0
@@ -51,4 +51,5 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 04b6629dc8104e842b9ca52cf5d2ae2e, type: 3}
   - {fileID: 21300000, guid: 990aa68b9414fec468da239307596d8a, type: 3}
   frameRate: 12
+  moveSfx: {fileID: 0}
   moveAnimationPrefab: {fileID: 2681595770613045481, guid: 7d051e042ccf51548a6d066e80f9c0ae, type: 3}

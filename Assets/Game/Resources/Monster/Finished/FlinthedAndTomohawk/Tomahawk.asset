@@ -13,6 +13,10 @@ MonoBehaviour:
   m_Name: Tomahawk
   m_EditorClassIdentifier: 
   name: Tomahawk
+  familyID: 6
+  evolution: {fileID: 0}
+  evolutionRequirement: 7
+  evolutionStage: 2
   description: 
   FrontSprite: {fileID: 21300000, guid: be7aecdb5bdd9b94ebca697e130b4ccc, type: 3}
   frontIdleSprite: {fileID: 21300000, guid: be7aecdb5bdd9b94ebca697e130b4ccc, type: 3}
@@ -30,13 +34,23 @@ MonoBehaviour:
   - {fileID: 21300000, guid: be7aecdb5bdd9b94ebca697e130b4ccc, type: 3}
   - {fileID: 21300000, guid: e297a17fbe222c04e8d7ae4e6679f06a, type: 3}
   enterAnimationRate: 10
-  Type1: 13
-  Type2: 12
-  maxHp: 65
-  attack: 75
-  defense: 45
-  magicAttack: 25
-  magicDefense: 30
-  speed: 55
+  Type1: 5
+  Type2: 3
+  maxHp: 70
+  attack: 135
+  defense: 80
+  magicAttack: 40
+  magicDefense: 50
+  speed: 110
   catchRate: 255
   learnableMoves: []
+  moveSlots:
+  - candidates:
+    - {fileID: 11400000, guid: 732c0598d8e31f94ba13598b7eea1569, type: 2}
+  - candidates:
+    - {fileID: 11400000, guid: 2c19ab45f651d6345a4d835f81073b58, type: 2}
+  - candidates:
+    - {fileID: 11400000, guid: 098b18e517ca47d4d8535245cd0038a3, type: 2}
+  - candidates:
+    - {fileID: 11400000, guid: e0aca356173037c4d9a5f62a78229334, type: 2}
+  initialUnlockedMoveSlots: 4

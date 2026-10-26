@@ -13,6 +13,10 @@ MonoBehaviour:
   m_Name: Clam #2
   m_EditorClassIdentifier: 
   name: Razorclam
+  familyID: 4
+  evolution: {fileID: 0}
+  evolutionRequirement: 7
+  evolutionStage: 2
   description: 
   FrontSprite: {fileID: 21300000, guid: 3da418b8552d7fb4a82a27dbb5470f77, type: 3}
   frontIdleSprite: {fileID: 21300000, guid: 3da418b8552d7fb4a82a27dbb5470f77, type: 3}
@@ -30,13 +34,23 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 3da418b8552d7fb4a82a27dbb5470f77, type: 3}
   - {fileID: 21300000, guid: 04c2ed4d3f08cf84da4d902ac5299661, type: 3}
   enterAnimationRate: 10
-  Type1: 0
+  Type1: 1
   Type2: 0
-  maxHp: 0
-  attack: 0
-  defense: 0
-  magicAttack: 0
-  magicDefense: 0
-  speed: 0
+  maxHp: 100
+  attack: 60
+  defense: 160
+  magicAttack: 100
+  magicDefense: 120
+  speed: 60
   catchRate: 255
   learnableMoves: []
+  moveSlots:
+  - candidates:
+    - {fileID: 11400000, guid: 732c0598d8e31f94ba13598b7eea1569, type: 2}
+  - candidates:
+    - {fileID: 11400000, guid: 8e04dd228aa6a8c43a85b693cafed7e7, type: 2}
+  - candidates:
+    - {fileID: 11400000, guid: 08d5f7d2c73caf04aadb663709d0c52d, type: 2}
+  - candidates:
+    - {fileID: 11400000, guid: 47a60144d8042dc4db982ab774defee3, type: 2}
+  initialUnlockedMoveSlots: 4

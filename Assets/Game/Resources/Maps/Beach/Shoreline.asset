@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MapWidth: 41
   MapHeight: 40
-  MaximumWalkers: 75
+  MaximumWalkers: 45
   FillPercentage: 0.4
   WaitTime: 0.01
   minClusters: 3
@@ -25,6 +25,7 @@ MonoBehaviour:
   maxClusterHeight: 16
   clusterFillPercent: 0.25
   isShoreline: 1
+  hasRiver: 0
   HousePrefabs: []
   FloorTiles:
   - item: {fileID: 11400000, guid: 2d394851d678d314b99599b82e2e4997, type: 2}
@@ -60,6 +61,9 @@ MonoBehaviour:
   isGateTeleport: 1
   isNormalStreet: 0
   EnableSidewalks: 0
+  riverHorizontal: {fileID: 0}
+  riverVertical: {fileID: 0}
+  riverCorner: {fileID: 0}
   TransitionUp: {fileID: 0}
   TransitionDown: {fileID: 11400000, guid: 2fc2175268cf0684b878eb794a3a3d19, type: 2}
   TransitionLeft: {fileID: 11400000, guid: 2128e61cda6eb88468a7b3d2ee3770da, type: 2}
@@ -120,10 +124,28 @@ MonoBehaviour:
     weight: 1
   - item: {fileID: 11400000, guid: f38a9a6c5423bd44aa6a80cf44ae7f9e, type: 2}
     weight: 2
+  Puddles: []
   WildMonsters:
   - item:
-      _base: {fileID: 11400000, guid: a294ca386c1ec6e4d947d5b320a24c89, type: 2}
-      level: 16
+      _base: {fileID: 11400000, guid: 51273b208da0f8445a27149fbb8f3c5c, type: 2}
+      unlockedMoveSlots: 0
+      movesInitialized: 0
+      evolutionProgress: 0
+      moves: []
+    weight: 1
+  - item:
+      _base: {fileID: 11400000, guid: fd58c42f1f59a9f409995814263e0fb3, type: 2}
+      unlockedMoveSlots: 0
+      movesInitialized: 0
+      evolutionProgress: 0
+      moves: []
+    weight: 1
+  - item:
+      _base: {fileID: 11400000, guid: ef1e919e485e37a4a94b62e9ac500ff5, type: 2}
+      unlockedMoveSlots: 0
+      movesInitialized: 0
+      evolutionProgress: 0
+      moves: []
     weight: 1
   NumberOfTrees: 0
   NumberOfHouses: 0
@@ -136,4 +158,5 @@ MonoBehaviour:
   grassPatchSize: 6
   grassPatchCount: 6
   tidepoolCount: 5
+  puddleCount: 10
   videoForThisMap: {fileID: 32900000, guid: f9381a1c89c4c664ba31cc86f1243072, type: 3}

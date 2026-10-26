@@ -25,6 +25,7 @@ MonoBehaviour:
   maxClusterHeight: 20
   clusterFillPercent: 0.25
   isShoreline: 0
+  hasRiver: 0
   HousePrefabs:
   - item: {fileID: 11400000, guid: e15dbc2e5628d024a964694497f78914, type: 2}
     weight: 1
@@ -92,6 +93,9 @@ MonoBehaviour:
   isGateTeleport: 1
   isNormalStreet: 0
   EnableSidewalks: 0
+  riverHorizontal: {fileID: 0}
+  riverVertical: {fileID: 0}
+  riverCorner: {fileID: 0}
   TransitionUp: {fileID: 0}
   TransitionDown: {fileID: 0}
   TransitionLeft: {fileID: 0}
@@ -164,19 +168,8 @@ MonoBehaviour:
   - item: {fileID: 11400000, guid: 3fa2eee8611edfd4caf0c4f41af68efa, type: 2}
     weight: 1
   Tidepools: []
-  WildMonsters:
-  - item:
-      _base: {fileID: 11400000, guid: d6ad54d8c61d266459ee34c3c997e239, type: 2}
-      level: 9
-    weight: 1
-  - item:
-      _base: {fileID: 11400000, guid: ccb44e809f8bac44abab523f19f84443, type: 2}
-      level: 8
-    weight: 1
-  - item:
-      _base: {fileID: 11400000, guid: 3dab1551be146e448b655e06b3587e5e, type: 2}
-      level: 6
-    weight: 1
+  Puddles: []
+  WildMonsters: []
   NumberOfTrees: 4
   NumberOfHouses: 1
   NumberOfNPCs: 0
@@ -188,4 +181,5 @@ MonoBehaviour:
   grassPatchSize: 6
   grassPatchCount: 4
   tidepoolCount: 0
+  puddleCount: 10
   videoForThisMap: {fileID: 32900000, guid: 295ad976bfbb3794ebbb9b396bdb3ce7, type: 3}

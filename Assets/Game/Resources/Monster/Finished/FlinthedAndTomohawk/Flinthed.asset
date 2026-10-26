@@ -13,6 +13,10 @@ MonoBehaviour:
   m_Name: Flinthed
   m_EditorClassIdentifier: 
   name: Flinthead
+  familyID: 6
+  evolution: {fileID: 11400000, guid: 1ce9f519a849f264c83086596b8bac8b, type: 2}
+  evolutionRequirement: 5
+  evolutionStage: 1
   description: 
   FrontSprite: {fileID: 21300000, guid: ccc7c12c853a0c7498a1fb9b421e8a47, type: 3}
   frontIdleSprite: {fileID: 21300000, guid: ccc7c12c853a0c7498a1fb9b421e8a47, type: 3}
@@ -31,8 +35,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: b47e0e61695eb9744947fabea71bbd2c, type: 3}
   enterAnimationRate: 10
   Type1: 5
-  Type2: 12
-  maxHp: 20
+  Type2: 3
+  maxHp: 30
   attack: 55
   defense: 35
   magicAttack: 15
@@ -41,6 +45,12 @@ MonoBehaviour:
   catchRate: 255
   learnableMoves:
   - moveBase: {fileID: 11400000, guid: 9b0022e287165ab47963c9ecc83eaae1, type: 2}
-    level: 0
   - moveBase: {fileID: 11400000, guid: 2c19ab45f651d6345a4d835f81073b58, type: 2}
-    level: 0
+  moveSlots:
+  - candidates:
+    - {fileID: 11400000, guid: 732c0598d8e31f94ba13598b7eea1569, type: 2}
+  - candidates:
+    - {fileID: 11400000, guid: 2c19ab45f651d6345a4d835f81073b58, type: 2}
+  - candidates:
+    - {fileID: 11400000, guid: 098b18e517ca47d4d8535245cd0038a3, type: 2}
+  initialUnlockedMoveSlots: 3

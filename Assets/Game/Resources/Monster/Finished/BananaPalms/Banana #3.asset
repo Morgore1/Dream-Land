@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Banana #3
   m_EditorClassIdentifier: 
   name: Binana
-  familyID: 
+  familyID: 1
   evolution: {fileID: 0}
-  evolutionRequirement: 2
+  evolutionRequirement: 7
   evolutionStage: 3
   description: 
   FrontSprite: {fileID: 21300000, guid: c0a53e8cbf553e84db81e85014f5ecf1, type: 3}
@@ -34,15 +34,25 @@ MonoBehaviour:
   - {fileID: 21300000, guid: e8b791d1873926945aea81e86abea7fe, type: 3}
   - {fileID: 21300000, guid: 59cdfb6dd158a314e8aa50d16ecb644a, type: 3}
   enterAnimationRate: 10
-  Type1: 0
+  Type1: 4
   Type2: 0
-  maxHp: 0
-  attack: 0
-  defense: 0
-  magicAttack: 0
-  magicDefense: 0
-  speed: 0
+  maxHp: 135
+  attack: 80
+  defense: 120
+  magicAttack: 140
+  magicDefense: 70
+  speed: 60
   catchRate: 255
   learnableMoves: []
-  moveSlots: []
-  initialUnlockedMoveSlots: 3
+  moveSlots:
+  - candidates:
+    - {fileID: 11400000, guid: 4e156edd1e50c6e42bc5dda6687b99d8, type: 2}
+    - {fileID: 11400000, guid: 9b0022e287165ab47963c9ecc83eaae1, type: 2}
+  - candidates:
+    - {fileID: 11400000, guid: 4e593841881663946a30e7a7e003ad04, type: 2}
+    - {fileID: 11400000, guid: 994b43036e7d85646babdd9e593ce82a, type: 2}
+  - candidates:
+    - {fileID: 11400000, guid: cb92a47476cfec446b27dc11ab4e3be2, type: 2}
+  - candidates:
+    - {fileID: 11400000, guid: 9651012131974ef4fb3676fe4e263603, type: 2}
+  initialUnlockedMoveSlots: 4

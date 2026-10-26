@@ -13,6 +13,10 @@ MonoBehaviour:
   m_Name: FireSlug #2
   m_EditorClassIdentifier: 
   name: Slugger
+  familyID: 5
+  evolution: {fileID: 0}
+  evolutionRequirement: 7
+  evolutionStage: 2
   description: 
   FrontSprite: {fileID: 21300000, guid: 5ef21499297548840bbd81b1da3d0fb1, type: 3}
   frontIdleSprite: {fileID: 0}
@@ -30,13 +34,23 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 5ef21499297548840bbd81b1da3d0fb1, type: 3}
   - {fileID: 21300000, guid: 18ea772a74138d24683384a03279e9ad, type: 3}
   enterAnimationRate: 10
-  Type1: 0
-  Type2: 0
-  maxHp: 0
-  attack: 0
-  defense: 0
-  magicAttack: 0
-  magicDefense: 0
-  speed: 0
+  Type1: 2
+  Type2: 3
+  maxHp: 90
+  attack: 90
+  defense: 90
+  magicAttack: 90
+  magicDefense: 90
+  speed: 90
   catchRate: 255
   learnableMoves: []
+  moveSlots:
+  - candidates:
+    - {fileID: 11400000, guid: eaef44a87f4c37b40bcc2ad85a133c75, type: 2}
+  - candidates:
+    - {fileID: 11400000, guid: 2c19ab45f651d6345a4d835f81073b58, type: 2}
+  - candidates:
+    - {fileID: 11400000, guid: 098b18e517ca47d4d8535245cd0038a3, type: 2}
+  - candidates:
+    - {fileID: 11400000, guid: 398fa2cd276263e48ad5e2b4c5b864df, type: 2}
+  initialUnlockedMoveSlots: 4

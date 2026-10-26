@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Pie
   description: 
-  type: 16
+  type: 5
   power: 80
   accuracy: 90
   alwaysHits: 0
@@ -41,4 +41,5 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 83ff78ccf7fda3c4c9668b258b265f7e, type: 3}
   - {fileID: 21300000, guid: 1804c373c4166df44ab21ed9e1ae2a07, type: 3}
   frameRate: 12
+  moveSfx: {fileID: 0}
   moveAnimationPrefab: {fileID: 2681595770613045481, guid: 7d051e042ccf51548a6d066e80f9c0ae, type: 3}

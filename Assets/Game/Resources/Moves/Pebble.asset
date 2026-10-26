@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Pebble
   description: 
-  type: 12
+  type: 3
   power: 35
   accuracy: 100
   alwaysHits: 0

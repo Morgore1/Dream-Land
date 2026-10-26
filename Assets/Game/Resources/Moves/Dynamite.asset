@@ -14,13 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Dynamite
   description: 
-  type: 3
+  type: 2
   power: 120
   accuracy: 60
   alwaysHits: 0
   ap: 5
   priority: 0
-  category: 0
+  category: 1
   effects:
     boosts: []
     status: 0
@@ -47,4 +47,5 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 65c1a1985bec5334cbb08c99a490d6f2, type: 3}
   - {fileID: 21300000, guid: a55684a802cc94f4fb17cad8d45ebbd9, type: 3}
   frameRate: 12
+  moveSfx: {fileID: 0}
   moveAnimationPrefab: {fileID: 2681595770613045481, guid: 7d051e042ccf51548a6d066e80f9c0ae, type: 3}

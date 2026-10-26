@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Fireblast
   description: 
-  type: 3
+  type: 2
   power: 80
   accuracy: 95
   alwaysHits: 0
@@ -44,4 +44,5 @@ MonoBehaviour:
   - {fileID: 21300000, guid: a41fa14505bf42a479d5faf67dd4c37d, type: 3}
   - {fileID: 21300000, guid: ee5520e4c2a27694ca4201c78190ae07, type: 3}
   frameRate: 12
+  moveSfx: {fileID: 0}
   moveAnimationPrefab: {fileID: 2681595770613045481, guid: 7d051e042ccf51548a6d066e80f9c0ae, type: 3}

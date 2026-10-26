@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Shark #1
   m_EditorClassIdentifier: 
   name: Ronald
-  familyID: 
-  evolution: {fileID: 0}
+  familyID: 9
+  evolution: {fileID: 11400000, guid: a13c0bf39ed13844c9380ecc4713732e, type: 2}
   evolutionRequirement: 5
-  evolutionStage: 0
+  evolutionStage: 1
   description: 
   FrontSprite: {fileID: 21300000, guid: f9c9a0215989617439c91e4fa34825b6, type: 3}
   frontIdleSprite: {fileID: 21300000, guid: f9c9a0215989617439c91e4fa34825b6, type: 3}
@@ -35,15 +35,23 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 4e0a9a4857ddc4a489172a2a00a247d9, type: 3}
   enterAnimationRate: 10
   Type1: 1
-  Type2: 0
-  maxHp: 40
-  attack: 40
-  defense: 30
-  magicAttack: 20
-  magicDefense: 15
-  speed: 30
+  Type2: 7
+  maxHp: 75
+  attack: 75
+  defense: 55
+  magicAttack: 35
+  magicDefense: 35
+  speed: 55
   catchRate: 255
   learnableMoves:
   - moveBase: {fileID: 11400000, guid: 4da2b9afe868d8e4e96440b85a32be9f, type: 2}
   - moveBase: {fileID: 11400000, guid: 31125551a5b5c0d4f85271ac06dca429, type: 2}
   - moveBase: {fileID: 11400000, guid: e0aca356173037c4d9a5f62a78229334, type: 2}
+  moveSlots:
+  - candidates:
+    - {fileID: 11400000, guid: 732c0598d8e31f94ba13598b7eea1569, type: 2}
+  - candidates:
+    - {fileID: 11400000, guid: 4da2b9afe868d8e4e96440b85a32be9f, type: 2}
+  - candidates:
+    - {fileID: 11400000, guid: 8e04dd228aa6a8c43a85b693cafed7e7, type: 2}
+  initialUnlockedMoveSlots: 3

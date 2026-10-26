@@ -160,23 +160,16 @@ public class LearnableMove
 
 public enum MonsterType
 {
-    None,
-    Water,
-    Electric,
-    Fire,
-    Void,
-    Normal,
-    Fractal,
-    Cursed,
-    Blessed,
-    Sound,
-    Shadow,
-    Light,
-    Earth,
-    Air,
-    Ice,
-    Crystallin,
-    Nature
+    None = 0,
+    Aquatic = 1,
+    Flame = 2,
+    Stone = 3,
+    Natural = 4,
+    Chaos = 5,
+    Order = 6,
+    Shadow = 7,
+    Light = 8,
+    Magical = 9
 }
 
 public enum Stat
@@ -196,31 +189,28 @@ public class TypeChart
 {
     static float[][] chart =
     {
-        //                   WAT ELEC FIR VOID NOR FRAC CURSE BLESS SOUND SHAD LIGH EARTH AIR ICE CRYST NAT
-        /*WAT*/new float[] { 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f },
-        /*ELEC*/new float[] { 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f },
-        /*FIR*/new float[] { 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f },
-        /*VOID*/new float[] { 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f },
-        /*NOR*/new float[] { 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f },
-        /*FRAC*/new float[] { 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f },
-        /*CURSE*/new float[] { 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f },
-        /*BLESS*/new float[] { 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f },
-        /*SOUND*/new float[] { 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f },
-        /*SHAD*/new float[] { 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f },
-        /*LIGH*/new float[] { 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f },
-        /*EARTH*/new float[] { 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f },
-        /*AIR*/new float[] { 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f },
-        /*ICE*/new float[] { 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f },
-        /*CRYST*/new float[] { 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f },
-        /*NAT*/new float[] { 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f },
+        // All matchups are neutral until type effectiveness is designed.
+        /*AQUATIC*/new float[] { 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f },
+        /*FLAME*/  new float[] { 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f },
+        /*STONE*/  new float[] { 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f },
+        /*NATURAL*/new float[] { 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f },
+        /*CHAOS*/  new float[] { 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f },
+        /*ORDER*/  new float[] { 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f },
+        /*SHADOW*/ new float[] { 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f },
+        /*LIGHT*/  new float[] { 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f },
+        /*MAGICAL*/new float[] { 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f },
     };
 
     public static float GetEffectiveness(MonsterType attackType, MonsterType defenseType)
     {
-        if (attackType == MonsterType.None || defenseType == MonsterType.None)
-                return 1;
+        if (attackType <= MonsterType.None || defenseType <= MonsterType.None)
+            return 1f;
+
         int row = (int)attackType - 1;
         int col = (int)defenseType - 1;
+
+        if (row < 0 || row >= chart.Length || col < 0 || col >= chart[row].Length)
+            return 1f;
 
         return chart[row][col];
     }

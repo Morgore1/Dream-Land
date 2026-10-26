@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Punch
   description: 
-  type: 5
+  type: 6
   power: 40
   accuracy: 100
   alwaysHits: 0
@@ -40,4 +40,5 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 49eea8539db344e4d8b4d5e6d9cebfac, type: 3}
   - {fileID: 21300000, guid: f344d0475bee35b4ab8b86ff85c38106, type: 3}
   frameRate: 12
+  moveSfx: {fileID: 0}
   moveAnimationPrefab: {fileID: 2681595770613045481, guid: 7d051e042ccf51548a6d066e80f9c0ae, type: 3}

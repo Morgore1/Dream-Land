@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Charcoal Spit
   description: 
-  type: 3
+  type: 2
   power: 60
   accuracy: 100
   alwaysHits: 0
@@ -35,4 +35,5 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 46b54b33d48fab94a956c930e8e414f7, type: 3}
   - {fileID: 21300000, guid: 110f2f323c7227144838eb82f9000b32, type: 3}
   frameRate: 12
+  moveSfx: {fileID: 0}
   moveAnimationPrefab: {fileID: 2681595770613045481, guid: 7d051e042ccf51548a6d066e80f9c0ae, type: 3}

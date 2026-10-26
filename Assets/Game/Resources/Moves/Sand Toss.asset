@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Sand Toss
   description: 
-  type: 12
+  type: 9
   power: 0
   accuracy: 90
   alwaysHits: 0
@@ -36,4 +36,5 @@ MonoBehaviour:
   - {fileID: 21300000, guid: e7db14af9b500d145a3a7a5d0918d165, type: 3}
   - {fileID: 21300000, guid: b7a4e472b72837d47838b6bff4a34388, type: 3}
   frameRate: 12
+  moveSfx: {fileID: 0}
   moveAnimationPrefab: {fileID: 2681595770613045481, guid: 7d051e042ccf51548a6d066e80f9c0ae, type: 3}

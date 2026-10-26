@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Vine Attack
   description: 
-  type: 16
+  type: 4
   power: 65
   accuracy: 100
   alwaysHits: 0
@@ -38,4 +38,5 @@ MonoBehaviour:
   - {fileID: 21300000, guid: a85b4b9655ab77c49b550b0bce4cf012, type: 3}
   - {fileID: 21300000, guid: 38fae885209e81b46a7f529f5f00f1e0, type: 3}
   frameRate: 12
+  moveSfx: {fileID: 0}
   moveAnimationPrefab: {fileID: 2681595770613045481, guid: 7d051e042ccf51548a6d066e80f9c0ae, type: 3}

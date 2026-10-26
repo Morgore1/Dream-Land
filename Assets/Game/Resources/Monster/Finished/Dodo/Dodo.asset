@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Dodo
   familyID: 100
-  evolution: {fileID: 0}
+  evolution: {fileID: 11400000, guid: 09c4121ad76ed8a4685871da19c0996c, type: 2}
   evolutionRequirement: 5
   evolutionStage: 1
   description: 
@@ -34,8 +34,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: d0629809e6723324c83c056fcb871826, type: 3}
   - {fileID: 21300000, guid: d8c978d7bd1f1e74c8765a93d96f716d, type: 3}
   enterAnimationRate: 10
-  Type1: 13
-  Type2: 1
+  Type1: 1
+  Type2: 0
   maxHp: 20
   attack: 35
   defense: 15
@@ -47,3 +47,12 @@ MonoBehaviour:
   - moveBase: {fileID: 11400000, guid: 9b0022e287165ab47963c9ecc83eaae1, type: 2}
   - moveBase: {fileID: 11400000, guid: 47a60144d8042dc4db982ab774defee3, type: 2}
   - moveBase: {fileID: 11400000, guid: 2c19ab45f651d6345a4d835f81073b58, type: 2}
+  moveSlots:
+  - candidates:
+    - {fileID: 11400000, guid: 732c0598d8e31f94ba13598b7eea1569, type: 2}
+  - candidates:
+    - {fileID: 11400000, guid: 59e0e17acd03dfc42b3589490ca685a7, type: 2}
+    - {fileID: 11400000, guid: 8e04dd228aa6a8c43a85b693cafed7e7, type: 2}
+  - candidates:
+    - {fileID: 11400000, guid: 47a60144d8042dc4db982ab774defee3, type: 2}
+  initialUnlockedMoveSlots: 3

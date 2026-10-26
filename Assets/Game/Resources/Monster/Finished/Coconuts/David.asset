@@ -34,8 +34,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 4955ad08c1cfc924a95ab150168d9c54, type: 3}
   - {fileID: 21300000, guid: cfc96517e7a4e314593a1021eb7949ce, type: 3}
   enterAnimationRate: 10
-  Type1: 0
-  Type2: 0
+  Type1: 4
+  Type2: 3
   maxHp: 9000
   attack: 9000
   defense: 9000

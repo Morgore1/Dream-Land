@@ -13,6 +13,10 @@ MonoBehaviour:
   m_Name: Pelican #1
   m_EditorClassIdentifier: 
   name: Seegull
+  familyID: 7
+  evolution: {fileID: 11400000, guid: ed7277281d0aee4449b4ab762b7879b4, type: 2}
+  evolutionRequirement: 3
+  evolutionStage: 1
   description: 
   FrontSprite: {fileID: 21300000, guid: 14636ed3aaba94347875a7d6f91d3533, type: 3}
   frontIdleSprite: {fileID: 21300000, guid: 14636ed3aaba94347875a7d6f91d3533, type: 3}
@@ -30,17 +34,21 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 14636ed3aaba94347875a7d6f91d3533, type: 3}
   - {fileID: 21300000, guid: 55a152fa02fc2c3498ad9bfe92f5f02d, type: 3}
   enterAnimationRate: 10
-  Type1: 5
-  Type2: 0
-  maxHp: 25
+  Type1: 1
+  Type2: 7
+  maxHp: 35
   attack: 35
-  defense: 20
+  defense: 25
   magicAttack: 15
-  magicDefense: 15
-  speed: 45
+  magicDefense: 20
+  speed: 30
   catchRate: 255
   learnableMoves:
   - moveBase: {fileID: 11400000, guid: 732c0598d8e31f94ba13598b7eea1569, type: 2}
-    level: 0
   - moveBase: {fileID: 11400000, guid: 08d5f7d2c73caf04aadb663709d0c52d, type: 2}
-    level: 0
+  moveSlots:
+  - candidates:
+    - {fileID: 11400000, guid: 732c0598d8e31f94ba13598b7eea1569, type: 2}
+  - candidates:
+    - {fileID: 11400000, guid: 8e04dd228aa6a8c43a85b693cafed7e7, type: 2}
+  initialUnlockedMoveSlots: 2

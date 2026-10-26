@@ -13,6 +13,10 @@ MonoBehaviour:
   m_Name: CrabCake #2
   m_EditorClassIdentifier: 
   name: Crabcake
+  familyID: 10
+  evolution: {fileID: 11400000, guid: 32d439c7bc46ed34a91632ab80551a26, type: 2}
+  evolutionRequirement: 5
+  evolutionStage: 2
   description: 
   FrontSprite: {fileID: 21300000, guid: 7399490b4cb95c74dad1ad28a98b4a5c, type: 3}
   frontIdleSprite: {fileID: 21300000, guid: 7399490b4cb95c74dad1ad28a98b4a5c, type: 3}
@@ -30,13 +34,21 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 7399490b4cb95c74dad1ad28a98b4a5c, type: 3}
   - {fileID: 21300000, guid: 334801c8f36dd6a46b6cda7572794ad1, type: 3}
   enterAnimationRate: 10
-  Type1: 0
-  Type2: 0
-  maxHp: 0
-  attack: 0
-  defense: 0
-  magicAttack: 0
-  magicDefense: 0
-  speed: 0
+  Type1: 1
+  Type2: 3
+  maxHp: 60
+  attack: 30
+  defense: 60
+  magicAttack: 70
+  magicDefense: 45
+  speed: 75
   catchRate: 255
   learnableMoves: []
+  moveSlots:
+  - candidates:
+    - {fileID: 11400000, guid: 4e156edd1e50c6e42bc5dda6687b99d8, type: 2}
+  - candidates:
+    - {fileID: 11400000, guid: 4da2b9afe868d8e4e96440b85a32be9f, type: 2}
+  - candidates:
+    - {fileID: 11400000, guid: 098b18e517ca47d4d8535245cd0038a3, type: 2}
+  initialUnlockedMoveSlots: 3

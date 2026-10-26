@@ -13,6 +13,10 @@ MonoBehaviour:
   m_Name: Shrimpcocktail #1
   m_EditorClassIdentifier: 
   name: Shrimpcocktail
+  familyID: 10
+  evolution: {fileID: 11400000, guid: 002bce7a3059af64e8d4a3ad0e345257, type: 2}
+  evolutionRequirement: 3
+  evolutionStage: 1
   description: 
   FrontSprite: {fileID: 21300000, guid: f5c487be6fbafaf40bf6443197bcc7a5, type: 3}
   frontIdleSprite: {fileID: 21300000, guid: f5c487be6fbafaf40bf6443197bcc7a5, type: 3}
@@ -30,13 +34,19 @@ MonoBehaviour:
   - {fileID: 21300000, guid: f5c487be6fbafaf40bf6443197bcc7a5, type: 3}
   - {fileID: 21300000, guid: 4bce663019afe824caa9aedbd95d5ce0, type: 3}
   enterAnimationRate: 10
-  Type1: 0
-  Type2: 0
-  maxHp: 0
-  attack: 0
-  defense: 0
-  magicAttack: 0
-  magicDefense: 0
-  speed: 0
+  Type1: 1
+  Type2: 3
+  maxHp: 30
+  attack: 20
+  defense: 30
+  magicAttack: 35
+  magicDefense: 25
+  speed: 40
   catchRate: 255
   learnableMoves: []
+  moveSlots:
+  - candidates:
+    - {fileID: 11400000, guid: 4e156edd1e50c6e42bc5dda6687b99d8, type: 2}
+  - candidates:
+    - {fileID: 11400000, guid: 4da2b9afe868d8e4e96440b85a32be9f, type: 2}
+  initialUnlockedMoveSlots: 2

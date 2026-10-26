@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MapWidth: 41
   MapHeight: 40
-  MaximumWalkers: 75
+  MaximumWalkers: 45
   FillPercentage: 0.4
   WaitTime: 0.01
   minClusters: 3
@@ -25,6 +25,7 @@ MonoBehaviour:
   maxClusterHeight: 16
   clusterFillPercent: 0.25
   isShoreline: 0
+  hasRiver: 0
   HousePrefabs:
   - item: {fileID: 11400000, guid: 51f1adffe13c410458d495b3294ba1e9, type: 2}
     weight: 1
@@ -66,6 +67,9 @@ MonoBehaviour:
   isGateTeleport: 1
   isNormalStreet: 0
   EnableSidewalks: 0
+  riverHorizontal: {fileID: 0}
+  riverVertical: {fileID: 0}
+  riverCorner: {fileID: 0}
   TransitionUp: {fileID: 0}
   TransitionDown: {fileID: 11400000, guid: 2fc2175268cf0684b878eb794a3a3d19, type: 2}
   TransitionLeft: {fileID: 11400000, guid: 2128e61cda6eb88468a7b3d2ee3770da, type: 2}
@@ -112,10 +116,35 @@ MonoBehaviour:
     weight: 1
   MultipleItemObstaclePrefabs: []
   Tidepools: []
+  Puddles: []
   WildMonsters:
   - item:
       _base: {fileID: 11400000, guid: 3dab1551be146e448b655e06b3587e5e, type: 2}
-      level: 18
+      unlockedMoveSlots: 0
+      movesInitialized: 0
+      evolutionProgress: 0
+      moves: []
+    weight: 1
+  - item:
+      _base: {fileID: 11400000, guid: a294ca386c1ec6e4d947d5b320a24c89, type: 2}
+      unlockedMoveSlots: 0
+      movesInitialized: 0
+      evolutionProgress: 0
+      moves: []
+    weight: 1
+  - item:
+      _base: {fileID: 11400000, guid: ccb44e809f8bac44abab523f19f84443, type: 2}
+      unlockedMoveSlots: 0
+      movesInitialized: 0
+      evolutionProgress: 0
+      moves: []
+    weight: 1
+  - item:
+      _base: {fileID: 11400000, guid: d6ad54d8c61d266459ee34c3c997e239, type: 2}
+      unlockedMoveSlots: 0
+      movesInitialized: 0
+      evolutionProgress: 0
+      moves: []
     weight: 1
   NumberOfTrees: 3
   NumberOfHouses: 2
@@ -128,4 +157,5 @@ MonoBehaviour:
   grassPatchSize: 6
   grassPatchCount: 6
   tidepoolCount: 10
+  puddleCount: 10
   videoForThisMap: {fileID: 32900000, guid: f9381a1c89c4c664ba31cc86f1243072, type: 3}

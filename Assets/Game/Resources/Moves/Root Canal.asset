@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Root Canal
   description: 
-  type: 5
+  type: 6
   power: 100
   accuracy: 75
   alwaysHits: 0
@@ -41,4 +41,5 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 57ea0653ab05bb646853d591a6f02887, type: 3}
   - {fileID: 21300000, guid: 5b1172e102778534a87c55e2dfd2d3e3, type: 3}
   frameRate: 12
+  moveSfx: {fileID: 0}
   moveAnimationPrefab: {fileID: 2681595770613045481, guid: 7d051e042ccf51548a6d066e80f9c0ae, type: 3}

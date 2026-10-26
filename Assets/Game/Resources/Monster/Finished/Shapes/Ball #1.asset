@@ -13,6 +13,10 @@ MonoBehaviour:
   m_Name: Ball #1
   m_EditorClassIdentifier: 
   name: Ball
+  familyID: 8
+  evolution: {fileID: 11400000, guid: d60c5b098c6bc0f45b6dc124e413b33a, type: 2}
+  evolutionRequirement: 3
+  evolutionStage: 1
   description: 
   FrontSprite: {fileID: 21300000, guid: 194bfa9151731af469c090258107add5, type: 3}
   frontIdleSprite: {fileID: 21300000, guid: 194bfa9151731af469c090258107add5, type: 3}
@@ -30,13 +34,19 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 194bfa9151731af469c090258107add5, type: 3}
   - {fileID: 21300000, guid: adfd11994db69a843a0b46407e9f7b5b, type: 3}
   enterAnimationRate: 10
-  Type1: 0
-  Type2: 0
-  maxHp: 0
-  attack: 0
-  defense: 0
-  magicAttack: 0
-  magicDefense: 0
-  speed: 0
+  Type1: 5
+  Type2: 8
+  maxHp: 25
+  attack: 20
+  defense: 20
+  magicAttack: 35
+  magicDefense: 35
+  speed: 40
   catchRate: 255
   learnableMoves: []
+  moveSlots:
+  - candidates:
+    - {fileID: 11400000, guid: 4e156edd1e50c6e42bc5dda6687b99d8, type: 2}
+  - candidates:
+    - {fileID: 11400000, guid: 08d5f7d2c73caf04aadb663709d0c52d, type: 2}
+  initialUnlockedMoveSlots: 2

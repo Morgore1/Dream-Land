@@ -13,6 +13,10 @@ MonoBehaviour:
   m_Name: Worm #1
   m_EditorClassIdentifier: 
   name: Worm
+  familyID: 12
+  evolution: {fileID: 11400000, guid: 362b2801ecb34c54b914cf0ebb3c947f, type: 2}
+  evolutionRequirement: 5
+  evolutionStage: 1
   description: 
   FrontSprite: {fileID: 21300000, guid: 633aa948b95fd884a8a82a798bbc5094, type: 3}
   frontIdleSprite: {fileID: 0}
@@ -30,13 +34,19 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 633aa948b95fd884a8a82a798bbc5094, type: 3}
   - {fileID: 21300000, guid: 19923a315f4ddef4b88061765e4c6e6a, type: 3}
   enterAnimationRate: 10
-  Type1: 0
-  Type2: 0
-  maxHp: 0
-  attack: 0
-  defense: 0
-  magicAttack: 0
-  magicDefense: 0
-  speed: 0
+  Type1: 4
+  Type2: 6
+  maxHp: 10
+  attack: 10
+  defense: 10
+  magicAttack: 10
+  magicDefense: 10
+  speed: 10
   catchRate: 255
   learnableMoves: []
+  moveSlots:
+  - candidates:
+    - {fileID: 11400000, guid: 2c19ab45f651d6345a4d835f81073b58, type: 2}
+  - candidates:
+    - {fileID: 11400000, guid: 732c0598d8e31f94ba13598b7eea1569, type: 2}
+  initialUnlockedMoveSlots: 2
