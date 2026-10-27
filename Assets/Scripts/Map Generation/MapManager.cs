@@ -27,6 +27,9 @@ public class MapManager : MonoBehaviour
     [SerializeField] private AudioClip routeMapClip;
 
     [SerializeField] private SpriteScreenTransition screenTransition;
+    private AudioClip currentProceduralMapMusic;
+    private AudioClip currentInteriorMusic;
+    private bool isShowingInterior;
     public enum MapType { Main, Procedural }
     [HideInInspector]
     public MapType previousMapType = MapType.Main;
@@ -40,13 +43,15 @@ public class MapManager : MonoBehaviour
 
         if (proceduralMapRoot != null && proceduralMapRoot.activeSelf)
         {
-            MusicManager.Instance.PlayRouteMapMusic(routeMapAudio);
+            previousMapType = MapType.Procedural;
+            PlayProceduralMapMusic();
             return;
         }
 
         if (mainMapRoot != null && mainMapRoot.activeSelf)
         {
-            MusicManager.Instance.PlayMainMapMusic(mainMapAudio);
+            previousMapType = MapType.Main;
+            PlayMainMapMusic();
         }
     }
 
@@ -100,11 +105,11 @@ public class MapManager : MonoBehaviour
         {
             if (showProcedural)
             {
-                MusicManager.Instance.PlayRouteMapMusic(routeMapAudio);
+                PlayProceduralMapMusic();
             }
             else
             {
-                MusicManager.Instance.PlayMainMapMusic(mainMapAudio);
+                PlayMainMapMusic();
             }
         }
     }
@@ -133,24 +138,82 @@ public class MapManager : MonoBehaviour
 
     public void ShowInteriorMap(bool show)
     {
+        ShowInteriorMap(show, null);
+    }
+
+    public void ShowInteriorMap(bool show, AudioClip interiorMusic)
+    {
         if (interiorMapRoot != null) interiorMapRoot.SetActive(show);
 
-        if (!show) return;
+        isShowingInterior = show;
+        if (!show)
+        {
+            PlayCurrentAreaMusic();
+            return;
+        }
 
         if (mainMapRoot != null) mainMapRoot.SetActive(false);
         if (proceduralMapRoot != null) proceduralMapRoot.SetActive(false);
 
         ResetAllNPCs(interiorMapRoot);
+        currentInteriorMusic = interiorMusic;
+        if (MusicManager.Instance != null)
+            MusicManager.Instance.PlayInteriorMusic(currentInteriorMusic);
     }
 
-    public void SetMapPreset(MapPreset preset)
+    public void PlayCurrentAreaMusic()
     {
-        
-        MapArea mapArea = proceduralMapRoot.GetComponent<MapArea>();
+        if (MusicManager.Instance == null)
+            return;
+
+        if (isShowingInterior)
+        {
+            MusicManager.Instance.PlayInteriorMusic(currentInteriorMusic);
+            return;
+        }
+
+        if (previousMapType == MapType.Procedural)
+            PlayProceduralMapMusic();
+        else
+            PlayMainMapMusic();
+    }
+
+    private void PlayMainMapMusic()
+    {
+        if (MusicManager.Instance == null)
+            return;
+
+        if (mainMapAudio != null && mainMapClip != null)
+            mainMapAudio.clip = mainMapClip;
+        MusicManager.Instance.PlayMainMapMusic(mainMapAudio);
+    }
+
+    private void PlayProceduralMapMusic()
+    {
+        if (MusicManager.Instance == null)
+            return;
+
+        if (routeMapAudio != null)
+            routeMapAudio.clip = currentProceduralMapMusic != null ? currentProceduralMapMusic : routeMapClip;
+        MusicManager.Instance.PlayRouteMapMusic(routeMapAudio, currentProceduralMapMusic, routeMapClip);
+    }
+
+    public void SetMapPreset(MapPreset preset, MapPreset secondaryPreset = null)
+    {
+        if (preset == null)
+            return;
+
+        currentProceduralMapMusic = preset.mapMusic != null
+            ? preset.mapMusic
+            : secondaryPreset != null ? secondaryPreset.mapMusic : null;
+
+        MapArea mapArea = proceduralMapRoot != null ? proceduralMapRoot.GetComponent<MapArea>() : null;
         if (mapArea != null)
         {
             mapArea.SetMapPreset(preset);
         }
 
+        if (!isShowingInterior && previousMapType == MapType.Procedural)
+            PlayProceduralMapMusic();
     }
 }

@@ -19,7 +19,7 @@ MonoBehaviour:
     description: Colored paint
     image: {fileID: 0}
     rewardPointCost: 10
-  - unlockId: egg.extra_choice
+  - unlockId: egg1
     displayName: Additional Egg Choice
     description: Unlock an additional egg choice in the egg selection menu.
     image: {fileID: 0}

@@ -20,42 +20,95 @@ public class WorldMapManager : MonoBehaviour
         public float secondaryRatio = 0.3f;
     }
 
-    private Dictionary<Vector2Int, MapPreset> generatedMaps =
-        new Dictionary<Vector2Int, MapPreset>();
+    private struct MapCacheKey
+    {
+        public readonly Vector2Int coordinate;
+        public readonly ProceduralMapSide side;
 
-    private Dictionary<Vector2Int, MixedMapSelection> generatedSelections =
-        new Dictionary<Vector2Int, MixedMapSelection>();
+        public MapCacheKey(Vector2Int coordinate, ProceduralMapSide side)
+        {
+            this.coordinate = coordinate;
+            this.side = side;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is MapCacheKey))
+                return false;
+
+            MapCacheKey other = (MapCacheKey)obj;
+            return coordinate == other.coordinate && side == other.side;
+        }
+
+        public override int GetHashCode() => (coordinate.GetHashCode() * 397) ^ (int)side;
+    }
+
+    private readonly Dictionary<MapCacheKey, MixedMapSelection> generatedSelections =
+        new Dictionary<MapCacheKey, MixedMapSelection>();
 
     void Awake()
     {
         Instance = this;
     }
 
+    private void OnValidate()
+    {
+        ValidateRules(ProceduralMapSide.Left, mapRules != null ? mapRules.leftRules : null);
+        ValidateRules(ProceduralMapSide.Right, mapRules != null ? mapRules.rightRules : null);
+    }
+
     public MapPreset GetMapForCurrentPosition()
     {
-        return GetMapSelectionForCurrentPosition().primary;
+        MixedMapSelection selection = GetMapSelectionForCurrentPosition();
+        return selection != null ? selection.primary : null;
     }
 
     public MixedMapSelection GetMapSelectionForCurrentPosition(List<WeightedItem<MapPreset>> explicitMaps = null)
     {
-        Vector2Int coord = WorldCoordinateManager.Instance.worldCoord;
-
-        if (generatedSelections.ContainsKey(coord))
-            return generatedSelections[coord];
-
-        List<WeightedItem<MapPreset>> candidateMaps = explicitMaps;
-        if (candidateMaps == null || candidateMaps.Count == 0)
+        WorldCoordinateManager coordinateManager = WorldCoordinateManager.Instance;
+        if (coordinateManager == null)
         {
-            candidateMaps = GetCandidateMapsForCoord(coord);
-        }
-
-        if (candidateMaps == null || candidateMaps.Count == 0)
-        {
-            Debug.LogWarning("No map candidates found for coord: " + coord);
+            Debug.LogWarning("Cannot select a procedural map because WorldCoordinateManager is missing.", this);
             return null;
         }
 
-        MapPreset primary = WeightedRandom.Pick(candidateMaps);
+        Vector2Int coord = coordinateManager.worldCoord;
+        ProceduralMapSide side = coordinateManager.EffectiveSide;
+        var cacheKey = new MapCacheKey(coord, side);
+
+        // A non-empty explicit list intentionally overrides even an existing cache entry.
+        bool hasExplicitOverride = explicitMaps != null && explicitMaps.Count > 0;
+        if (!hasExplicitOverride && generatedSelections.TryGetValue(cacheKey, out MixedMapSelection cachedSelection))
+            return cachedSelection;
+
+        List<WeightedItem<MapPreset>> candidateMaps;
+        if (hasExplicitOverride)
+        {
+            candidateMaps = GetValidCandidates(explicitMaps);
+            if (candidateMaps.Count == 0)
+            {
+                Debug.LogWarning($"Explicit map override has no valid presets at {coord}.", this);
+                return null;
+            }
+        }
+        else
+        {
+            long distance = System.Math.Abs((long)coord.x) + System.Math.Abs((long)coord.y);
+            candidateMaps = GetCandidateMapsForDistance(distance, side);
+            if (candidateMaps.Count == 0)
+            {
+                Debug.LogWarning($"No valid map candidates configured for {side} at distance {distance} (coordinate {coord}).", this);
+                return null;
+            }
+        }
+
+        MapPreset primary = PickWeightedPreset(candidateMaps);
+        if (primary == null)
+        {
+            Debug.LogWarning($"Could not select a primary map preset at {coord}.", this);
+            return null;
+        }
+
         var selection = new MixedMapSelection
         {
             primary = primary,
@@ -75,37 +128,103 @@ public class WorldMapManager : MonoBehaviour
 
             if (secondaryCandidates.Count > 0)
             {
-                MapPreset secondary = WeightedRandom.Pick(secondaryCandidates);
-                selection.secondary = secondary;
-                selection.primaryRatio = 0.7f;
-                selection.secondaryRatio = 0.3f;
-                selection.isMixed = true;
+                MapPreset secondary = PickWeightedPreset(secondaryCandidates);
+                if (secondary != null)
+                {
+                    selection.secondary = secondary;
+                    selection.primaryRatio = 0.7f;
+                    selection.secondaryRatio = 0.3f;
+                    selection.isMixed = true;
+                }
             }
         }
 
-        generatedMaps[coord] = primary;
-        generatedSelections[coord] = selection;
+        generatedSelections[cacheKey] = selection;
         return selection;
     }
 
-    private List<WeightedItem<MapPreset>> GetCandidateMapsForCoord(Vector2Int coord)
+    private List<WeightedItem<MapPreset>> GetCandidateMapsForDistance(long distance, ProceduralMapSide side)
     {
-        foreach (var rule in mapRules.rules)
+        if (mapRules == null)
+            return new List<WeightedItem<MapPreset>>();
+
+        List<DistanceMapRule> sideRules = side == ProceduralMapSide.Left
+            ? mapRules.leftRules
+            : mapRules.rightRules;
+
+        if (sideRules == null)
+            return new List<WeightedItem<MapPreset>>();
+
+        foreach (DistanceMapRule rule in sideRules)
         {
-            if (coord.x >= rule.minX && coord.x <= rule.maxX &&
-                coord.y >= rule.minY && coord.y <= rule.maxY)
+            if (rule != null && distance >= rule.minDistance && distance <= rule.maxDistance)
             {
-                return rule.possibleMaps;
+                return GetValidCandidates(rule.possibleMaps);
             }
         }
 
-        Debug.LogWarning("No rule matched for coord: " + coord);
+        return new List<WeightedItem<MapPreset>>();
+    }
 
-        if (mapRules.rules != null && mapRules.rules.Count > 0)
+    private static List<WeightedItem<MapPreset>> GetValidCandidates(List<WeightedItem<MapPreset>> candidates)
+    {
+        var validCandidates = new List<WeightedItem<MapPreset>>();
+        if (candidates == null)
+            return validCandidates;
+
+        foreach (WeightedItem<MapPreset> candidate in candidates)
         {
-            return mapRules.rules[0].possibleMaps;
+            if (candidate != null && candidate.item != null && candidate.weight > 0)
+                validCandidates.Add(candidate);
         }
 
-        return new List<WeightedItem<MapPreset>>();
+        return validCandidates;
+    }
+
+    private static MapPreset PickWeightedPreset(List<WeightedItem<MapPreset>> candidates)
+    {
+        double totalWeight = 0d;
+        foreach (WeightedItem<MapPreset> candidate in candidates)
+            totalWeight += candidate.weight;
+
+        if (totalWeight <= 0d)
+            return null;
+
+        double roll = Random.value * totalWeight;
+        foreach (WeightedItem<MapPreset> candidate in candidates)
+        {
+            roll -= candidate.weight;
+            if (roll < 0d)
+                return candidate.item;
+        }
+
+        // Random.value can return its inclusive upper bound.
+        return candidates[candidates.Count - 1].item;
+    }
+
+    private void ValidateRules(ProceduralMapSide side, List<DistanceMapRule> rules)
+    {
+        if (rules == null)
+            return;
+
+        for (int i = 0; i < rules.Count; i++)
+        {
+            DistanceMapRule rule = rules[i];
+            if (rule == null)
+                continue;
+
+            if (rule.minDistance < 0 || rule.maxDistance < rule.minDistance)
+                Debug.LogWarning($"{side} map rule {i} has an invalid distance range.", this);
+
+            if (GetValidCandidates(rule.possibleMaps).Count == 0)
+                Debug.LogWarning($"{side} map rule {i} has no valid weighted map presets.", this);
+
+            for (int j = 0; j < i; j++)
+            {
+                DistanceMapRule other = rules[j];
+                if (other != null && rule.minDistance <= other.maxDistance && rule.maxDistance >= other.minDistance)
+                    Debug.LogWarning($"{side} map rules {j} and {i} overlap; the first matching rule is used.", this);
+            }
+        }
     }
 }

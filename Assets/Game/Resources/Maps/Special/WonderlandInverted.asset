@@ -25,6 +25,7 @@ MonoBehaviour:
   maxClusterHeight: 20
   clusterFillPercent: 0.25
   isShoreline: 0
+  hasRiver: 0
   HousePrefabs:
   - item: {fileID: 11400000, guid: afcd26f241528134ebd022945c3e32f2, type: 2}
     weight: 1
@@ -78,10 +79,10 @@ MonoBehaviour:
     weight: 1
   RoadMiddle: {fileID: 11400000, guid: 6e580daf9a4672a4a951d297ec956d9e, type: 2}
   Sidewalk: {fileID: 0}
-  EastRoadTunnelEntrance: {fileID: 0}
-  WestRoadTunnelEntrance: {fileID: 0}
-  SouthRoadTunnelEntrance: {fileID: 0}
-  NorthRoadTunnelEntrance: {fileID: 0}
+  EastRoadTunnelEntrance: {fileID: 11400000, guid: a66ff3260352649d3955eb3e2ff8193c, type: 2}
+  WestRoadTunnelEntrance: {fileID: 11400000, guid: 79059991c62a948eab941e03bd58109c, type: 2}
+  SouthRoadTunnelEntrance: {fileID: 11400000, guid: bb07e19296eff4e45b731d4709839d0f, type: 2}
+  NorthRoadTunnelEntrance: {fileID: 11400000, guid: 2b0c5574a804f0a4f8ec2f51973aa9f9, type: 2}
   RoadTunnel: {fileID: 0}
   CrossRoad: {fileID: 0}
   Path: {fileID: 11400000, guid: 6e580daf9a4672a4a951d297ec956d9e, type: 2}
@@ -90,6 +91,9 @@ MonoBehaviour:
   isGateTeleport: 1
   isNormalStreet: 0
   EnableSidewalks: 0
+  riverHorizontal: {fileID: 0}
+  riverVertical: {fileID: 0}
+  riverCorner: {fileID: 0}
   TransitionUp: {fileID: 0}
   TransitionDown: {fileID: 0}
   TransitionLeft: {fileID: 0}
@@ -178,18 +182,14 @@ MonoBehaviour:
   - item: {fileID: 11400000, guid: 5dbe15ac019ed914ea1b0f952006999d, type: 2}
     weight: 2
   Tidepools: []
+  Puddles: []
   WildMonsters:
   - item:
-      _base: {fileID: 11400000, guid: d6ad54d8c61d266459ee34c3c997e239, type: 2}
-      level: 9
-    weight: 1
-  - item:
-      _base: {fileID: 11400000, guid: ccb44e809f8bac44abab523f19f84443, type: 2}
-      level: 8
-    weight: 1
-  - item:
       _base: {fileID: 11400000, guid: 3dab1551be146e448b655e06b3587e5e, type: 2}
-      level: 6
+      unlockedMoveSlots: 0
+      movesInitialized: 0
+      evolutionProgress: 0
+      moves: []
     weight: 1
   NumberOfTrees: 4
   NumberOfHouses: 1
@@ -202,4 +202,5 @@ MonoBehaviour:
   grassPatchSize: 6
   grassPatchCount: 4
   tidepoolCount: 0
+  puddleCount: 10
   videoForThisMap: {fileID: 32900000, guid: 427a7cd86285b2243b527af87d08d7b6, type: 3}

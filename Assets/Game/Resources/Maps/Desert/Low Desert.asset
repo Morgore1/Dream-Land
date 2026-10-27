@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MapWidth: 41
   MapHeight: 40
-  MaximumWalkers: 75
+  MaximumWalkers: 45
   FillPercentage: 0.4
   WaitTime: 0.01
   minClusters: 3
@@ -25,6 +25,7 @@ MonoBehaviour:
   maxClusterHeight: 16
   clusterFillPercent: 0.25
   isShoreline: 0
+  hasRiver: 0
   HousePrefabs:
   - item: {fileID: 11400000, guid: 548420e535d5f6849a490c401265016a, type: 2}
     weight: 1
@@ -67,21 +68,30 @@ MonoBehaviour:
       weight: 1
     - item: {fileID: 11400000, guid: d8a5aee59c6433c4283271bd77ed5510, type: 2}
       weight: 3
-  TallGrass: {fileID: 11400000, guid: 0c1d9a22f11987d4794c0a317175e61b, type: 2}
+  TallGrass:
+  - item: {fileID: 0}
+    weight: 1
+  - item: {fileID: 0}
+    weight: 1
+  - item: {fileID: 0}
+    weight: 1
   RoadMiddle: {fileID: 11400000, guid: 5b81bdba4eb847248966b08a5678e39a, type: 2}
   Sidewalk: {fileID: 11400000, guid: a13b5794d314b7541b255fba748ffa5b, type: 2}
-  EastRoadTunnelEntrance: {fileID: 11400000, guid: f564033d9aa14ef4c89c7a587da33138, type: 2}
-  WestRoadTunnelEntrance: {fileID: 11400000, guid: ca6c52045bdc5ff47a0027d5d94635a6, type: 2}
-  SouthRoadTunnelEntrance: {fileID: 11400000, guid: f2ee84a2648e49f419deb2232faf4bcb, type: 2}
-  NorthRoadTunnelEntrance: {fileID: 11400000, guid: 412c38f7b0bf7d54da45ca5599c493ce, type: 2}
+  EastRoadTunnelEntrance: {fileID: 11400000, guid: 294480c46008b9f45aacd9ce63279817, type: 2}
+  WestRoadTunnelEntrance: {fileID: 11400000, guid: 3d73434e07b33ca49b8241fc288a1343, type: 2}
+  SouthRoadTunnelEntrance: {fileID: 11400000, guid: 084796a50a028564dac7629c5f1ac8b1, type: 2}
+  NorthRoadTunnelEntrance: {fileID: 11400000, guid: c4c27cfd697a3f44ab3ce1439538423d, type: 2}
   RoadTunnel: {fileID: 11400000, guid: 891f02790c8f423448d4db9361a8c731, type: 2}
   CrossRoad: {fileID: 11400000, guid: 66a6e03311b69f8458c17942b37ac474, type: 2}
   Path: {fileID: 0}
-  EnableNorthSouthRoads: 0
+  EnableNorthSouthRoads: 1
   EnableEastWestRoads: 1
   isGateTeleport: 1
-  isNormalStreet: 1
-  EnableSidewalks: 1
+  isNormalStreet: 0
+  EnableSidewalks: 0
+  riverHorizontal: {fileID: 0}
+  riverVertical: {fileID: 0}
+  riverCorner: {fileID: 0}
   TransitionUp: {fileID: 11400000, guid: 6548a7dc7c2f5504ab2b2ef30b552712, type: 2}
   TransitionDown: {fileID: 11400000, guid: 5e4429dc4100492438da365888b3fdea, type: 2}
   TransitionLeft: {fileID: 11400000, guid: ee9e17a54bafe95439473ad1a1c118d4, type: 2}
@@ -90,23 +100,8 @@ MonoBehaviour:
   CornerNE: {fileID: 11400000, guid: 93cd6c647c9e03148b8e94aae9c98b4a, type: 2}
   CornerSW: {fileID: 11400000, guid: b0a5024a51d9f6a4493f2bb01d8930e3, type: 2}
   CornerSE: {fileID: 11400000, guid: 9934638f4fa90284bb57069396e0127e, type: 2}
-  ItemTiles:
-  - item: {fileID: 11400000, guid: 9862d9a79a29aba40a70f3cea8c90e79, type: 2}
-    weight: 2
-  - item: {fileID: 11400000, guid: 23d9cc6b19fded54fa3200d37069bfc9, type: 2}
-    weight: 2
-  - item: {fileID: 11400000, guid: a7b23e1c0f04f7e4ea1fdd486ae90378, type: 2}
-    weight: 1
-  - item: {fileID: 11400000, guid: 48e35e7900109234aa822618f6153074, type: 2}
-    weight: 2
-  - item: {fileID: 11400000, guid: ccdbd66f4f0d7654eae2500ec2c3fda1, type: 2}
-    weight: 1
-  - item: {fileID: 11400000, guid: 8b35ca5aab2d8f5408080dd8045ec4dd, type: 2}
-    weight: 2
-  - item: {fileID: 11400000, guid: fc92364c87bea8f43ac40a082970f6e1, type: 2}
-    weight: 2
-  - item: {fileID: 11400000, guid: f2c43cc45b7918843ae16586e357def8, type: 2}
-    weight: 1
+  ObstacleTiles: []
+  AnimatedObstacleTiles: []
   BackgroundItemTiles:
   - item: {fileID: 11400000, guid: 263573c424e44804ab84d0d1e995b807, type: 2}
     weight: 1
@@ -125,17 +120,35 @@ MonoBehaviour:
   - item: {fileID: 1971903203958624188, guid: c2efcb9c8e8ee7c4c9457220db9a591e, type: 3}
     weight: 1
   TreePrefabs: []
-  MultipleItemTilePrefabs: []
+  MultipleItemObstaclePrefabs: []
   Tidepools: []
-  WildMonsters: []
+  Puddles: []
+  WildMonsters:
+  - item:
+      _base: {fileID: 11400000, guid: a7817e7137a4c924dbf63a88f96a1b06, type: 2}
+      unlockedMoveSlots: 0
+      movesInitialized: 0
+      evolutionProgress: 0
+      moves: []
+    weight: 1
+  - item:
+      _base: {fileID: 11400000, guid: c4f2933391924284cb0c86513ec9454e, type: 2}
+      unlockedMoveSlots: 0
+      movesInitialized: 0
+      evolutionProgress: 0
+      moves: []
+    weight: 1
   NumberOfTrees: 0
   NumberOfHouses: 2
   NumberOfNPCs: 0
   NumberOfObtainableItems: 3
-  NumberOfItems: 15
-  NumberOfMTItems: 15
+  NumberOfObstacles: 15
+  NumberOfAnimatedObstacles: 5
+  NumberOfMTObstacles: 15
   NumberOfBackgroundItems: 25
   grassPatchSize: 10
   grassPatchCount: 5
   tidepoolCount: 10
+  puddleCount: 10
   videoForThisMap: {fileID: 32900000, guid: ef4b447d86a7d3c4a8eb8d6304e6b7a6, type: 3}
+  mapMusic: {fileID: 8300000, guid: 0a9f636d72ccc463d96ea4c84423845e, type: 3}

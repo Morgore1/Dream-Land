@@ -102,5 +102,8 @@ public class MapPreset : ScriptableObject
 
     public VideoClip videoForThisMap;
 
+    [Header("Music")]
+    public AudioClip mapMusic;
+
     public static VideoClip SelectedVideoClip;
 }

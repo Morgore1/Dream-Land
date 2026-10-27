@@ -81,10 +81,10 @@ MonoBehaviour:
     weight: 1
   RoadMiddle: {fileID: 11400000, guid: d4a10d2f802a88d41891c2d798d50bf8, type: 2}
   Sidewalk: {fileID: 0}
-  EastRoadTunnelEntrance: {fileID: 0}
-  WestRoadTunnelEntrance: {fileID: 0}
-  SouthRoadTunnelEntrance: {fileID: 0}
-  NorthRoadTunnelEntrance: {fileID: 0}
+  EastRoadTunnelEntrance: {fileID: 11400000, guid: 9f27f6309feab4e928aca2ab191ed5f0, type: 2}
+  WestRoadTunnelEntrance: {fileID: 11400000, guid: 62b063b758ef94b2e9f6349eaab4312d, type: 2}
+  SouthRoadTunnelEntrance: {fileID: 11400000, guid: c3309a21c022d48bbbe0c83575774223, type: 2}
+  NorthRoadTunnelEntrance: {fileID: 11400000, guid: 301adf6905277cf45932c7b39ea9447f, type: 2}
   RoadTunnel: {fileID: 0}
   CrossRoad: {fileID: 0}
   Path: {fileID: 11400000, guid: 1ef4303ff22f65d46a2940da10db6f25, type: 2}
@@ -169,7 +169,14 @@ MonoBehaviour:
     weight: 1
   Tidepools: []
   Puddles: []
-  WildMonsters: []
+  WildMonsters:
+  - item:
+      _base: {fileID: 11400000, guid: 3dab1551be146e448b655e06b3587e5e, type: 2}
+      unlockedMoveSlots: 0
+      movesInitialized: 0
+      evolutionProgress: 0
+      moves: []
+    weight: 0
   NumberOfTrees: 4
   NumberOfHouses: 1
   NumberOfNPCs: 0

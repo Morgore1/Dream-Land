@@ -12,10 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36173274d1fb5c746a979aa40cb2f108, type: 3}
   m_Name: GD N
   m_EditorClassIdentifier: 
-  visualTile: {fileID: 11400000, guid: 52e1eb07cd80da243b0df177994145f9, type: 2}
+  visualTile: {fileID: 11400000, guid: 6e000b6562a1e83468cdd2616477994d, type: 2}
   teleportData:
     destination: {x: 20, y: 5}
     toProceduralMap: 1
     mapPreset:
     - item: {fileID: 11400000, guid: f806d24eb871205468fae0f3c8ae3b45, type: 2}
       weight: 1
+    side: 0
+    direction: {x: 0, y: 0}

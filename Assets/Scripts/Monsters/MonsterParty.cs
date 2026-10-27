@@ -55,7 +55,7 @@ public class MonsterParty : MonoBehaviour
 
     public Monster GetHealthyMonster()
     {
-        return monsters.Where(x => x.HP > 0).FirstOrDefault();
+        return Monsters.FirstOrDefault(monster => monster != null && monster.Base != null && monster.HP > 0);
     }
 
     public bool AddMonsterToParty(Monster newMonster)
@@ -74,9 +74,10 @@ public class MonsterParty : MonoBehaviour
 
     public void HealAllMonsters()
     {
-        foreach (var monster in monsters)
+        foreach (var monster in Monsters)
         {
-            monster.RestoreFullHealth();
+            if (monster != null)
+                monster.RestoreFullHealth();
         }
     }
     public IEnumerator CombineMonster(Monster target)

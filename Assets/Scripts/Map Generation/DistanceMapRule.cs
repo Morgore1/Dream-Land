@@ -5,11 +5,11 @@ using UnityEngine;
 [System.Serializable]
 public class DistanceMapRule
 {
-    public int minX;
-    public int maxX;
+    [Min(0)]
+    public int minDistance;
 
-    public int minY;
-    public int maxY;
+    [Min(0)]
+    public int maxDistance;
 
-    public List<WeightedItem<MapPreset>> possibleMaps;
+    public List<WeightedItem<MapPreset>> possibleMaps = new List<WeightedItem<MapPreset>>();
 }

@@ -19,3 +19,5 @@ MonoBehaviour:
     mapPreset:
     - item: {fileID: 11400000, guid: f806d24eb871205468fae0f3c8ae3b45, type: 2}
       weight: 1
+    side: 1
+    direction: {x: 0, y: 0}

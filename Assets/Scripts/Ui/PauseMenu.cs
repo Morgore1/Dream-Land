@@ -337,7 +337,12 @@ public class PauseMenu : MonoBehaviour
     void QuitGame()
     {
         Time.timeScale = 1f;
-        Debug.Log("Quit to main menu!");
-        SceneManager.LoadScene("MainMenu");
+        GameIsPaused = false;
+        Debug.Log("Quitting game.");
+        Application.Quit();
+
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
     }
 }

@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
-using UnityEditor.Presets;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.UIElements;
@@ -146,28 +145,41 @@ public class PlayerController : MonoBehaviour
         if (teleportTile != null)
         {
             TunnelTeleportData teleportData = teleportTile.teleportData;
+            WorldCoordinateManager coordinateManager = WorldCoordinateManager.Instance;
+            WorldMapManager worldMapManager = WorldMapManager.Instance;
+
+            if (coordinateManager == null || worldMapManager == null)
+            {
+                Debug.LogError("Cannot enter a procedural map because a world map manager or coordinate manager is missing.", this);
+                canMove = true;
+                yield break;
+            }
 
             // Detect direction player entered from
             Vector2Int entryDir = lastMoveDir;
             if (teleportData.toProceduralMap)
             {
-                
-                if (!WorldCoordinateManager.Instance.IsInProceduralMap)
+                if (!coordinateManager.IsInProceduralMap)
                 {
-                    WorldCoordinateManager.Instance.IsInProceduralMap = true;
+                    coordinateManager.StartProceduralTrip(teleportData.side);
 
+                    WorldMapManager.MixedMapSelection selection =
+                        worldMapManager.GetMapSelectionForCurrentPosition(teleportData.mapPreset);
+                    if (selection == null || selection.primary == null)
+                    {
+                        coordinateManager.IsInProceduralMap = false;
+                        Debug.LogWarning("No valid map selection is configured for this procedural gate.", this);
+                        canMove = true;
+                        yield break;
+                    }
 
                     mapManager.ToggleMapVisibility(true);
 
-                    WorldMapManager.MixedMapSelection selection =
-                        WorldMapManager.Instance.GetMapSelectionForCurrentPosition(teleportData.mapPreset);
-                    MapPreset preset = selection != null ? selection.primary : WeightedRandom.Pick(teleportData.mapPreset);
-
-                    mapManager.SetMapPreset(preset);
+                    mapManager.SetMapPreset(selection.primary, selection.isMixed ? selection.secondary : null);
 
                     walkerGenerator.lastEntryDirection = lastMoveDir;
                     walkerGenerator.ClearMap();
-                    walkerGenerator.GenerateMapWithSelection(selection ?? new WorldMapManager.MixedMapSelection { primary = preset, isMixed = false });
+                    walkerGenerator.GenerateMapWithSelection(selection);
 
                     
                     Vector2Int destination = teleportData.destination;
@@ -183,14 +195,22 @@ public class PlayerController : MonoBehaviour
                 else
                 {
                     Vector2Int dir = entryDir;
+                    Vector2Int previousCoord = coordinateManager.worldCoord;
+                    ProceduralMapSide previousSide = coordinateManager.EffectiveSide;
+                    coordinateManager.Move(dir);
 
-                    
-                    WorldCoordinateManager.Instance.Move(dir);
+                    WorldMapManager.MixedMapSelection selection =
+                        worldMapManager.GetMapSelectionForCurrentPosition(teleportData.mapPreset);
+                    if (selection == null || selection.primary == null)
+                    {
+                        coordinateManager.RestorePosition(previousCoord, previousSide);
+                        Debug.LogWarning("No valid map selection is configured for this procedural coordinate.", this);
+                        canMove = true;
+                        yield break;
+                    }
 
                     mapManager.ToggleMapVisibility(true);
 
-                    WorldMapManager.MixedMapSelection selection = WorldMapManager.Instance.GetMapSelectionForCurrentPosition();
-                    MapPreset preset = selection != null ? selection.primary : WorldMapManager.Instance.GetMapForCurrentPosition();
                     Vector2Int destination = teleportData.destination;
                     transform.position = new Vector3(
                         destination.x + 0.5f,
@@ -198,11 +218,11 @@ public class PlayerController : MonoBehaviour
                         0f
                     );
 
-                    mapManager.SetMapPreset(preset);
+                    mapManager.SetMapPreset(selection.primary, selection.isMixed ? selection.secondary : null);
                     walkerGenerator.lastEntryDirection = lastMoveDir;
                     // Generate map
                     walkerGenerator.ClearMap();
-                    walkerGenerator.GenerateMapWithSelection(selection ?? new WorldMapManager.MixedMapSelection { primary = preset, isMixed = false });
+                    walkerGenerator.GenerateMapWithSelection(selection);
                 }
 
                 yield return new WaitForSeconds(0.5f);
@@ -211,9 +231,9 @@ public class PlayerController : MonoBehaviour
             else
             {
                 // Leaving procedural → reset state
-                if (WorldCoordinateManager.Instance.IsInProceduralMap)
+                if (coordinateManager.IsInProceduralMap)
                 {
-                    WorldCoordinateManager.Instance.IsInProceduralMap = false;
+                    coordinateManager.IsInProceduralMap = false;
                 }
 
                 mapManager.ToggleMapVisibility(false);
@@ -285,7 +305,7 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                mapManager.ShowInteriorMap(true);
+                mapManager.ShowInteriorMap(true, teleportData.interiorMusic);
             }
 
             transform.position = new Vector3(teleportData.destination.x + 0.5f, teleportData.destination.y + 0.7f, 0f);

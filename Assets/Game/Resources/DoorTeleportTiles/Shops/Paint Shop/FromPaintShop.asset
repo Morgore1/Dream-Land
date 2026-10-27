@@ -37,5 +37,6 @@ MonoBehaviour:
   teleportData:
     destination: {x: 104, y: -3}
     interiorName: 
+    interiorMusic: {fileID: 8300000, guid: 7b4ad012d3e5b4d14984e0fc1967a3a3, type: 3}
     goesToMainMap: 1
     goesToProceduralMap: 0

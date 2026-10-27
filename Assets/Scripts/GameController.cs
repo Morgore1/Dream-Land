@@ -15,6 +15,18 @@ public class ProceduralTrainerRoundSettings
     public float ReplacementChance => replacementChance;
 }
 
+[System.Serializable]
+public class ProceduralTrainerPreset
+{
+    [SerializeField] TrainerController trainerPrefab;
+    [SerializeField, Range(1, 6)] int startingPartySize = 3;
+    [SerializeField] List<ProceduralTrainerRoundSettings> rounds = new List<ProceduralTrainerRoundSettings>();
+
+    public TrainerController TrainerPrefab => trainerPrefab;
+    public int StartingPartySize => Mathf.Clamp(startingPartySize, 1, 6);
+    public List<ProceduralTrainerRoundSettings> Rounds => rounds;
+}
+
 public enum GameState { FreeRoam, Battle, Dialogue, Cutscene }
 
 public class GameController : MonoBehaviour
@@ -24,10 +36,7 @@ public class GameController : MonoBehaviour
     [SerializeField] Camera worldCamera;
 
     [Header("Procedural Encounter")]
-    [SerializeField] TrainerController proceduralOpponent;
-    [SerializeField] List<ProceduralTrainerRoundSettings> proceduralRounds = new List<ProceduralTrainerRoundSettings>();
-    // Retained to migrate scenes/prefabs serialized with the previous multi-opponent setup.
-    [SerializeField, HideInInspector] List<TrainerController> proceduralEncounterOpponents = new List<TrainerController>();
+    [SerializeField] List<WeightedItem<ProceduralTrainerPreset>> proceduralTrainerPresets = new List<WeightedItem<ProceduralTrainerPreset>>();
     [SerializeField] int Energy = 10;
     [SerializeField] int proceduralPlayerLives = 1;
     [SerializeField] TMP_Text energyText;
@@ -41,6 +50,7 @@ public class GameController : MonoBehaviour
     bool battleCompletionHandled;
     bool proceduralRosterInitialized;
     bool proceduralConfigurationWarningLogged;
+    ProceduralTrainerPreset selectedProceduralTrainerPreset;
     int remainingPlayerLives;
     int currentFight = 1;
     int proceduralRewardFightNumber;
@@ -223,6 +233,7 @@ public class GameController : MonoBehaviour
             if (remainingPlayerLives <= 0)
             {
                 EndProceduralEncounter();
+                ResetProceduralRun();
                 ReturnToMainMenu();
                 return;
             }
@@ -246,14 +257,8 @@ public class GameController : MonoBehaviour
         if (MusicManager.Instance != null)
         {
             var mapManager = FindObjectOfType<MapManager>();
-            if (mapManager != null && mapManager.previousMapType == MapManager.MapType.Procedural)
-            {
-                MusicManager.Instance.PlayRouteMapMusic();
-            }
-            else
-            {
-                MusicManager.Instance.PlayMainMapMusic();
-            }
+            if (mapManager != null)
+                mapManager.PlayCurrentAreaMusic();
         }
     }
 
@@ -334,20 +339,19 @@ public class GameController : MonoBehaviour
         }
 
         DisableEnergyOverlay();
-        var configuredOpponent = GetProceduralOpponent();
-        if (configuredOpponent == null || configuredOpponent.GetComponent<MonsterParty>() == null)
+        if (isProceduralEncounterActive)
+            return;
+
+        if (selectedProceduralTrainerPreset == null && !TrySelectProceduralTrainer())
         {
             if (!proceduralConfigurationWarningLogged)
             {
-                Debug.LogWarning("Procedural encounter requires a trainer prefab with TrainerController and MonsterParty on the same GameObject. Assign the new opponent field or retain an entry in the legacy opponent list.", this);
+                Debug.LogError("No valid procedural trainer presets are configured. Add weighted trainer prefabs with TrainerController and MonsterParty on the same GameObject.", this);
                 proceduralConfigurationWarningLogged = true;
             }
             RestoreEnergyAfterSkippedRound();
             return;
         }
-
-        if (isProceduralEncounterActive)
-            return;
 
         isProceduralEncounterActive = true;
         if (remainingPlayerLives <= 0)
@@ -371,11 +375,27 @@ public class GameController : MonoBehaviour
         SceneManager.LoadScene("MainMenu");
     }
 
+    private void ResetProceduralRun()
+    {
+        selectedProceduralTrainerPreset = null;
+        proceduralTrainerRoster.Clear();
+        proceduralRosterInitialized = false;
+        proceduralTrainerParty = null;
+        isProceduralEncounterActive = false;
+        isProceduralBattle = false;
+        battleCompletionHandled = false;
+        proceduralRewardFightNumber = 0;
+        roundProgressAwarded = 0;
+        currentFight = 1;
+        remainingPlayerLives = proceduralPlayerLives;
+    }
+
     private void SpawnProceduralOpponentAndStartFight()
     {
-        var opponentPrefab = GetProceduralOpponent();
+        var opponentPrefab = selectedProceduralTrainerPreset != null ? selectedProceduralTrainerPreset.TrainerPrefab : null;
         if (opponentPrefab == null)
         {
+            Debug.LogError("No trainer has been selected for this procedural run.", this);
             RestoreEnergyAfterSkippedRound();
             return;
         }
@@ -400,9 +420,10 @@ public class GameController : MonoBehaviour
                 proceduralTrainerRoster.Add(new ProceduralTrainerRosterMember(validPool[Random.Range(0, validPool.Count)], 0));
         }
 
-        if (proceduralTrainerRoster.Count == 0)
+        if (proceduralTrainerRoster.Count == 0 || !proceduralTrainerRoster.Exists(member => member != null && member.Base != null))
         {
             Debug.LogError("Procedural trainer has no monsters. Add an initial monster to its MonsterParty or configure a non-empty round pool.", this);
+            isProceduralEncounterActive = false;
             RestoreEnergyAfterSkippedRound();
             return;
         }
@@ -441,11 +462,26 @@ public class GameController : MonoBehaviour
         proceduralTrainerParty = trainerParty;
         proceduralOpponentObject.SetActive(false);
 
-        StartProceduralBattle(trainerController, trainerParty);
+        StartProceduralBattle(trainerParty);
     }
 
-    private void StartProceduralBattle(TrainerController trainerController, MonsterParty trainerParty)
+    private void StartProceduralBattle(MonsterParty trainerParty)
     {
+        MonsterParty playerParty = playerController != null ? playerController.GetComponent<MonsterParty>() : null;
+        if (playerParty == null || playerParty.GetHealthyMonster() == null || trainerParty == null || trainerParty.GetHealthyMonster() == null)
+        {
+            Debug.LogError("Cannot start procedural battle: both parties need at least one healthy monster.", this);
+            if (proceduralOpponentObject != null)
+            {
+                Destroy(proceduralOpponentObject);
+                proceduralOpponentObject = null;
+            }
+            proceduralTrainerParty = null;
+            isProceduralEncounterActive = false;
+            RestoreEnergyAfterSkippedRound();
+            return;
+        }
+
         isProceduralBattle = true;
         proceduralRewardFightNumber = currentFight;
         battleCompletionHandled = false;
@@ -453,7 +489,8 @@ public class GameController : MonoBehaviour
         battleSystem.gameObject.SetActive(true);
         worldCamera.gameObject.SetActive(false);
 
-        var playerParty = playerController.GetComponent<MonsterParty>();
+        if (MusicManager.Instance != null)
+            MusicManager.Instance.PlayBattleMusic();
 
         battleSystem.StartTrainerBattle(playerParty, trainerParty);
     }
@@ -471,30 +508,76 @@ public class GameController : MonoBehaviour
         playerParty.HealAllMonsters();
     }
 
-    private TrainerController GetProceduralOpponent()
+    private bool TrySelectProceduralTrainer()
     {
-        if (proceduralOpponent != null)
-            return proceduralOpponent;
-
-        if (proceduralEncounterOpponents != null)
+        var validPresets = new List<WeightedItem<ProceduralTrainerPreset>>();
+        if (proceduralTrainerPresets != null)
         {
-            foreach (var legacyOpponent in proceduralEncounterOpponents)
+            foreach (WeightedItem<ProceduralTrainerPreset> entry in proceduralTrainerPresets)
             {
-                if (legacyOpponent != null)
-                    return legacyOpponent;
+                if (entry == null || entry.item == null || entry.item.TrainerPrefab == null || entry.weight <= 0)
+                    continue;
+
+                TrainerController trainerPrefab = entry.item.TrainerPrefab;
+                if (trainerPrefab.GetComponent<MonsterParty>() == null)
+                {
+                    Debug.LogWarning($"Procedural trainer preset '{trainerPrefab.name}' has no MonsterParty on its root and will be ignored.", trainerPrefab);
+                    continue;
+                }
+
+                List<ProceduralTrainerRoundSettings> rounds = entry.item.Rounds;
+                List<MonsterBase> startingPool = rounds != null && rounds.Count > 0
+                    ? GetValidMonsterPool(rounds[0])
+                    : new List<MonsterBase>();
+
+                if (startingPool.Count == 0)
+                {
+                    Debug.LogWarning($"Procedural trainer preset '{trainerPrefab.name}' needs at least one valid monster in its first round's monster pool.", trainerPrefab);
+                    continue;
+                }
+
+                validPresets.Add(entry);
             }
         }
 
-        return null;
+        long totalWeight = 0;
+        foreach (WeightedItem<ProceduralTrainerPreset> preset in validPresets)
+            totalWeight += preset.weight;
+
+        if (totalWeight <= 0)
+            return false;
+
+        long roll = (long)(Random.value * totalWeight);
+        foreach (WeightedItem<ProceduralTrainerPreset> preset in validPresets)
+        {
+            roll -= preset.weight;
+            if (roll < 0)
+            {
+                selectedProceduralTrainerPreset = preset.item;
+                proceduralTrainerRoster.Clear();
+                proceduralRosterInitialized = false;
+                Debug.Log($"Selected procedural trainer '{selectedProceduralTrainerPreset.TrainerPrefab.name}' for this run.", this);
+                return true;
+            }
+        }
+
+        selectedProceduralTrainerPreset = validPresets[validPresets.Count - 1].item;
+        proceduralTrainerRoster.Clear();
+        proceduralRosterInitialized = false;
+        return true;
     }
 
     private ProceduralTrainerRoundSettings GetProceduralRoundSettingsForFight()
     {
-        if (proceduralRounds == null || proceduralRounds.Count == 0)
+        List<ProceduralTrainerRoundSettings> rounds = selectedProceduralTrainerPreset != null
+            ? selectedProceduralTrainerPreset.Rounds
+            : null;
+
+        if (rounds == null || rounds.Count == 0)
             return null;
 
-        int index = Mathf.Clamp(currentFight - 1, 0, proceduralRounds.Count - 1);
-        return proceduralRounds[index];
+        int index = Mathf.Clamp(currentFight - 1, 0, rounds.Count - 1);
+        return rounds[index];
     }
 
     private bool InitializeProceduralRoster()
@@ -502,30 +585,30 @@ public class GameController : MonoBehaviour
         if (proceduralRosterInitialized)
             return true;
 
-        var opponentPrefab = GetProceduralOpponent();
-        var initialParty = opponentPrefab != null ? opponentPrefab.GetComponent<MonsterParty>() : null;
-        if (initialParty == null)
+        if (selectedProceduralTrainerPreset == null)
             return false;
 
         proceduralTrainerRoster.Clear();
-        foreach (var monster in initialParty.Monsters)
+        List<ProceduralTrainerRoundSettings> rounds = selectedProceduralTrainerPreset.Rounds;
+        ProceduralTrainerRoundSettings startingRound = rounds != null && rounds.Count > 0 ? rounds[0] : null;
+        List<MonsterBase> startingPool = GetValidMonsterPool(startingRound);
+        if (startingPool.Count == 0)
         {
-            if (monster == null || monster.Base == null)
-                continue;
+            Debug.LogError($"Selected trainer preset '{selectedProceduralTrainerPreset.TrainerPrefab.name}' has no valid monsters in its first round pool.", this);
+            return false;
+        }
 
-            if (proceduralTrainerRoster.Count >= MaxTrainerPartySize)
-            {
-                Debug.LogWarning("Procedural trainer's authored party has more than six monsters; extra members are ignored.", this);
-                break;
-            }
-
-            var member = new ProceduralTrainerRosterMember(monster.Base, monster.EvolutionProgress);
-            NormalizeRosterMember(member);
-            proceduralTrainerRoster.Add(member);
+        int partySize = Mathf.Min(selectedProceduralTrainerPreset.StartingPartySize, MaxTrainerPartySize, startingPool.Count);
+        for (int i = 0; i < partySize; i++)
+        {
+            int selectedIndex = Random.Range(0, startingPool.Count);
+            MonsterBase selectedBase = startingPool[selectedIndex];
+            startingPool.RemoveAt(selectedIndex);
+            proceduralTrainerRoster.Add(new ProceduralTrainerRosterMember(selectedBase, 0));
         }
 
         proceduralRosterInitialized = true;
-        return true;
+        return proceduralTrainerRoster.Count > 0;
     }
 
     private void PrepareProceduralRoundRoster(ProceduralTrainerRoundSettings roundSettings)
@@ -715,6 +798,10 @@ public class GameController : MonoBehaviour
             proceduralOpponentObject = null;
         }
         proceduralTrainerParty = null;
+
+        var mapManager = FindObjectOfType<MapManager>();
+        if (mapManager != null)
+            mapManager.PlayCurrentAreaMusic();
     }
 
     private void Update()

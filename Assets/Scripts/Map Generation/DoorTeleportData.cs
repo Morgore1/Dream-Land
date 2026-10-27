@@ -7,6 +7,7 @@ public class DoorTeleportData
 {
     public Vector2Int destination;
     public string interiorName; // Optional identifier
+    public AudioClip interiorMusic;
 
     public bool goesToMainMap;
     public bool goesToProceduralMap;
