@@ -118,7 +118,7 @@ MonoBehaviour:
   - item: {fileID: 1971903203958624188, guid: c2efcb9c8e8ee7c4c9457220db9a591e, type: 3}
     weight: 1
   TreePrefabs:
-  - item: {fileID: 11400000, guid: 675d7017001139d499c09020b5de07f3, type: 2}
+  - item: {fileID: 11400000, guid: 7803b716fb82f92429ee3000b871f4ec, type: 2}
     weight: 1
   MultipleItemObstaclePrefabs: []
   Tidepools: []
