@@ -16,8 +16,6 @@ MonoBehaviour:
   teleportData:
     destination: {x: 5, y: 20}
     toProceduralMap: 1
-    mapPreset:
-    - item: {fileID: 11400000, guid: 914e11bbdcc97f84ea1aca35e2f6bc66, type: 2}
-      weight: 1
-    side: 0
+    mapPreset: []
+    side: 1
     direction: {x: 0, y: 0}

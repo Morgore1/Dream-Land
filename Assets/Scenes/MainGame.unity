@@ -9488,10 +9488,10 @@ Camera:
   m_LensShift: {x: 0, y: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.8725567
-    y: 0.018386109
-    width: 1.0007819
-    height: 0.9805925
+    x: 0.06435007
+    y: 0.9331984
+    width: 0.8236808
+    height: 0.97165996
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
@@ -19622,7 +19622,7 @@ MonoBehaviour:
         - {fileID: 11400000, guid: fd58c42f1f59a9f409995814263e0fb3, type: 2}
         replacementChance: 0
     weight: 1
-  Energy: 8
+  Energy: 5
   proceduralPlayerLives: 3
   energyText: {fileID: 448643879}
   fightText: {fileID: 1842630947}
@@ -141095,257 +141095,257 @@ MonoBehaviour:
   mapRules:
     leftRules:
     - minDistance: 0
-      maxDistance: 2
+      maxDistance: 1
       possibleMaps:
       - item: {fileID: 11400000, guid: 0ec89a84583584d4e9642497477a9f94, type: 2}
         weight: 100
       - item: {fileID: 11400000, guid: b3b0a34d4f1dad343b79e97fe59ccdcc, type: 2}
-        weight: 1
+        weight: 5
       - item: {fileID: 11400000, guid: 5d521c5853176ac4786483e428af2829, type: 2}
-        weight: 1
+        weight: 5
       - item: {fileID: 11400000, guid: 3008e08acf0b09b4cad39de1f628fdbd, type: 2}
-        weight: 1
+        weight: 5
       - item: {fileID: 11400000, guid: 7de68fadd0b11e540ba63ac7daf78db9, type: 2}
-        weight: 1
-    - minDistance: 3
-      maxDistance: 3
+        weight: 5
+    - minDistance: 2
+      maxDistance: 2
       possibleMaps:
       - item: {fileID: 11400000, guid: 0ec89a84583584d4e9642497477a9f94, type: 2}
         weight: 80
       - item: {fileID: 11400000, guid: 0241f1acb1a271147b0cef9b4bdbc319, type: 2}
         weight: 20
       - item: {fileID: 11400000, guid: 5d521c5853176ac4786483e428af2829, type: 2}
-        weight: 1
+        weight: 5
       - item: {fileID: 11400000, guid: b3b0a34d4f1dad343b79e97fe59ccdcc, type: 2}
-        weight: 1
+        weight: 5
       - item: {fileID: 11400000, guid: 3008e08acf0b09b4cad39de1f628fdbd, type: 2}
-        weight: 1
+        weight: 5
       - item: {fileID: 11400000, guid: 7de68fadd0b11e540ba63ac7daf78db9, type: 2}
-        weight: 1
-    - minDistance: 4
+        weight: 5
+    - minDistance: 3
+      maxDistance: 4
+      possibleMaps:
+      - item: {fileID: 11400000, guid: 0241f1acb1a271147b0cef9b4bdbc319, type: 2}
+        weight: 100
+      - item: {fileID: 11400000, guid: 5d521c5853176ac4786483e428af2829, type: 2}
+        weight: 5
+      - item: {fileID: 11400000, guid: b3b0a34d4f1dad343b79e97fe59ccdcc, type: 2}
+        weight: 5
+      - item: {fileID: 11400000, guid: 3008e08acf0b09b4cad39de1f628fdbd, type: 2}
+        weight: 5
+      - item: {fileID: 11400000, guid: 7de68fadd0b11e540ba63ac7daf78db9, type: 2}
+        weight: 5
+    - minDistance: 5
       maxDistance: 5
       possibleMaps:
       - item: {fileID: 11400000, guid: 0241f1acb1a271147b0cef9b4bdbc319, type: 2}
-        weight: 100
-      - item: {fileID: 11400000, guid: 5d521c5853176ac4786483e428af2829, type: 2}
-        weight: 1
-      - item: {fileID: 11400000, guid: b3b0a34d4f1dad343b79e97fe59ccdcc, type: 2}
-        weight: 1
-      - item: {fileID: 11400000, guid: 3008e08acf0b09b4cad39de1f628fdbd, type: 2}
-        weight: 1
-      - item: {fileID: 11400000, guid: 7de68fadd0b11e540ba63ac7daf78db9, type: 2}
-        weight: 1
-    - minDistance: 6
-      maxDistance: 6
-      possibleMaps:
-      - item: {fileID: 11400000, guid: 0241f1acb1a271147b0cef9b4bdbc319, type: 2}
         weight: 70
       - item: {fileID: 11400000, guid: d5b9d2a2265552f49b0e589ae444aa3c, type: 2}
         weight: 30
       - item: {fileID: 11400000, guid: 5d521c5853176ac4786483e428af2829, type: 2}
-        weight: 1
+        weight: 5
       - item: {fileID: 11400000, guid: b3b0a34d4f1dad343b79e97fe59ccdcc, type: 2}
-        weight: 1
+        weight: 5
       - item: {fileID: 11400000, guid: 3008e08acf0b09b4cad39de1f628fdbd, type: 2}
-        weight: 1
+        weight: 5
       - item: {fileID: 11400000, guid: 7de68fadd0b11e540ba63ac7daf78db9, type: 2}
-        weight: 1
-    - minDistance: 7
+        weight: 5
+    - minDistance: 6
+      maxDistance: 7
+      possibleMaps:
+      - item: {fileID: 11400000, guid: d5b9d2a2265552f49b0e589ae444aa3c, type: 2}
+        weight: 100
+      - item: {fileID: 11400000, guid: 5d521c5853176ac4786483e428af2829, type: 2}
+        weight: 5
+      - item: {fileID: 11400000, guid: b3b0a34d4f1dad343b79e97fe59ccdcc, type: 2}
+        weight: 5
+      - item: {fileID: 11400000, guid: 3008e08acf0b09b4cad39de1f628fdbd, type: 2}
+        weight: 5
+      - item: {fileID: 11400000, guid: 7de68fadd0b11e540ba63ac7daf78db9, type: 2}
+        weight: 5
+    - minDistance: 8
       maxDistance: 8
       possibleMaps:
       - item: {fileID: 11400000, guid: d5b9d2a2265552f49b0e589ae444aa3c, type: 2}
-        weight: 100
-      - item: {fileID: 11400000, guid: 5d521c5853176ac4786483e428af2829, type: 2}
-        weight: 2
-      - item: {fileID: 11400000, guid: b3b0a34d4f1dad343b79e97fe59ccdcc, type: 2}
-        weight: 2
-      - item: {fileID: 11400000, guid: 3008e08acf0b09b4cad39de1f628fdbd, type: 2}
-        weight: 2
-      - item: {fileID: 11400000, guid: 7de68fadd0b11e540ba63ac7daf78db9, type: 2}
-        weight: 2
-    - minDistance: 9
-      maxDistance: 9
-      possibleMaps:
-      - item: {fileID: 11400000, guid: d5b9d2a2265552f49b0e589ae444aa3c, type: 2}
         weight: 70
       - item: {fileID: 11400000, guid: d3179068abcf4b54d99eac0c6bf7c918, type: 2}
         weight: 30
       - item: {fileID: 11400000, guid: 5d521c5853176ac4786483e428af2829, type: 2}
-        weight: 2
+        weight: 5
       - item: {fileID: 11400000, guid: b3b0a34d4f1dad343b79e97fe59ccdcc, type: 2}
-        weight: 2
+        weight: 5
       - item: {fileID: 11400000, guid: 3008e08acf0b09b4cad39de1f628fdbd, type: 2}
-        weight: 2
+        weight: 5
       - item: {fileID: 11400000, guid: 7de68fadd0b11e540ba63ac7daf78db9, type: 2}
-        weight: 2
-    - minDistance: 10
+        weight: 5
+    - minDistance: 9
+      maxDistance: 10
+      possibleMaps:
+      - item: {fileID: 11400000, guid: d3179068abcf4b54d99eac0c6bf7c918, type: 2}
+        weight: 100
+      - item: {fileID: 11400000, guid: 5d521c5853176ac4786483e428af2829, type: 2}
+        weight: 5
+      - item: {fileID: 11400000, guid: b3b0a34d4f1dad343b79e97fe59ccdcc, type: 2}
+        weight: 5
+      - item: {fileID: 11400000, guid: 3008e08acf0b09b4cad39de1f628fdbd, type: 2}
+        weight: 5
+      - item: {fileID: 11400000, guid: 7de68fadd0b11e540ba63ac7daf78db9, type: 2}
+        weight: 5
+    - minDistance: 11
       maxDistance: 11
       possibleMaps:
       - item: {fileID: 11400000, guid: d3179068abcf4b54d99eac0c6bf7c918, type: 2}
-        weight: 100
-      - item: {fileID: 11400000, guid: 5d521c5853176ac4786483e428af2829, type: 2}
-        weight: 2
-      - item: {fileID: 11400000, guid: b3b0a34d4f1dad343b79e97fe59ccdcc, type: 2}
-        weight: 2
-      - item: {fileID: 11400000, guid: 3008e08acf0b09b4cad39de1f628fdbd, type: 2}
-        weight: 2
-      - item: {fileID: 11400000, guid: 7de68fadd0b11e540ba63ac7daf78db9, type: 2}
-        weight: 2
-    - minDistance: 12
-      maxDistance: 12
-      possibleMaps:
-      - item: {fileID: 11400000, guid: d3179068abcf4b54d99eac0c6bf7c918, type: 2}
         weight: 70
       - item: {fileID: 11400000, guid: 5c779ed51e46d564194f5426bb590617, type: 2}
         weight: 30
       - item: {fileID: 11400000, guid: 5d521c5853176ac4786483e428af2829, type: 2}
-        weight: 3
+        weight: 5
       - item: {fileID: 11400000, guid: b3b0a34d4f1dad343b79e97fe59ccdcc, type: 2}
-        weight: 3
+        weight: 5
       - item: {fileID: 11400000, guid: 3008e08acf0b09b4cad39de1f628fdbd, type: 2}
-        weight: 2
+        weight: 5
       - item: {fileID: 11400000, guid: 7de68fadd0b11e540ba63ac7daf78db9, type: 2}
-        weight: 2
-    - minDistance: 13
-      maxDistance: 13
+        weight: 5
+    - minDistance: 12
+      maxDistance: 100
       possibleMaps:
       - item: {fileID: 11400000, guid: 5c779ed51e46d564194f5426bb590617, type: 2}
         weight: 100
       - item: {fileID: 11400000, guid: 5d521c5853176ac4786483e428af2829, type: 2}
-        weight: 3
+        weight: 6
       - item: {fileID: 11400000, guid: b3b0a34d4f1dad343b79e97fe59ccdcc, type: 2}
-        weight: 3
+        weight: 6
       - item: {fileID: 11400000, guid: 3008e08acf0b09b4cad39de1f628fdbd, type: 2}
-        weight: 2
+        weight: 6
       - item: {fileID: 11400000, guid: 7de68fadd0b11e540ba63ac7daf78db9, type: 2}
-        weight: 2
+        weight: 6
     rightRules:
     - minDistance: 0
-      maxDistance: 2
+      maxDistance: 1
       possibleMaps:
       - item: {fileID: 11400000, guid: f806d24eb871205468fae0f3c8ae3b45, type: 2}
         weight: 100
       - item: {fileID: 11400000, guid: 5d521c5853176ac4786483e428af2829, type: 2}
-        weight: 1
+        weight: 5
       - item: {fileID: 11400000, guid: b3b0a34d4f1dad343b79e97fe59ccdcc, type: 2}
-        weight: 1
+        weight: 5
       - item: {fileID: 11400000, guid: 3008e08acf0b09b4cad39de1f628fdbd, type: 2}
-        weight: 1
+        weight: 5
       - item: {fileID: 11400000, guid: 7de68fadd0b11e540ba63ac7daf78db9, type: 2}
-        weight: 1
-    - minDistance: 3
-      maxDistance: 3
+        weight: 5
+    - minDistance: 2
+      maxDistance: 2
       possibleMaps:
       - item: {fileID: 11400000, guid: f806d24eb871205468fae0f3c8ae3b45, type: 2}
         weight: 80
       - item: {fileID: 11400000, guid: 85b124993d358c54fa4b7381bf810d40, type: 2}
         weight: 20
       - item: {fileID: 11400000, guid: 5d521c5853176ac4786483e428af2829, type: 2}
-        weight: 1
+        weight: 5
       - item: {fileID: 11400000, guid: b3b0a34d4f1dad343b79e97fe59ccdcc, type: 2}
-        weight: 1
+        weight: 5
       - item: {fileID: 11400000, guid: 3008e08acf0b09b4cad39de1f628fdbd, type: 2}
-        weight: 1
+        weight: 5
       - item: {fileID: 11400000, guid: 7de68fadd0b11e540ba63ac7daf78db9, type: 2}
-        weight: 1
-    - minDistance: 4
+        weight: 5
+    - minDistance: 3
+      maxDistance: 4
+      possibleMaps:
+      - item: {fileID: 11400000, guid: 85b124993d358c54fa4b7381bf810d40, type: 2}
+        weight: 100
+      - item: {fileID: 11400000, guid: 5d521c5853176ac4786483e428af2829, type: 2}
+        weight: 5
+      - item: {fileID: 11400000, guid: b3b0a34d4f1dad343b79e97fe59ccdcc, type: 2}
+        weight: 5
+      - item: {fileID: 11400000, guid: 3008e08acf0b09b4cad39de1f628fdbd, type: 2}
+        weight: 5
+      - item: {fileID: 11400000, guid: 7de68fadd0b11e540ba63ac7daf78db9, type: 2}
+        weight: 5
+    - minDistance: 5
       maxDistance: 5
       possibleMaps:
       - item: {fileID: 11400000, guid: 85b124993d358c54fa4b7381bf810d40, type: 2}
-        weight: 100
-      - item: {fileID: 11400000, guid: 5d521c5853176ac4786483e428af2829, type: 2}
-        weight: 1
-      - item: {fileID: 11400000, guid: b3b0a34d4f1dad343b79e97fe59ccdcc, type: 2}
-        weight: 1
-      - item: {fileID: 11400000, guid: 3008e08acf0b09b4cad39de1f628fdbd, type: 2}
-        weight: 1
-      - item: {fileID: 11400000, guid: 7de68fadd0b11e540ba63ac7daf78db9, type: 2}
-        weight: 1
-    - minDistance: 6
-      maxDistance: 6
-      possibleMaps:
-      - item: {fileID: 11400000, guid: 85b124993d358c54fa4b7381bf810d40, type: 2}
         weight: 70
       - item: {fileID: 11400000, guid: 914e11bbdcc97f84ea1aca35e2f6bc66, type: 2}
         weight: 30
       - item: {fileID: 11400000, guid: 5d521c5853176ac4786483e428af2829, type: 2}
-        weight: 1
+        weight: 5
       - item: {fileID: 11400000, guid: b3b0a34d4f1dad343b79e97fe59ccdcc, type: 2}
-        weight: 1
+        weight: 5
       - item: {fileID: 11400000, guid: 3008e08acf0b09b4cad39de1f628fdbd, type: 2}
-        weight: 1
+        weight: 5
       - item: {fileID: 11400000, guid: 7de68fadd0b11e540ba63ac7daf78db9, type: 2}
-        weight: 1
-    - minDistance: 7
+        weight: 5
+    - minDistance: 6
+      maxDistance: 7
+      possibleMaps:
+      - item: {fileID: 11400000, guid: 914e11bbdcc97f84ea1aca35e2f6bc66, type: 2}
+        weight: 100
+      - item: {fileID: 11400000, guid: 5d521c5853176ac4786483e428af2829, type: 2}
+        weight: 5
+      - item: {fileID: 11400000, guid: 3008e08acf0b09b4cad39de1f628fdbd, type: 2}
+        weight: 5
+      - item: {fileID: 11400000, guid: 7de68fadd0b11e540ba63ac7daf78db9, type: 2}
+        weight: 5
+      - item: {fileID: 11400000, guid: b3b0a34d4f1dad343b79e97fe59ccdcc, type: 2}
+        weight: 5
+    - minDistance: 8
       maxDistance: 8
       possibleMaps:
       - item: {fileID: 11400000, guid: 914e11bbdcc97f84ea1aca35e2f6bc66, type: 2}
-        weight: 100
-      - item: {fileID: 11400000, guid: 5d521c5853176ac4786483e428af2829, type: 2}
-        weight: 2
-      - item: {fileID: 11400000, guid: 3008e08acf0b09b4cad39de1f628fdbd, type: 2}
-        weight: 2
-      - item: {fileID: 11400000, guid: 7de68fadd0b11e540ba63ac7daf78db9, type: 2}
-        weight: 2
-      - item: {fileID: 11400000, guid: b3b0a34d4f1dad343b79e97fe59ccdcc, type: 2}
-        weight: 2
-    - minDistance: 9
-      maxDistance: 9
-      possibleMaps:
-      - item: {fileID: 11400000, guid: 914e11bbdcc97f84ea1aca35e2f6bc66, type: 2}
         weight: 70
       - item: {fileID: 11400000, guid: 38b09e769bfbb874894386412faf0dac, type: 2}
         weight: 30
       - item: {fileID: 11400000, guid: 5d521c5853176ac4786483e428af2829, type: 2}
-        weight: 2
+        weight: 5
       - item: {fileID: 11400000, guid: b3b0a34d4f1dad343b79e97fe59ccdcc, type: 2}
-        weight: 2
+        weight: 5
       - item: {fileID: 11400000, guid: 3008e08acf0b09b4cad39de1f628fdbd, type: 2}
-        weight: 2
+        weight: 5
       - item: {fileID: 11400000, guid: 7de68fadd0b11e540ba63ac7daf78db9, type: 2}
-        weight: 2
-    - minDistance: 10
+        weight: 5
+    - minDistance: 9
+      maxDistance: 10
+      possibleMaps:
+      - item: {fileID: 11400000, guid: 38b09e769bfbb874894386412faf0dac, type: 2}
+        weight: 100
+      - item: {fileID: 11400000, guid: 5d521c5853176ac4786483e428af2829, type: 2}
+        weight: 5
+      - item: {fileID: 11400000, guid: b3b0a34d4f1dad343b79e97fe59ccdcc, type: 2}
+        weight: 5
+      - item: {fileID: 11400000, guid: 3008e08acf0b09b4cad39de1f628fdbd, type: 2}
+        weight: 5
+      - item: {fileID: 11400000, guid: 7de68fadd0b11e540ba63ac7daf78db9, type: 2}
+        weight: 5
+    - minDistance: 11
       maxDistance: 11
       possibleMaps:
       - item: {fileID: 11400000, guid: 38b09e769bfbb874894386412faf0dac, type: 2}
-        weight: 100
-      - item: {fileID: 11400000, guid: 5d521c5853176ac4786483e428af2829, type: 2}
-        weight: 2
-      - item: {fileID: 11400000, guid: b3b0a34d4f1dad343b79e97fe59ccdcc, type: 2}
-        weight: 2
-      - item: {fileID: 11400000, guid: 3008e08acf0b09b4cad39de1f628fdbd, type: 2}
-        weight: 2
-      - item: {fileID: 11400000, guid: 7de68fadd0b11e540ba63ac7daf78db9, type: 2}
-        weight: 2
-    - minDistance: 12
-      maxDistance: 12
-      possibleMaps:
-      - item: {fileID: 11400000, guid: 38b09e769bfbb874894386412faf0dac, type: 2}
         weight: 70
       - item: {fileID: 11400000, guid: 01ac1af7869e3544b82b0bcb4468ce0a, type: 2}
         weight: 30
       - item: {fileID: 11400000, guid: 5d521c5853176ac4786483e428af2829, type: 2}
-        weight: 3
+        weight: 5
       - item: {fileID: 11400000, guid: b3b0a34d4f1dad343b79e97fe59ccdcc, type: 2}
-        weight: 3
+        weight: 5
       - item: {fileID: 11400000, guid: 3008e08acf0b09b4cad39de1f628fdbd, type: 2}
-        weight: 2
+        weight: 5
       - item: {fileID: 11400000, guid: 7de68fadd0b11e540ba63ac7daf78db9, type: 2}
-        weight: 2
-    - minDistance: 13
-      maxDistance: 13
+        weight: 5
+    - minDistance: 12
+      maxDistance: 100
       possibleMaps:
       - item: {fileID: 11400000, guid: 01ac1af7869e3544b82b0bcb4468ce0a, type: 2}
         weight: 100
       - item: {fileID: 11400000, guid: 5d521c5853176ac4786483e428af2829, type: 2}
-        weight: 3
+        weight: 6
       - item: {fileID: 11400000, guid: b3b0a34d4f1dad343b79e97fe59ccdcc, type: 2}
-        weight: 3
+        weight: 6
       - item: {fileID: 11400000, guid: 3008e08acf0b09b4cad39de1f628fdbd, type: 2}
-        weight: 2
+        weight: 6
       - item: {fileID: 11400000, guid: 7de68fadd0b11e540ba63ac7daf78db9, type: 2}
-        weight: 2
-  mixChance: 0.02
+        weight: 6
+  mixChance: 0.25
 --- !u!1 &2145312784
 GameObject:
   m_ObjectHideFlags: 0

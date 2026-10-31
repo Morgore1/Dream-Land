@@ -190,3 +190,4 @@ MonoBehaviour:
   tidepoolCount: 0
   puddleCount: 10
   videoForThisMap: {fileID: 32900000, guid: 295ad976bfbb3794ebbb9b396bdb3ce7, type: 3}
+  mapMusic: {fileID: 8300000, guid: 1a938bc5ac7e54a17ba7f9fe62782b4e, type: 3}

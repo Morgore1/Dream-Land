@@ -49,10 +49,10 @@ MonoBehaviour:
     weight: 1
   RoadMiddle: {fileID: 11400000, guid: 1ef5cc7938ff66742949521f2b5e9e3a, type: 2}
   Sidewalk: {fileID: 0}
-  EastRoadTunnelEntrance: {fileID: 11400000, guid: 1ae04e29001c1874aa93d97f59917485, type: 2}
-  WestRoadTunnelEntrance: {fileID: 11400000, guid: 97b7e9f21df61d049a3bc9b1c3bece18, type: 2}
-  SouthRoadTunnelEntrance: {fileID: 11400000, guid: e4477b375f4c4494d8fafa84d29c24f2, type: 2}
-  NorthRoadTunnelEntrance: {fileID: 11400000, guid: bbe5a400a30fc394b9d8049fe8251dd3, type: 2}
+  EastRoadTunnelEntrance: {fileID: 11400000, guid: debed6fe01d02af40a4b1d880e95a39c, type: 2}
+  WestRoadTunnelEntrance: {fileID: 11400000, guid: d3dc4b808d2f73b498d74bdfe929bbb7, type: 2}
+  SouthRoadTunnelEntrance: {fileID: 11400000, guid: 9fc636d6ea6fdfa47b1513470fe70f3b, type: 2}
+  NorthRoadTunnelEntrance: {fileID: 11400000, guid: b76251e98c3ac164493e3131dc11303d, type: 2}
   RoadTunnel: {fileID: 0}
   CrossRoad: {fileID: 0}
   Path: {fileID: 11400000, guid: 2d394851d678d314b99599b82e2e4997, type: 2}

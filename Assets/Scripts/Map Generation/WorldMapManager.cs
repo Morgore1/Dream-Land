@@ -76,8 +76,11 @@ public class WorldMapManager : MonoBehaviour
         ProceduralMapSide side = coordinateManager.EffectiveSide;
         var cacheKey = new MapCacheKey(coord, side);
 
-        // A non-empty explicit list intentionally overrides even an existing cache entry.
-        bool hasExplicitOverride = explicitMaps != null && explicitMaps.Count > 0;
+        // Once the player is on a procedural trip, the coordinate rules always
+        // determine the map. Explicit lists are only used outside that trip.
+        bool hasExplicitOverride = !coordinateManager.IsInProceduralMap
+            && explicitMaps != null
+            && explicitMaps.Count > 0;
         if (!hasExplicitOverride && generatedSelections.TryGetValue(cacheKey, out MixedMapSelection cachedSelection))
             return cachedSelection;
 
@@ -139,7 +142,10 @@ public class WorldMapManager : MonoBehaviour
             }
         }
 
-        generatedSelections[cacheKey] = selection;
+        // Explicit teleport overrides are gate-specific and must not affect
+        // the distance-rule selection cached for this coordinate.
+        if (!hasExplicitOverride)
+            generatedSelections[cacheKey] = selection;
         return selection;
     }
 
