@@ -1890,8 +1890,8 @@ public class WalkerGenerator : MonoBehaviour
                 gridHandler[pos.x, pos.y] = Grid.SOLID;
                 Tile Tidepool = WeightedRandom.Pick(Tidepools);
                 Vector3Int tilePos = new Vector3Int(pos.x, pos.y, 0);
-                solidObjectsTileMap.SetTile(tilePos, Tidepool);
-                SaveTile("solidObjectsTileMap", tilePos, Tidepool);
+                nonCollisionLowTileMap.SetTile(tilePos, Tidepool);
+                SaveTile("nonCollisionLowTileMap", tilePos, Tidepool);
                 count++;
 
                 List<Vector2Int> neighbors = new List<Vector2Int>()

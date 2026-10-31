@@ -165,11 +165,11 @@ public enum MonsterType
     Flame = 2,
     Stone = 3,
     Natural = 4,
-    Chaos = 5,
-    Order = 6,
+    Chaotic = 5,
+    Orderly = 6,
     Shadow = 7,
     Light = 8,
-    Magical = 9
+    Plasma = 9
 }
 
 public enum Stat
@@ -189,16 +189,17 @@ public class TypeChart
 {
     static float[][] chart =
     {
-        // All matchups are neutral until type effectiveness is designed.
-        /*AQUATIC*/new float[] { 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f },
-        /*FLAME*/  new float[] { 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f },
-        /*STONE*/  new float[] { 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f },
-        /*NATURAL*/new float[] { 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f },
-        /*CHAOS*/  new float[] { 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f },
-        /*ORDER*/  new float[] { 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f },
-        /*SHADOW*/ new float[] { 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f },
-        /*LIGHT*/  new float[] { 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f },
-        /*MAGICAL*/new float[] { 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f },
+        // Columns are the defending type; rows are the attacking type.
+        //              AQU  FLA  STO  NAT  CHAO ORDY SHA  LIG  PLA
+        /*AQUATIC*/new float[] { 1f,  2f,  1f,  1f,  1f,  1f,  0.5f,1f,  1f },
+        /*FLAME*/  new float[] { 0.5f,1f,  2f,  2f,  1f,  1f,  1f,  1f,  1f },
+        /*STONE*/  new float[] { 0.5f,1f,  1f,  1f,  0.5f,1f,  1f,  1f,  0f },
+        /*NATURAL*/new float[] { 2f,  0.5f,1f,  1f,  1f,  1f,  0.5f,1f,  0f },
+        /*CHAOTIC*/new float[] { 1f,  1f,  0.5f,0.5f,1f,  1f,  1f,  2f,  1f },
+        /*ORDERLY*/new float[] { 1f,  1f,  1f,  1f,  2f,  1f,  1f,  0.5f,1f },
+        /*SHADOW*/ new float[] { 1f,  1f,  1f,  1f,  0.5f,1f,  1f,  0.5f,2f },
+        /*LIGHT*/  new float[] { 1f,  1f,  1f,  1f,  1f,  1f,  2f,  1f,  1f },
+        /*PLASMA*/ new float[] { 1f,  1f,  0f,  1f,  1f,  0.5f,2f,  2f,  1f },
     };
 
     public static float GetEffectiveness(MonsterType attackType, MonsterType defenseType)
