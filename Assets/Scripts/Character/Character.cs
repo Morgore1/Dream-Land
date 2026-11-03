@@ -50,13 +50,8 @@ public class Character : MonoBehaviour
 
     private bool IsPathClear(Vector3 targetPos)
     {
-        var diff = targetPos - transform.position;
-        var dir = diff.normalized;
-
-        if (Physics2D.BoxCast(transform.position + dir, new Vector2(0.2f, 0.2f), 0f, dir, diff.magnitude - 1, GameLayers.i.SolidLayer | GameLayers.i.InteractableLayer | GameLayers.i.PlayerLayer) == true)
-            return false;
-
-        return true;   
+        int blockingLayers = GameLayers.i.SolidLayer | GameLayers.i.InteractableLayer | GameLayers.i.PlayerLayer;
+        return Physics2D.OverlapBox(targetPos, new Vector2(0.2f, 0.2f), 0f, blockingLayers) == null;
     }
 
     private bool IsWalkable(Vector3 targetPos)

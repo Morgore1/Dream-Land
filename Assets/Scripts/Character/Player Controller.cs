@@ -124,27 +124,30 @@ public class PlayerController : MonoBehaviour
         character.Animator.IsMoving = false;
         yield return new WaitForSeconds(0.1f);
 
+        if (mapManager == null || walkerGenerator == null)
+        {
+            Debug.LogError("Cannot use a tunnel because the map manager or walker generator is missing.", this);
+            canMove = true;
+            yield break;
+        }
+
         Vector3Int playerTilePos = Vector3Int.FloorToInt(transform.position);
-        TileBase tile = null;
-        TeleportTile teleportTile = null;
+        TunnelTeleportData teleportData = null;
+        bool isProceduralMapActive = mapManager.proceduralMapRoot != null && mapManager.proceduralMapRoot.activeSelf;
 
-        tile = mapManager.walkerGenerator.RoadTunnelEntranceMap.GetTile(playerTilePos);
-        if (tile is TeleportTile tpTile1 && tpTile1.teleportData != null)
+        if (isProceduralMapActive)
         {
-            teleportTile = tpTile1;
+            walkerGenerator.TryGetTunnelTeleportData(playerTilePos, out teleportData);
         }
-        else
+        else if (mapManager.mainRoadTunnelEntranceMap != null)
         {
-            tile = mapManager.mainRoadTunnelEntranceMap.GetTile(playerTilePos);
-            if (tile is TeleportTile tpTile2 && tpTile2.teleportData != null)
-            {
-                teleportTile = tpTile2;
-            }
+            TileBase mainMapTile = mapManager.mainRoadTunnelEntranceMap.GetTile(playerTilePos);
+            if (mainMapTile is TeleportTile mainMapTeleportTile)
+                teleportData = mainMapTeleportTile.teleportData;
         }
 
-        if (teleportTile != null)
+        if (teleportData != null)
         {
-            TunnelTeleportData teleportData = teleportTile.teleportData;
             WorldCoordinateManager coordinateManager = WorldCoordinateManager.Instance;
             WorldMapManager worldMapManager = WorldMapManager.Instance;
 
@@ -159,71 +162,59 @@ public class PlayerController : MonoBehaviour
             Vector2Int entryDir = lastMoveDir;
             if (teleportData.toProceduralMap)
             {
-                if (!coordinateManager.IsInProceduralMap)
+                Vector2Int previousCoord = coordinateManager.worldCoord;
+                ProceduralMapSide previousSide = coordinateManager.EffectiveSide;
+                bool wasInProceduralMap = coordinateManager.IsInProceduralMap;
+
+                if (!wasInProceduralMap)
                 {
                     coordinateManager.StartProceduralTrip(teleportData.side);
-
-                    WorldMapManager.MixedMapSelection selection =
-                        worldMapManager.GetMapSelectionForCurrentPosition(teleportData.mapPreset);
-                    if (selection == null || selection.primary == null)
-                    {
-                        coordinateManager.IsInProceduralMap = false;
-                        Debug.LogWarning("No valid map selection is configured for this procedural gate.", this);
-                        canMove = true;
-                        yield break;
-                    }
-
-                    mapManager.ToggleMapVisibility(true);
-
-                    mapManager.SetMapPreset(selection.primary, selection.isMixed ? selection.secondary : null);
-
-                    walkerGenerator.lastEntryDirection = lastMoveDir;
-                    walkerGenerator.ClearMap();
-                    walkerGenerator.GenerateMapWithSelection(selection);
-
-                    
-                    Vector2Int destination = teleportData.destination;
-                    transform.position = new Vector3(
-                        destination.x + 0.5f,
-                        destination.y + 0.7f,
-                        0f
-                    );
-
-                    OnEnterProceduralMap?.Invoke();
                 }
-                
                 else
                 {
-                    Vector2Int dir = entryDir;
-                    Vector2Int previousCoord = coordinateManager.worldCoord;
-                    ProceduralMapSide previousSide = coordinateManager.EffectiveSide;
-                    coordinateManager.Move(dir);
-
-                    WorldMapManager.MixedMapSelection selection =
-                        worldMapManager.GetMapSelectionForCurrentPosition(teleportData.mapPreset);
-                    if (selection == null || selection.primary == null)
-                    {
-                        coordinateManager.RestorePosition(previousCoord, previousSide);
-                        Debug.LogWarning("No valid map selection is configured for this procedural coordinate.", this);
-                        canMove = true;
-                        yield break;
-                    }
-
-                    mapManager.ToggleMapVisibility(true);
-
-                    Vector2Int destination = teleportData.destination;
-                    transform.position = new Vector3(
-                        destination.x + 0.5f,
-                        destination.y + 0.7f,
-                        0f
-                    );
-
-                    mapManager.SetMapPreset(selection.primary, selection.isMixed ? selection.secondary : null);
-                    walkerGenerator.lastEntryDirection = lastMoveDir;
-                    // Generate map
-                    walkerGenerator.ClearMap();
-                    walkerGenerator.GenerateMapWithSelection(selection);
+                    coordinateManager.Move(entryDir);
                 }
+
+                WorldMapManager.MixedMapSelection selection =
+                    worldMapManager.GetMapSelectionForCurrentPosition(teleportData.mapPreset);
+                if (selection == null || selection.primary == null)
+                {
+                    coordinateManager.RestorePosition(previousCoord, previousSide);
+                    coordinateManager.IsInProceduralMap = wasInProceduralMap;
+                    Debug.LogWarning("No valid map selection is configured for this procedural coordinate; tunnel travel was cancelled.", this);
+                    canMove = true;
+                    yield break;
+                }
+
+                if (!walkerGenerator.CanGenerateMapWithSelection(selection, entryDir))
+                {
+                    coordinateManager.RestorePosition(previousCoord, previousSide);
+                    coordinateManager.IsInProceduralMap = wasInProceduralMap;
+                    Debug.LogError($"The selected map preset '{selection.primary.name}' is missing required floor, road, or directional gate tiles; tunnel travel was cancelled.", this);
+                    canMove = true;
+                    yield break;
+                }
+
+                walkerGenerator.lastEntryDirection = entryDir;
+                walkerGenerator.ClearMap();
+                walkerGenerator.GenerateMapWithSelection(selection);
+
+                if (!walkerGenerator.HasGeneratedTunnelGates ||
+                    !walkerGenerator.TryGetWalkableArrival(teleportData.destination, out Vector2Int arrivalPosition))
+                {
+                    coordinateManager.RestorePosition(previousCoord, previousSide);
+                    coordinateManager.IsInProceduralMap = wasInProceduralMap;
+                    Debug.LogError($"Generated map '{selection.primary.name}' has no usable tunnel gate or the TeleportTile-authored destination {teleportData.destination} is not walkable; tunnel travel was cancelled.", this);
+                    canMove = true;
+                    yield break;
+                }
+
+                mapManager.SetMapPreset(selection.primary, selection.isMixed ? selection.secondary : null);
+                mapManager.ToggleMapVisibility(true);
+                transform.position = new Vector3(arrivalPosition.x + 0.5f, arrivalPosition.y + 0.7f, 0f);
+
+                if (!wasInProceduralMap)
+                    OnEnterProceduralMap?.Invoke();
 
                 yield return new WaitForSeconds(0.5f);
             }
@@ -251,7 +242,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("No teleport tile or teleport data found under player");
+            Debug.LogWarning("No runtime tunnel data or authored main-map teleport data was found under the player.", this);
         }
 
         canMove = true;

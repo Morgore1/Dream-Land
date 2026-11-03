@@ -240,6 +240,44 @@ public class WalkerGenerator : MonoBehaviour
 
     private Dictionary<Vector2Int, TunnelTeleportData> tunnelTeleportPoints = new Dictionary<Vector2Int, TunnelTeleportData>();
 
+    public bool HasGeneratedTunnelGates => tunnelTeleportPoints.Count > 0;
+
+    public bool TryGetTunnelTeleportData(Vector3Int tilePosition, out TunnelTeleportData teleportData)
+    {
+        return tunnelTeleportPoints.TryGetValue(new Vector2Int(tilePosition.x, tilePosition.y), out teleportData);
+    }
+
+    public bool TryGetWalkableArrival(Vector2Int desiredPosition, out Vector2Int arrivalPosition)
+    {
+        arrivalPosition = desiredPosition;
+        if (gridHandler == null || gridHandler.GetLength(0) != MapWidth || gridHandler.GetLength(1) != MapHeight)
+            return false;
+
+        if (!InBounds(desiredPosition))
+            return false;
+
+        Grid cell = gridHandler[desiredPosition.x, desiredPosition.y];
+        return cell == Grid.ROAD || cell == Grid.FLOOR || cell == Grid.PATH || cell == Grid.SIDEWALK || cell == Grid.GRASS;
+    }
+
+    public bool CanGenerateMapWithSelection(WorldMapManager.MixedMapSelection selection, Vector2Int entryDirection)
+    {
+        if (selection == null || selection.primary == null)
+            return false;
+
+        MapPreset preset = selection.primary;
+        if (preset.MapWidth < 12 || preset.MapHeight < 12 || preset.RoadMiddle == null || preset.FloorTiles == null || preset.FloorTiles.Count == 0)
+            return false;
+
+        Vector2Int exitDirection = -NormalizeDirection(entryDirection);
+        TileBase entranceTile = exitDirection == Vector2Int.up ? preset.NorthRoadTunnelEntrance
+            : exitDirection == Vector2Int.down ? preset.SouthRoadTunnelEntrance
+            : exitDirection == Vector2Int.left ? preset.WestRoadTunnelEntrance
+            : preset.EastRoadTunnelEntrance;
+
+        return entranceTile != null && preset.FloorTiles.Exists(item => item != null && item.item != null);
+    }
+
     public void GenerateMapWithPreset(MapPreset preset)
     {
         if (preset == null)
@@ -252,7 +290,7 @@ public class WalkerGenerator : MonoBehaviour
         InitializeGrid(); // reset grid before generation
         SelectedVideoClip = videoForThisMap;
 
-        Debug.Log("Video selected: " + SelectedVideoClip.name);
+        Debug.Log("Video selected: " + (SelectedVideoClip != null ? SelectedVideoClip.name : "None"));
     }
 
     public void GenerateMapWithSelection(WorldMapManager.MixedMapSelection selection)
@@ -562,6 +600,8 @@ public class WalkerGenerator : MonoBehaviour
     }
     public void ClearMap()
     {
+        tunnelTeleportPoints.Clear();
+
         // Clear tiles
         floorTileMap?.ClearAllTiles();
         tallGrassTileMap?.ClearAllTiles();
@@ -1136,7 +1176,14 @@ public class WalkerGenerator : MonoBehaviour
         Vector2Int mainExitPos = GetFixedGatePositionForDirection(exitDir);
 
         Vector2Int mainEntrance = PlaceGates(mainExitPos, exitDir);
-        tunnels.Add((mainEntrance, exitDir));
+        if (tunnelTeleportPoints.ContainsKey(mainExitPos))
+        {
+            tunnels.Add((mainEntrance, exitDir));
+        }
+        else
+        {
+            Debug.LogError($"Could not place the required tunnel gate at {mainExitPos} facing {exitDir}. Check the preset's entrance tile assignment.", this);
+        }
 
         // Extra tunnels
         int extraCount = Random.Range(1, 4);
@@ -1154,10 +1201,17 @@ public class WalkerGenerator : MonoBehaviour
             Vector2Int pos = GetRandomPositionForDirection(dir);
 
             Vector2Int extraEntrance = PlaceGates(pos, dir);
-            tunnels.Add((extraEntrance, dir));
+            if (tunnelTeleportPoints.ContainsKey(pos))
+                tunnels.Add((extraEntrance, dir));
         }
 
         // Now roads will use correct entrance positions
+        if (tunnels.Count == 0)
+        {
+            CreateWalls();
+            return;
+        }
+
         GenerateConnectingRoads(tunnels);
     }
     void GenerateShorelineWestGates()
@@ -1180,6 +1234,12 @@ public class WalkerGenerator : MonoBehaviour
     }
     void PlaceShorelineGate(Vector2Int entrance, Vector2Int dir)
     {
+        if (WestRoadTunnelEntrance == null)
+        {
+            Debug.LogError("Cannot place shoreline gates because the west entrance tile is not assigned.", this);
+            return;
+        }
+
         Vector3Int pos = (Vector3Int)entrance;
 
         // Floor underneath
@@ -1197,11 +1257,9 @@ public class WalkerGenerator : MonoBehaviour
         gridHandler[entrance.x, entrance.y] = Grid.TUNNEL;
 
         // Teleport data
-        tunnelTeleportPoints[entrance] = new TunnelTeleportData
-        {
-            destination = GetTunnelDestinationForDirection(entrance, dir),
-            toProceduralMap = true
-        };
+        TunnelTeleportData teleportData = CreateRuntimeTeleportData(entrance, dir, WestRoadTunnelEntrance);
+        if (teleportData != null)
+            tunnelTeleportPoints[entrance] = teleportData;
 
         // Small road going INTO the map
         Vector2Int roadStart = entrance + Vector2Int.right;
@@ -1226,6 +1284,9 @@ public class WalkerGenerator : MonoBehaviour
         Vector3Int entrancePos = (Vector3Int)entrance;
         TileBase entranceTile = GetDirectionalTunnelEntranceTile(dir);
 
+        if (entranceTile == null)
+            return entrance;
+
         // 1. Place floor under the gate (IMPORTANT)
         Tile floor = WeightedRandom.Pick(floorTiles);
         floorTileMap.SetTile(entrancePos, floor);
@@ -1234,14 +1295,18 @@ public class WalkerGenerator : MonoBehaviour
         // 2. Now place the gate tile itself on the entrance tilemap
         if (isShoreline)
         {
-            if (entranceTile != null && entranceTile != WestRoadTunnelEntrance)
+            if (entranceTile != WestRoadTunnelEntrance)
             {
                 roadTunnelEntranceMap.SetTile(entrancePos, entranceTile);
                 gridHandler[entrance.x, entrance.y] = Grid.TUNNEL;
                 SaveTile(roadTunnelEntranceMap.name, entrancePos, entranceTile);
             }
+            else if (roadTunnelEntranceMap.GetTile(entrancePos) != entranceTile)
+            {
+                return entrance;
+            }
         }
-        else if (entranceTile != null)
+        else
         {
             roadTunnelEntranceMap.SetTile(entrancePos, entranceTile);
             gridHandler[entrance.x, entrance.y] = Grid.TUNNEL;
@@ -1249,11 +1314,10 @@ public class WalkerGenerator : MonoBehaviour
         }
 
         // Teleport point keyed on the entrance tile the player stands on
-        tunnelTeleportPoints[entrance] = new TunnelTeleportData
-        {
-            destination = GetTunnelDestinationForDirection(entrance, dir),
-            toProceduralMap = true
-        };
+        TunnelTeleportData teleportData = CreateRuntimeTeleportData(entrance, dir, entranceTile);
+        if (teleportData == null)
+            return entrance;
+        tunnelTeleportPoints[entrance] = teleportData;
 
         
 
@@ -1273,6 +1337,27 @@ public class WalkerGenerator : MonoBehaviour
         }
 
         return roadStart; // this is the true tunnel entrance position
+    }
+
+    private TunnelTeleportData CreateRuntimeTeleportData(Vector2Int entrance, Vector2Int dir, TileBase entranceTile)
+    {
+        TunnelTeleportData assetData = entranceTile is TeleportTile teleportTile ? teleportTile.teleportData : null;
+        if (assetData == null)
+        {
+            Debug.LogError($"Tunnel tile at {entrance} is not a TeleportTile with teleport data; it cannot be used as a gate.", this);
+            return null;
+        }
+
+        return new TunnelTeleportData
+        {
+            destination = assetData.destination,
+            toProceduralMap = assetData.toProceduralMap,
+            side = assetData.side,
+            direction = dir,
+            mapPreset = assetData.mapPreset != null
+                ? new List<WeightedItem<MapPreset>>(assetData.mapPreset)
+                : new List<WeightedItem<MapPreset>>()
+        };
     }
     void GenerateOrganicPath(Vector2Int start, Vector2Int end)
     {
