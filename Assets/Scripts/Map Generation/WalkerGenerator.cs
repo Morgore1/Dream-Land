@@ -142,6 +142,21 @@ public class WalkerGenerator : MonoBehaviour
 
     [SerializeField] float clusterFillPercent = 0.25f;
 
+    [Header("Procedural Layout Variation")]
+    [Range(0f, 1f)] [SerializeField] private float townLayoutChance = 0.4f;
+    [Range(0.1f, 1f)] [SerializeField] private float compactClusterFillMultiplier = 0.55f;
+    [Min(8)] [SerializeField] private int townRadius = 26;
+    [Range(1f, 4f)] [SerializeField] private float townHouseMultiplier = 2f;
+    [Min(0)] [SerializeField] private int extraRouteCount = 2;
+    [Header("Route Surroundings")]
+    [Min(1)] [SerializeField] private int compactRouteFloorWidth = 3;
+    [Min(1)] [SerializeField] private int townRouteFloorWidth = 9;
+    [Range(0, 4)] [SerializeField] private int routeEdgeVariation = 2;
+    private bool useTownLayout;
+    private Vector2Int townCenter;
+    private HashSet<Vector2Int> townFloorCells = new HashSet<Vector2Int>();
+    private int housesToPlace;
+
     private Grid[,] gridHandler;
     private List<WalkerObject> Walkers;
     private int TileCount = 0;
@@ -326,6 +341,14 @@ public class WalkerGenerator : MonoBehaviour
         minClusterHeight = preset.minClusterHeight;
         maxClusterHeight = preset.maxClusterHeight;
         clusterFillPercent = preset.clusterFillPercent;
+        townLayoutChance = preset.townLayoutChance;
+        compactClusterFillMultiplier = preset.compactClusterFillMultiplier;
+        townRadius = preset.townRadius;
+        townHouseMultiplier = preset.townHouseMultiplier;
+        extraRouteCount = preset.extraRouteCount;
+        compactRouteFloorWidth = preset.compactRouteFloorWidth;
+        townRouteFloorWidth = preset.townRouteFloorWidth;
+        routeEdgeVariation = preset.routeEdgeVariation;
 
         HousePrefabs = new List<WeightedItem<HouseTileData>>(preset.HousePrefabs);
 
@@ -403,6 +426,14 @@ public class WalkerGenerator : MonoBehaviour
         blendedPreset.minClusterHeight = primary.minClusterHeight;
         blendedPreset.maxClusterHeight = primary.maxClusterHeight;
         blendedPreset.clusterFillPercent = primary.clusterFillPercent;
+        blendedPreset.townLayoutChance = primary.townLayoutChance;
+        blendedPreset.compactClusterFillMultiplier = primary.compactClusterFillMultiplier;
+        blendedPreset.townRadius = primary.townRadius;
+        blendedPreset.townHouseMultiplier = primary.townHouseMultiplier;
+        blendedPreset.extraRouteCount = primary.extraRouteCount;
+        blendedPreset.compactRouteFloorWidth = primary.compactRouteFloorWidth;
+        blendedPreset.townRouteFloorWidth = primary.townRouteFloorWidth;
+        blendedPreset.routeEdgeVariation = primary.routeEdgeVariation;
 
         blendedPreset.isShoreline = primary.isShoreline;
         blendedPreset.hasRiver = primary.hasRiver;
@@ -663,6 +694,10 @@ public class WalkerGenerator : MonoBehaviour
         }
 
         Walkers = new List<WalkerObject>();
+        useTownLayout = MapWidth >= 40 && MapHeight >= 40 && Random.value < townLayoutChance;
+        townFloorCells.Clear();
+        if (!useTownLayout)
+            clusterFillPercent *= compactClusterFillMultiplier;
         
         GenerateClusters();
         if (hasRiver)
@@ -955,10 +990,45 @@ public class WalkerGenerator : MonoBehaviour
             }
         }
 
+        CreateOuterWallBorder();
+
         // Once walls are generated, generate other features
         PlaceHouses();
         GenerateGrassPatches();
         
+    }
+
+    private void CreateOuterWallBorder()
+    {
+        const int borderThickness = 5;
+        if (MapWidth <= borderThickness * 2 || MapHeight <= borderThickness * 2)
+            return;
+
+        for (int x = 0; x < MapWidth; x++)
+        {
+            for (int y = 0; y < MapHeight; y++)
+            {
+                bool isOuterBorder = x < borderThickness || x >= MapWidth - borderThickness
+                    || y < borderThickness || y >= MapHeight - borderThickness;
+                if (!isOuterBorder || gridHandler[x, y] == Grid.TUNNEL)
+                    continue;
+
+                Vector3Int pos = new Vector3Int(x, y, 0);
+                Tile floor = WeightedRandom.Pick(floorTiles);
+                Tile wall = WeightedRandom.Pick(wallTiles);
+
+                roadTileMap?.SetTile(pos, null);
+                pathTileMap?.SetTile(pos, null);
+                riverTileMap?.SetTile(pos, null);
+                riverTileMap?.SetTransformMatrix(pos, Matrix4x4.identity);
+                floorTileMap?.SetTile(pos, floor);
+                mapWallTileMap?.SetTile(pos, wall);
+                gridHandler[x, y] = Grid.WALL;
+
+                SaveTile("floorTileMap", pos, floor);
+                SaveTile("mapWallTileMap", pos, wall);
+            }
+        }
     }
     List<Vector2Int> riverTiles = new List<Vector2Int>();
     void GenerateRiver()
@@ -1363,6 +1433,11 @@ public class WalkerGenerator : MonoBehaviour
     {
         Vector2Int current = start;
         int safety = MapWidth * MapHeight;
+        int baseFloorWidth = useTownLayout ? townRouteFloorWidth : compactRouteFloorWidth;
+        int minimumFloorWidth = Mathf.Max(1, baseFloorWidth - routeEdgeVariation);
+        int maximumFloorWidth = baseFloorWidth + routeEdgeVariation;
+        int leftFloorWidth = Random.Range(minimumFloorWidth, maximumFloorWidth + 1);
+        int rightFloorWidth = Random.Range(minimumFloorWidth, maximumFloorWidth + 1);
 
         SetRoadTile(current);
 
@@ -1413,7 +1488,69 @@ public class WalkerGenerator : MonoBehaviour
 
             current = next;
             SetRoadTile(current);
+
+            // Keep the road tile itself one cell wide; carve a variable floor valley around it.
+            leftFloorWidth = VaryRouteEdgeWidth(leftFloorWidth, minimumFloorWidth, maximumFloorWidth);
+            rightFloorWidth = VaryRouteEdgeWidth(rightFloorWidth, minimumFloorWidth, maximumFloorWidth);
+            Vector2Int perpendicular = new Vector2Int(-step.y, step.x);
+            CarveRouteFloorShoulder(current, perpendicular, leftFloorWidth, rightFloorWidth);
         }
+
+        // The randomized path is monotonic, but retain a deterministic fallback in case
+        // future route rules introduce a blocked step or the safety bound is reached.
+        while (current != end)
+        {
+            if (current.x != end.x)
+                current.x += end.x > current.x ? 1 : -1;
+            else
+                current.y += end.y > current.y ? 1 : -1;
+
+            SetRoadTile(current);
+            Vector2Int fallbackPerpendicular = Mathf.Abs(end.x - current.x) > Mathf.Abs(end.y - current.y)
+                ? Vector2Int.up
+                : Vector2Int.right;
+            CarveRouteFloorShoulder(current, fallbackPerpendicular, leftFloorWidth, rightFloorWidth);
+        }
+    }
+
+    private int VaryRouteEdgeWidth(int currentWidth, int minimumWidth, int maximumWidth)
+    {
+        // Most steps retain the current bank width; occasional small changes create natural bends.
+        if (Random.value < 0.28f)
+            currentWidth += Random.Range(-1, 2);
+
+        return Mathf.Clamp(currentWidth, minimumWidth, maximumWidth);
+    }
+
+    private void CarveRouteFloorShoulder(Vector2Int roadPosition, Vector2Int perpendicular, int leftWidth, int rightWidth)
+    {
+        for (int distance = 1; distance <= leftWidth; distance++)
+            CarveWalkableFloor(roadPosition + perpendicular * distance);
+
+        for (int distance = 1; distance <= rightWidth; distance++)
+            CarveWalkableFloor(roadPosition - perpendicular * distance);
+    }
+
+    private void CarveWalkableFloor(Vector2Int position)
+    {
+        if (!InBounds(position))
+            return;
+
+        Grid cell = gridHandler[position.x, position.y];
+        if (cell != Grid.EMPTY && cell != Grid.FLOOR && cell != Grid.WALL)
+            return;
+
+        Vector3Int tilePosition = new Vector3Int(position.x, position.y, 0);
+        if (cell == Grid.WALL)
+        {
+            mapWallTileMap?.SetTile(tilePosition, null);
+            wallTileMap?.SetTile(tilePosition, null);
+        }
+
+        Tile floor = WeightedRandom.Pick(floorTiles);
+        floorTileMap.SetTile(tilePosition, floor);
+        gridHandler[position.x, position.y] = Grid.FLOOR;
+        SaveTile("floorTileMap", tilePosition, floor);
     }
 
     void GenerateConnectingRoads(List<(Vector2Int pos, Vector2Int dir)> tunnels)
@@ -1421,9 +1558,22 @@ public class WalkerGenerator : MonoBehaviour
         if (tunnels == null || tunnels.Count == 0)
             return;
 
-        // --- Compute a hub position (center of a random cluster) ---
+        if (useTownLayout)
+        {
+            int margin = Mathf.CeilToInt(GetTownDistrictRadius() * 1.2f) + 3;
+            townCenter = new Vector2Int(
+                Mathf.Clamp(MapWidth / 2 + Random.Range(-MapWidth / 10, MapWidth / 10 + 1), margin, MapWidth - margin - 1),
+                Mathf.Clamp(MapHeight / 2 + Random.Range(-MapHeight / 10, MapHeight / 10 + 1), margin, MapHeight - margin - 1));
+            CarveTownDistrict(townCenter);
+        }
+
+        // Town layouts route through their plaza; compact layouts use a variable cluster hub.
         Vector2Int hub;
-        if (this.clusters != null && this.clusters.Count > 0)
+        if (useTownLayout)
+        {
+            hub = townCenter;
+        }
+        else if (this.clusters != null && this.clusters.Count > 0)
         {
             int randomIndex = Random.Range(0, this.clusters.Count);
             hub = this.clusters[randomIndex].center;
@@ -1456,7 +1606,100 @@ public class WalkerGenerator : MonoBehaviour
             GenerateOrganicPath(t.pos, hub);
         }
 
+        // Optional links add loops/branches on town layouts; compact maps stay route-focused.
+        int routeCount = useTownLayout ? extraRouteCount : Mathf.Min(1, extraRouteCount);
+        if (this.clusters != null && this.clusters.Count > 1)
+        {
+            for (int i = 0; i < routeCount; i++)
+            {
+                WalkerCluster cluster = this.clusters[Random.Range(0, this.clusters.Count)];
+                GenerateOrganicPath(cluster.center, hub);
+            }
+        }
+
         CreateWalls();
+    }
+
+    private void CarveTownDistrict(Vector2Int center)
+    {
+        float radius = GetTownDistrictRadius();
+        float radiusX = radius * Random.Range(0.9f, 1.2f);
+        float radiusY = radius * Random.Range(0.75f, 1.15f);
+        int shape = Random.Range(0, 3);
+        float rotation = Random.Range(0f, 360f) * Mathf.Deg2Rad;
+        float phaseA = Random.Range(0f, Mathf.PI * 2f);
+        float phaseB = Random.Range(0f, Mathf.PI * 2f);
+        float phaseC = Random.Range(0f, Mathf.PI * 2f);
+        int minX = Mathf.Max(2, center.x - Mathf.CeilToInt(radiusX));
+        int maxX = Mathf.Min(MapWidth - 3, center.x + Mathf.CeilToInt(radiusX));
+        int minY = Mathf.Max(2, center.y - Mathf.CeilToInt(radiusY));
+        int maxY = Mathf.Min(MapHeight - 3, center.y + Mathf.CeilToInt(radiusY));
+
+        for (int x = minX; x <= maxX; x++)
+        {
+            for (int y = minY; y <= maxY; y++)
+            {
+                float offsetX = x - center.x;
+                float offsetY = y - center.y;
+                float localX = (offsetX * Mathf.Cos(rotation) + offsetY * Mathf.Sin(rotation)) / radiusX;
+                float localY = (-offsetX * Mathf.Sin(rotation) + offsetY * Mathf.Cos(rotation)) / radiusY;
+                if (!IsInsideTownShape(localX, localY, shape, phaseA, phaseB, phaseC))
+                    continue;
+
+                Vector2Int cell = new Vector2Int(x, y);
+                if (gridHandler[x, y] == Grid.EMPTY)
+                    CarveTile(cell);
+                if (gridHandler[x, y] == Grid.FLOOR)
+                    townFloorCells.Add(cell);
+            }
+        }
+    }
+
+    private bool IsInsideTownShape(float x, float y, int shape, float phaseA, float phaseB, float phaseC)
+    {
+        if (shape == 1)
+        {
+            // A rounded L formed from two joined arms, with subtly wandering edges.
+            float edgeNoise = 0.035f * Mathf.Sin(x * 9f + phaseA) + 0.025f * Mathf.Sin(y * 7f + phaseB);
+            bool longArm = IsInsideRoundedRectangle(x, y, -0.96f, 0.38f, -0.34f - edgeNoise, 0.34f + edgeNoise, 0.16f);
+            bool shortArm = IsInsideRoundedRectangle(x, y, -0.32f - edgeNoise, 0.34f + edgeNoise, -0.34f, 0.96f, 0.16f);
+            return longArm || shortArm;
+        }
+
+        float angle = Mathf.Atan2(y, x);
+        float radius = Mathf.Sqrt(x * x + y * y);
+        float boundary = 1f
+            + 0.09f * Mathf.Sin(angle * 3f + phaseA)
+            + 0.055f * Mathf.Sin(angle * 5f + phaseB)
+            + 0.035f * Mathf.Sin(angle * 8f + phaseC);
+
+        if (shape == 0)
+        {
+            // An oval with mild low-frequency asymmetry rather than a perfect ellipse.
+            float ellipseRadius = Mathf.Sqrt(x * x + y * y);
+            float ovalEdge = 1f + 0.045f * Mathf.Sin(angle * 2f + phaseA) + 0.025f * Mathf.Sin(angle * 6f + phaseC);
+            return ellipseRadius <= ovalEdge;
+        }
+
+        // A broad, naturally lobed town footprint with no high-frequency per-cell noise.
+        return radius <= boundary;
+    }
+
+    private static bool IsInsideRoundedRectangle(float x, float y, float minX, float maxX, float minY, float maxY, float cornerRadius)
+    {
+        float centerX = (minX + maxX) * 0.5f;
+        float centerY = (minY + maxY) * 0.5f;
+        float halfWidth = (maxX - minX) * 0.5f - cornerRadius;
+        float halfHeight = (maxY - minY) * 0.5f - cornerRadius;
+        float outsideX = Mathf.Max(Mathf.Abs(x - centerX) - halfWidth, 0f);
+        float outsideY = Mathf.Max(Mathf.Abs(y - centerY) - halfHeight, 0f);
+        return outsideX * outsideX + outsideY * outsideY <= cornerRadius * cornerRadius;
+    }
+
+    private float GetTownDistrictRadius()
+    {
+        float maximumRadius = Mathf.Max(8f, (Mathf.Min(MapWidth, MapHeight) - 10f) / 2.4f);
+        return Mathf.Clamp(townRadius, 8f, maximumRadius);
     }
 
     void SetRoadTile(Vector2Int pos)
@@ -1464,12 +1707,25 @@ public class WalkerGenerator : MonoBehaviour
         if (!InBounds(pos))
             return;
 
-        // Don't overwrite walls or tunnel entrances
-        if (gridHandler[pos.x, pos.y] == Grid.WALL ||
-            gridHandler[pos.x, pos.y] == Grid.TUNNEL)
+        // Preserve gate visuals/data, but cut a continuous route through generated walls
+        // and rivers instead of silently omitting those route cells.
+        if (gridHandler[pos.x, pos.y] == Grid.TUNNEL)
             return;
 
         Vector3Int v3 = (Vector3Int)pos;
+        if (gridHandler[pos.x, pos.y] == Grid.WALL)
+        {
+            mapWallTileMap?.SetTile(v3, null);
+            wallTileMap?.SetTile(v3, null);
+            Tile floor = WeightedRandom.Pick(floorTiles);
+            floorTileMap?.SetTile(v3, floor);
+            SaveTile("floorTileMap", v3, floor);
+        }
+        if (gridHandler[pos.x, pos.y] == Grid.RIVER)
+        {
+            riverTileMap?.SetTile(v3, null);
+            riverTileMap?.SetTransformMatrix(v3, Matrix4x4.identity);
+        }
 
         roadTileMap.SetTile(v3, RoadMiddleTile);
         gridHandler[pos.x, pos.y] = Grid.ROAD;
@@ -2041,18 +2297,44 @@ public class WalkerGenerator : MonoBehaviour
     {
         int housesPlaced = 0;
         int attempts = 0;
+        int targetHouseCount = useTownLayout
+            ? Mathf.RoundToInt(NumberOfHouses * townHouseMultiplier)
+            : NumberOfHouses;
+        List<Vector2Int> townCells = useTownLayout ? new List<Vector2Int>(townFloorCells) : null;
+        Vector2Int houseGroupCenter = townCenter;
+        int activeHouseGroup = -1;
 
         // Max house size to check for space clearance
         int maxHouseWidth = 0;
         int maxHouseHeight = 0;
         if (HousePrefabs != null &&  HousePrefabs.Count > 0)
         {
-            while (housesPlaced < NumberOfHouses && attempts < 1000)
+            while (housesPlaced < targetHouseCount && attempts < 2000)
             {
                 attempts++;
 
-                int x = Random.Range(1, MapWidth - maxHouseWidth);
-                int y = Random.Range(1, MapHeight - maxHouseHeight);
+                int x;
+                int y;
+                if (townCells != null && townCells.Count > 0 && attempts < 1800)
+                {
+                    int group = housesPlaced / 3;
+                    if (group != activeHouseGroup)
+                    {
+                        activeHouseGroup = group;
+                        houseGroupCenter = townCells[Random.Range(0, townCells.Count)];
+                    }
+
+                    Vector2Int candidate = houseGroupCenter + new Vector2Int(Random.Range(-9, 10), Random.Range(-9, 10));
+                    if (!townFloorCells.Contains(candidate))
+                        candidate = townCells[Random.Range(0, townCells.Count)];
+                    x = candidate.x;
+                    y = candidate.y;
+                }
+                else
+                {
+                    x = Random.Range(1, MapWidth - maxHouseWidth);
+                    y = Random.Range(1, MapHeight - maxHouseHeight);
+                }
 
                 HouseTileData selectedHouse = WeightedRandom.Pick(HousePrefabs);
 
@@ -2393,53 +2675,69 @@ public class WalkerGenerator : MonoBehaviour
     }
     void GeneratePathToSidewalk(int doorX, int doorY)
     {
-        int range = 10;
-        Vector2Int? nearestSidewalk = null;
-        float minDist = float.MaxValue;
+        Vector2Int door = new Vector2Int(doorX, doorY);
+        Queue<Vector2Int> frontier = new Queue<Vector2Int>();
+        Dictionary<Vector2Int, Vector2Int> cameFrom = new Dictionary<Vector2Int, Vector2Int>();
+        HashSet<Vector2Int> visited = new HashSet<Vector2Int>();
+        Vector2Int[] directions = { Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right };
 
-        for (int dx = -range; dx <= range; dx++)
+        foreach (Vector2Int direction in directions)
         {
-            for (int dy = -range; dy <= range; dy++)
+            Vector2Int neighbor = door + direction;
+            if (InBounds(neighbor) && IsWalkableGridCell(gridHandler[neighbor.x, neighbor.y]))
             {
-                int checkX = doorX + dx;
-                int checkY = doorY + dy;
-
-                if (InBounds(checkX, checkY) && gridHandler[checkX, checkY] == Grid.SIDEWALK)
-                {
-                    float dist = Vector2Int.Distance(new Vector2Int(doorX, doorY), new Vector2Int(checkX, checkY));
-                    if (dist < minDist)
-                    {
-                        minDist = dist;
-                        nearestSidewalk = new Vector2Int(checkX, checkY);
-                    }
-                }
+                frontier.Enqueue(neighbor);
+                visited.Add(neighbor);
+                cameFrom[neighbor] = door;
             }
         }
 
-        if (nearestSidewalk.HasValue)
+        Vector2Int target = new Vector2Int(-1, -1);
+        while (frontier.Count > 0)
         {
-            Vector2Int current = new Vector2Int(doorX, doorY);
-            Vector2Int target = nearestSidewalk.Value;
-
-            // Simple straight-line path generation
-            while (current != target)
+            Vector2Int current = frontier.Dequeue();
+            Grid cell = gridHandler[current.x, current.y];
+            if (cell == Grid.ROAD || cell == Grid.SIDEWALK || cell == Grid.PATH)
             {
-                if (current.x < target.x) current.x++;
-                else if (current.x > target.x) current.x--;
-                else if (current.y < target.y) current.y++;
-                else if (current.y > target.y) current.y--;
+                target = current;
+                break;
+            }
 
-                // Don't overwrite sidewalk or door
-                if (gridHandler[current.x, current.y] == Grid.EMPTY || gridHandler[current.x, current.y] == Grid.FLOOR )
-                {
-                    gridHandler[current.x, current.y] = Grid.PATH;
-                    Vector3Int pos = new Vector3Int(current.x, current.y, 0);
-                    pathTileMap.SetTile(pos, Path); // Optional: use a special path tile
-                    SaveTile("pathTileMap", pos, Path);
-                    Debug.Log($"Generating path from door at ({doorX}, {doorY}) to sidewalk at ({target.x}, {target.y})");
-                }
+            foreach (Vector2Int direction in directions)
+            {
+                Vector2Int next = current + direction;
+                if (!InBounds(next) || visited.Contains(next) || !IsWalkableGridCell(gridHandler[next.x, next.y]))
+                    continue;
+
+                visited.Add(next);
+                cameFrom[next] = current;
+                frontier.Enqueue(next);
             }
         }
+
+        if (target.x < 0)
+            return;
+
+        Vector2Int pathCell = target;
+        while (cameFrom.TryGetValue(pathCell, out Vector2Int previous) && previous != door)
+        {
+            pathCell = previous;
+            if (gridHandler[pathCell.x, pathCell.y] != Grid.FLOOR)
+                continue;
+
+            Vector3Int tilePos = new Vector3Int(pathCell.x, pathCell.y, 0);
+            if (Path != null)
+            {
+                pathTileMap.SetTile(tilePos, Path);
+                SaveTile(pathTileMap.name, tilePos, Path);
+            }
+            gridHandler[pathCell.x, pathCell.y] = Grid.PATH;
+        }
+    }
+
+    private static bool IsWalkableGridCell(Grid cell)
+    {
+        return cell == Grid.ROAD || cell == Grid.FLOOR || cell == Grid.PATH || cell == Grid.SIDEWALK || cell == Grid.GRASS;
     }
 
     void PlaceItems()

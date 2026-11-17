@@ -28,6 +28,17 @@ public class MapPreset : ScriptableObject
 
     public float clusterFillPercent = 0.25f;
 
+    [Header("Procedural Layout Variation")]
+    [Range(0f, 1f)] public float townLayoutChance = 0.4f;
+    [Range(0.1f, 1f)] public float compactClusterFillMultiplier = 0.55f;
+    [Min(8)] public int townRadius = 26;
+    [Range(1f, 4f)] public float townHouseMultiplier = 2f;
+    [Min(0)] public int extraRouteCount = 2;
+    [Header("Route Surroundings")]
+    [Min(1)] public int compactRouteFloorWidth = 3;
+    [Min(1)] public int townRouteFloorWidth = 9;
+    [Range(0, 4)] public int routeEdgeVariation = 2;
+
 
     [Header("Special Map Conditions")]
     public bool isShoreline;

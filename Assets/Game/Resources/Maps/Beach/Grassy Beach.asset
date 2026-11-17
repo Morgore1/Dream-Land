@@ -19,14 +19,26 @@ MonoBehaviour:
   WaitTime: 0.01
   minClusters: 3
   maxClusters: 6
-  minClusterWidth: 8
+  minClusterWidth: 12
   maxClusterWidth: 16
-  minClusterHeight: 8
+  minClusterHeight: 12
   maxClusterHeight: 16
   clusterFillPercent: 0.25
+  townLayoutChance: 0.25
+  compactClusterFillMultiplier: 0.25
+  townRadius: 16
+  townHouseMultiplier: 3
+  extraRouteCount: 2
+  compactRouteFloorWidth: 3
+  townRouteFloorWidth: 9
+  routeEdgeVariation: 2
   isShoreline: 0
   hasRiver: 0
-  HousePrefabs: []
+  HousePrefabs:
+  - item: {fileID: 11400000, guid: a87bbf51fc015174d8716bcde2204529, type: 2}
+    weight: 1
+  - item: {fileID: 11400000, guid: 51f1adffe13c410458d495b3294ba1e9, type: 2}
+    weight: 1
   FloorTiles:
   - item: {fileID: 11400000, guid: f6662fd1fa1c35749b47792ef1bf89fd, type: 2}
     weight: 4
@@ -160,7 +172,7 @@ MonoBehaviour:
       moves: []
     weight: 1
   NumberOfTrees: 5
-  NumberOfHouses: 0
+  NumberOfHouses: 2
   NumberOfNPCs: 0
   NumberOfObtainableItems: 3
   NumberOfObstacles: 8
