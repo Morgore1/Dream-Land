@@ -32,6 +32,12 @@ MonoBehaviour:
   compactRouteFloorWidth: 3
   townRouteFloorWidth: 9
   routeEdgeVariation: 2
+  wildernessChance: 0.2
+  wildernessTreeMultiplier: 2
+  wildernessGrassPatchCountMultiplier: 1.5
+  wildernessGrassPatchSizeMultiplier: 1.5
+  wildernessClusterCountMultiplier: 1.5
+  wildernessClusterSizeMultiplier: 0.35
   isShoreline: 0
   hasRiver: 0
   HousePrefabs:

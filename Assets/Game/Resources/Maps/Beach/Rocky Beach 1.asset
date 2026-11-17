@@ -24,6 +24,20 @@ MonoBehaviour:
   minClusterHeight: 8
   maxClusterHeight: 16
   clusterFillPercent: 0.25
+  townLayoutChance: 0.25
+  compactClusterFillMultiplier: 0.25
+  townRadius: 16
+  townHouseMultiplier: 3
+  extraRouteCount: 2
+  compactRouteFloorWidth: 3
+  townRouteFloorWidth: 9
+  routeEdgeVariation: 2
+  wildernessChance: 0.2
+  wildernessTreeMultiplier: 2
+  wildernessGrassPatchCountMultiplier: 2
+  wildernessGrassPatchSizeMultiplier: 1.5
+  wildernessClusterCountMultiplier: 1.5
+  wildernessClusterSizeMultiplier: 0.75
   isShoreline: 0
   hasRiver: 0
   HousePrefabs: []

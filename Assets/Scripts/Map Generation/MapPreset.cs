@@ -39,6 +39,14 @@ public class MapPreset : ScriptableObject
     [Min(1)] public int townRouteFloorWidth = 9;
     [Range(0, 4)] public int routeEdgeVariation = 2;
 
+    [Header("Wilderness Variation")]
+    [Range(0f, 1f)] public float wildernessChance = 0.2f;
+    [Min(0.1f)] public float wildernessTreeMultiplier = 2f;
+    [Min(0.1f)] public float wildernessGrassPatchCountMultiplier = 2f;
+    [Min(0.1f)] public float wildernessGrassPatchSizeMultiplier = 1.5f;
+    [Min(0.1f)] public float wildernessClusterCountMultiplier = 1.5f;
+    [Range(0.25f, 1f)] public float wildernessClusterSizeMultiplier = 0.75f;
+
 
     [Header("Special Map Conditions")]
     public bool isShoreline;

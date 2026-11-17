@@ -152,7 +152,15 @@ public class WalkerGenerator : MonoBehaviour
     [Min(1)] [SerializeField] private int compactRouteFloorWidth = 3;
     [Min(1)] [SerializeField] private int townRouteFloorWidth = 9;
     [Range(0, 4)] [SerializeField] private int routeEdgeVariation = 2;
+    [Header("Wilderness Variation")]
+    [Range(0f, 1f)] [SerializeField] private float wildernessChance = 0.2f;
+    [Min(0.1f)] [SerializeField] private float wildernessTreeMultiplier = 2f;
+    [Min(0.1f)] [SerializeField] private float wildernessGrassPatchCountMultiplier = 2f;
+    [Min(0.1f)] [SerializeField] private float wildernessGrassPatchSizeMultiplier = 1.5f;
+    [Min(0.1f)] [SerializeField] private float wildernessClusterCountMultiplier = 1.5f;
+    [Range(0.25f, 1f)] [SerializeField] private float wildernessClusterSizeMultiplier = 0.75f;
     private bool useTownLayout;
+    private bool isWildernessMap;
     private Vector2Int townCenter;
     private HashSet<Vector2Int> townFloorCells = new HashSet<Vector2Int>();
     private int housesToPlace;
@@ -349,6 +357,12 @@ public class WalkerGenerator : MonoBehaviour
         compactRouteFloorWidth = preset.compactRouteFloorWidth;
         townRouteFloorWidth = preset.townRouteFloorWidth;
         routeEdgeVariation = preset.routeEdgeVariation;
+        wildernessChance = preset.wildernessChance;
+        wildernessTreeMultiplier = preset.wildernessTreeMultiplier;
+        wildernessGrassPatchCountMultiplier = preset.wildernessGrassPatchCountMultiplier;
+        wildernessGrassPatchSizeMultiplier = preset.wildernessGrassPatchSizeMultiplier;
+        wildernessClusterCountMultiplier = preset.wildernessClusterCountMultiplier;
+        wildernessClusterSizeMultiplier = preset.wildernessClusterSizeMultiplier;
 
         HousePrefabs = new List<WeightedItem<HouseTileData>>(preset.HousePrefabs);
 
@@ -434,6 +448,12 @@ public class WalkerGenerator : MonoBehaviour
         blendedPreset.compactRouteFloorWidth = primary.compactRouteFloorWidth;
         blendedPreset.townRouteFloorWidth = primary.townRouteFloorWidth;
         blendedPreset.routeEdgeVariation = primary.routeEdgeVariation;
+        blendedPreset.wildernessChance = primary.wildernessChance * primaryRatio + secondary.wildernessChance * secondaryRatio;
+        blendedPreset.wildernessTreeMultiplier = primary.wildernessTreeMultiplier * primaryRatio + secondary.wildernessTreeMultiplier * secondaryRatio;
+        blendedPreset.wildernessGrassPatchCountMultiplier = primary.wildernessGrassPatchCountMultiplier * primaryRatio + secondary.wildernessGrassPatchCountMultiplier * secondaryRatio;
+        blendedPreset.wildernessGrassPatchSizeMultiplier = primary.wildernessGrassPatchSizeMultiplier * primaryRatio + secondary.wildernessGrassPatchSizeMultiplier * secondaryRatio;
+        blendedPreset.wildernessClusterCountMultiplier = primary.wildernessClusterCountMultiplier * primaryRatio + secondary.wildernessClusterCountMultiplier * secondaryRatio;
+        blendedPreset.wildernessClusterSizeMultiplier = primary.wildernessClusterSizeMultiplier * primaryRatio + secondary.wildernessClusterSizeMultiplier * secondaryRatio;
 
         blendedPreset.isShoreline = primary.isShoreline;
         blendedPreset.hasRiver = primary.hasRiver;
@@ -694,7 +714,10 @@ public class WalkerGenerator : MonoBehaviour
         }
 
         Walkers = new List<WalkerObject>();
-        useTownLayout = MapWidth >= 40 && MapHeight >= 40 && Random.value < townLayoutChance;
+        float effectiveWildernessChance = Mathf.Clamp01(wildernessChance);
+        isWildernessMap = effectiveWildernessChance >= 1f
+            || (effectiveWildernessChance > 0f && Random.value < effectiveWildernessChance);
+        useTownLayout = !isWildernessMap && MapWidth >= 40 && MapHeight >= 40 && Random.value < townLayoutChance;
         townFloorCells.Clear();
         if (!useTownLayout)
             clusterFillPercent *= compactClusterFillMultiplier;
@@ -742,13 +765,35 @@ public class WalkerGenerator : MonoBehaviour
     }
     void GenerateClusters()
     {
-        int clusterCount = Random.Range(minClusters, maxClusters + 1);
+        int clusterCountMin = minClusters;
+        int clusterCountMax = maxClusters;
+        int clusterWidthMin = minClusterWidth;
+        int clusterWidthMax = maxClusterWidth;
+        int clusterHeightMin = minClusterHeight;
+        int clusterHeightMax = maxClusterHeight;
+
+        if (isWildernessMap)
+        {
+            float countMultiplier = Mathf.Max(0.1f, wildernessClusterCountMultiplier);
+            float sizeMultiplier = Mathf.Clamp(wildernessClusterSizeMultiplier, 0.25f, 1f);
+            clusterCountMin = Mathf.Max(1, Mathf.RoundToInt(minClusters * countMultiplier));
+            clusterCountMax = Mathf.Max(clusterCountMin, Mathf.RoundToInt(maxClusters * countMultiplier));
+
+            int maxWidthExclusive = Mathf.Max(5, MapWidth - 4);
+            int maxHeightExclusive = Mathf.Max(5, MapHeight - 4);
+            clusterWidthMin = Mathf.Clamp(Mathf.RoundToInt(minClusterWidth * sizeMultiplier), 4, maxWidthExclusive - 1);
+            clusterWidthMax = Mathf.Clamp(Mathf.RoundToInt(maxClusterWidth * sizeMultiplier), clusterWidthMin + 1, maxWidthExclusive);
+            clusterHeightMin = Mathf.Clamp(Mathf.RoundToInt(minClusterHeight * sizeMultiplier), 4, maxHeightExclusive - 1);
+            clusterHeightMax = Mathf.Clamp(Mathf.RoundToInt(maxClusterHeight * sizeMultiplier), clusterHeightMin + 1, maxHeightExclusive);
+        }
+
+        int clusterCount = Random.Range(clusterCountMin, clusterCountMax + 1);
         List<WalkerCluster> clusters = new List<WalkerCluster>();
 
         for (int i = 0; i < clusterCount; i++)
         {
-            int width = Random.Range(minClusterWidth, maxClusterWidth);
-            int height = Random.Range(minClusterHeight, maxClusterHeight);
+            int width = Random.Range(clusterWidthMin, clusterWidthMax);
+            int height = Random.Range(clusterHeightMin, clusterHeightMax);
 
             int x = Random.Range(2, MapWidth - width - 2);
             int y = Random.Range(2, MapHeight - height - 2);
@@ -1283,6 +1328,15 @@ public class WalkerGenerator : MonoBehaviour
         }
 
         GenerateConnectingRoads(tunnels);
+        foreach (var tunnel in tunnels)
+        {
+            Vector2Int entrance = tunnel.pos + tunnel.dir * 2;
+            TileBase entranceTile = GetDirectionalTunnelEntranceTile(tunnel.dir);
+            if (isShoreline && entranceTile == WestRoadTunnelEntrance)
+                continue;
+
+            PlaceGateBorder(entrance, tunnel.dir);
+        }
     }
     void GenerateShorelineWestGates()
     {
@@ -1407,6 +1461,55 @@ public class WalkerGenerator : MonoBehaviour
         }
 
         return roadStart; // this is the true tunnel entrance position
+    }
+
+    private void PlaceGateBorder(Vector2Int entrance, Vector2Int outwardDirection)
+    {
+        if (wallTileMap == null)
+            return;
+
+        TileBase borderTile = GetGateBorderTile();
+        if (borderTile == null)
+            return;
+
+        Vector2Int perpendicular = new Vector2Int(-outwardDirection.y, outwardDirection.x);
+        PlaceGateBorderTile(entrance + outwardDirection, borderTile);
+        PlaceGateBorderTile(entrance + perpendicular, borderTile);
+        PlaceGateBorderTile(entrance - perpendicular, borderTile);
+    }
+
+    private TileBase GetGateBorderTile()
+    {
+        if (RoadTunnel != null)
+            return RoadTunnel;
+
+        if (wallTiles == null)
+            return null;
+
+        foreach (WeightedItem<Tile> wallTile in wallTiles)
+        {
+            if (wallTile != null && wallTile.item != null)
+                return wallTile.item;
+        }
+
+        return null;
+    }
+
+    private void PlaceGateBorderTile(Vector2Int position, TileBase borderTile)
+    {
+        if (!InBounds(position) || borderTile == null)
+            return;
+
+        Grid cell = gridHandler[position.x, position.y];
+        if (cell == Grid.TUNNEL)
+            return;
+
+        Vector3Int tilePosition = new Vector3Int(position.x, position.y, 0);
+        roadTileMap?.SetTile(tilePosition, null);
+        pathTileMap?.SetTile(tilePosition, null);
+        wallTileMap.SetTile(tilePosition, borderTile);
+        gridHandler[position.x, position.y] = Grid.WALL;
+        SaveTile(wallTileMap.name, tilePosition, borderTile);
     }
 
     private TunnelTeleportData CreateRuntimeTeleportData(Vector2Int entrance, Vector2Int dir, TileBase entranceTile)
@@ -1929,28 +2032,15 @@ public class WalkerGenerator : MonoBehaviour
                 perpDir = Vector2Int.right;
             }
 
-            // Place tunnels perpendicular to road direction, 2 tiles each side
-            for (int i = 1; i <= 2; i++)
-            {
-                Vector2Int forward = shiftedRoadEnd + perpDir * i;
-                Vector2Int backward = shiftedRoadEnd - perpDir * i;
+            // Frame three sides of the gate; the side facing the road stays open.
+            TileBase borderTile = GetGateBorderTile();
+            PlaceGateBorderTile(shiftedRoadEnd + dir, borderTile);
+            PlaceGateBorderTile(shiftedRoadEnd + perpDir, borderTile);
+            PlaceGateBorderTile(shiftedRoadEnd - perpDir, borderTile);
 
-                if (InBounds(forward))
-                {
-                    Vector3Int forwardPos = (Vector3Int)forward;
-                    wallTileMap.SetTile(forwardPos, RoadTunnel);
-                    gridHandler[forward.x, forward.y] = Grid.WALL;
-                    SaveTile(wallTileMap.name, forwardPos, RoadTunnel);
-                }
-
-                if (InBounds(backward))
-                {
-                    Vector3Int backwardPos = (Vector3Int)backward;
-                    wallTileMap.SetTile(backwardPos, RoadTunnel);
-                    gridHandler[backward.x, backward.y] = Grid.WALL;
-                    SaveTile(wallTileMap.name, backwardPos, RoadTunnel);
-                }
-            }
+            // Extend the side walls one additional tile to match the existing tunnel width.
+            PlaceGateBorderTile(shiftedRoadEnd + perpDir * 2, borderTile);
+            PlaceGateBorderTile(shiftedRoadEnd - perpDir * 2, borderTile);
         }
     }
     private TileBase GetDirectionalTunnelEntranceTile(Vector2Int dir)
@@ -2085,8 +2175,11 @@ public class WalkerGenerator : MonoBehaviour
     {
         int patchesPlaced = 0;
         int attempts = 0;
+        int targetPatchCount = ScaleWildernessCount(grassPatchCount, wildernessGrassPatchCountMultiplier);
+        int targetPatchSize = ScaleWildernessCount(grassPatchSize, wildernessGrassPatchSizeMultiplier);
+        int attemptLimit = isWildernessMap ? GetScaledPlacementAttemptLimit(targetPatchCount) : 1000;
 
-        while (patchesPlaced < grassPatchCount && attempts < 1000)
+        while (patchesPlaced < targetPatchCount && attempts < attemptLimit)
         {
             int x = Random.Range(1, MapWidth - 1);
             int y = Random.Range(1, MapHeight - 1);
@@ -2094,7 +2187,7 @@ public class WalkerGenerator : MonoBehaviour
             // Start only on floor tiles and avoid houses, roads, sidewalks
             if (IsEmpty(x, y))
             {
-                GrowGrassPatch(x, y, grassPatchSize);
+                GrowGrassPatch(x, y, targetPatchSize);
                 patchesPlaced++;
             }
 
@@ -2297,9 +2390,9 @@ public class WalkerGenerator : MonoBehaviour
     {
         int housesPlaced = 0;
         int attempts = 0;
-        int targetHouseCount = useTownLayout
-            ? Mathf.RoundToInt(NumberOfHouses * townHouseMultiplier)
-            : NumberOfHouses;
+        int targetHouseCount = isWildernessMap
+            ? 0
+            : useTownLayout ? Mathf.RoundToInt(NumberOfHouses * townHouseMultiplier) : NumberOfHouses;
         List<Vector2Int> townCells = useTownLayout ? new List<Vector2Int>(townFloorCells) : null;
         Vector2Int houseGroupCenter = townCenter;
         int activeHouseGroup = -1;
@@ -2450,13 +2543,15 @@ public class WalkerGenerator : MonoBehaviour
     {
         int treesPlaced = 0;
         int attempts = 0;
+        int targetTreeCount = ScaleWildernessCount(NumberOfTrees, wildernessTreeMultiplier);
+        int attemptLimit = isWildernessMap ? GetScaledPlacementAttemptLimit(targetTreeCount) : 1000;
 
         // Max house size to check for space clearance
         int maxTreeWidth = 0;
         int maxTreeHeight = 0;
         if (TreePrefabs != null && TreePrefabs.Count > 0)
         {
-            while (treesPlaced < NumberOfTrees && attempts < 1000)
+            while (treesPlaced < targetTreeCount && attempts < attemptLimit)
             {
                 attempts++;
 
@@ -2504,6 +2599,21 @@ public class WalkerGenerator : MonoBehaviour
             }
         }
 
+    }
+
+    private int ScaleWildernessCount(int baseCount, float multiplier)
+    {
+        if (!isWildernessMap)
+            return Mathf.Max(0, baseCount);
+
+        return Mathf.Max(0, Mathf.RoundToInt(Mathf.Max(0, baseCount) * Mathf.Max(0.1f, multiplier)));
+    }
+
+    private int GetScaledPlacementAttemptLimit(int targetCount)
+    {
+        long scaledLimit = System.Math.Max(1000L, (long)targetCount * 100L);
+        long mapCellLimit = (long)MapWidth * MapHeight;
+        return (int)System.Math.Min(scaledLimit, System.Math.Max(1L, mapCellLimit));
     }
 
     bool InBounds(int x, int y)
