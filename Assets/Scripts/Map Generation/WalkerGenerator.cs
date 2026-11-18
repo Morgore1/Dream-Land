@@ -1055,7 +1055,8 @@ public class WalkerGenerator : MonoBehaviour
             {
                 bool isOuterBorder = x < borderThickness || x >= MapWidth - borderThickness
                     || y < borderThickness || y >= MapHeight - borderThickness;
-                if (!isOuterBorder || gridHandler[x, y] == Grid.TUNNEL)
+                Grid cell = gridHandler[x, y];
+                if (!isOuterBorder || cell == Grid.TUNNEL || cell == Grid.ROAD || cell == Grid.SIDEWALK)
                     continue;
 
                 Vector3Int pos = new Vector3Int(x, y, 0);
@@ -1501,7 +1502,7 @@ public class WalkerGenerator : MonoBehaviour
             return;
 
         Grid cell = gridHandler[position.x, position.y];
-        if (cell == Grid.TUNNEL)
+        if (cell == Grid.ROAD || cell == Grid.SIDEWALK || cell == Grid.TUNNEL)
             return;
 
         Vector3Int tilePosition = new Vector3Int(position.x, position.y, 0);
@@ -1987,7 +1988,8 @@ public class WalkerGenerator : MonoBehaviour
                     }
                     else
                     {
-                        if (RoadTunnel != null)
+                        if (RoadTunnel != null && gridHandler[tilePos.x, tilePos.y] != Grid.ROAD
+                            && gridHandler[tilePos.x, tilePos.y] != Grid.SIDEWALK)
                         {
                             wallTileMap.SetTile(pos, RoadTunnel);
                             gridHandler[tilePos.x, tilePos.y] = Grid.WALL;
