@@ -45,13 +45,14 @@ public class BattleDialogueBox : MonoBehaviour
     private IEnumerator TypeDialogueCoroutine(string dialogue)
     {
         dialogueText.text = "";
+        float effectiveLettersPerSecond = DialogueSpeedSettings.ScaleCharactersPerSecond(lettersPerSecond);
         foreach (var letter in dialogue.ToCharArray())
         {
             dialogueText.text += letter;
-            yield return new WaitForSeconds(1f / lettersPerSecond);
+            yield return new WaitForSeconds(1f / effectiveLettersPerSecond);
         }
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(DialogueSpeedSettings.ScaleDialogueWait(0.5f));
     }
 
     public void EnableDialogueText(bool enabled)

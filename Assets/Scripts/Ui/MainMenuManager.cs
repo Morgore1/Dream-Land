@@ -72,11 +72,12 @@ public class MainMenuManager : MonoBehaviour
     private IEnumerator TypeTutorialPrompt()
     {
         tutorialText.text = string.Empty;
+        float effectiveLettersPerSecond = DialogueSpeedSettings.ScaleCharactersPerSecond(lettersPerSecond);
 
         foreach (char letter in tutorialPrompt.ToCharArray())
         {
             tutorialText.text += letter;
-            yield return new WaitForSeconds(1f / lettersPerSecond);
+            yield return new WaitForSeconds(1f / effectiveLettersPerSecond);
         }
 
         typingCoroutine = null;

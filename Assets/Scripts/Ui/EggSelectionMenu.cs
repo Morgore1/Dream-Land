@@ -251,11 +251,12 @@ public class EggSelectionMenu : MonoBehaviour
             yield break;
 
         textObject.text = string.Empty;
+        float effectiveLettersPerSecond = DialogueSpeedSettings.ScaleCharactersPerSecond(lettersPerSecond);
 
         foreach (char letter in message.ToCharArray())
         {
             textObject.text += letter;
-            yield return new WaitForSeconds(1f / lettersPerSecond);
+            yield return new WaitForSeconds(1f / effectiveLettersPerSecond);
         }
     }
 }

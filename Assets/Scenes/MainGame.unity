@@ -1583,7 +1583,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b446b87afcd5b3746830e7b8cece059f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 3
+  moveSpeed: 4
 --- !u!114 &70933833
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9488,15 +9488,15 @@ Camera:
   m_LensShift: {x: 0, y: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.06435007
-    y: 0.9331984
+    x: 0.091377094
+    y: 1.0931175
     width: 0.8236808
     height: 0.97165996
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 2.8125
+  orthographic size: 3.75
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -72874,6 +72874,20 @@ MonoBehaviour:
   minClusterHeight: 8
   maxClusterHeight: 16
   clusterFillPercent: 0.25
+  townLayoutChance: 0.4
+  compactClusterFillMultiplier: 0.55
+  townRadius: 26
+  townHouseMultiplier: 2
+  extraRouteCount: 2
+  compactRouteFloorWidth: 3
+  townRouteFloorWidth: 9
+  routeEdgeVariation: 2
+  wildernessChance: 0.2
+  wildernessTreeMultiplier: 2
+  wildernessGrassPatchCountMultiplier: 2
+  wildernessGrassPatchSizeMultiplier: 1.5
+  wildernessClusterCountMultiplier: 1.5
+  wildernessClusterSizeMultiplier: 0.75
   NumberOfHouses: 5
   NumberOfTrees: 5
   NumberOfNPCs: 3

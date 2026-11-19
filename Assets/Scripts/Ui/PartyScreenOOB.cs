@@ -19,21 +19,43 @@ public class PartyScreenOOB : MonoBehaviour
 
     PartyMemberUI[] memberSlots;
     List<Monster> monsters;
+    int selectedMember = -1;
+
+    public bool CanReorderMembers { get; private set; }
 
     public bool IsDetailsOpen => detailsPanel != null && detailsPanel.activeSelf;
 
     public void init()
     {
-        memberSlots = GetComponentsInChildren<PartyMemberUI>(true);
+        EnsureMemberSlotsInitialized();
         HideMonsterDetails();
+    }
+
+    private void EnsureMemberSlotsInitialized()
+    {
+        if (memberSlots != null)
+            return;
+
+        memberSlots = GetComponentsInChildren<PartyMemberUI>(true);
+        for (int i = 0; i < memberSlots.Length; i++)
+        {
+            OOBPartyMemberDragHandler dragHandler = memberSlots[i].GetComponent<OOBPartyMemberDragHandler>();
+            if (dragHandler == null)
+                dragHandler = memberSlots[i].gameObject.AddComponent<OOBPartyMemberDragHandler>();
+
+            dragHandler.Initialize(this, i);
+        }
+    }
+
+    public void SetMemberReorderingEnabled(bool enabled)
+    {
+        CanReorderMembers = enabled;
     }
 
     public void SetPartyData(List<Monster> monsters)
     {
         this.monsters = monsters ?? new List<Monster>();
-
-        if (memberSlots == null)
-            memberSlots = GetComponentsInChildren<PartyMemberUI>(true);
+        EnsureMemberSlotsInitialized();
 
         for (int i = 0; i < memberSlots.Length; i++)
         {
@@ -55,12 +77,49 @@ public class PartyScreenOOB : MonoBehaviour
         if (memberSlots == null || monsters == null)
             return;
 
+        this.selectedMember = selectedMember;
         for (int i = 0; i < memberSlots.Length; i++)
         {
             if (memberSlots[i] != null)
                 memberSlots[i].SetSelected(i == selectedMember && i < monsters.Count);
         }
 
+    }
+
+    public bool HasMonsterInSlot(int slotIndex)
+    {
+        return monsters != null
+            && slotIndex >= 0
+            && slotIndex < monsters.Count
+            && monsters[slotIndex] != null
+            && monsters[slotIndex].Base != null;
+    }
+
+    public bool TrySwapMembers(int sourceIndex, int targetIndex)
+    {
+        if (!CanReorderMembers || IsDetailsOpen || sourceIndex == targetIndex
+            || !HasMonsterInSlot(sourceIndex) || !HasMonsterInSlot(targetIndex))
+            return false;
+
+        Monster sourceMonster = monsters[sourceIndex];
+        monsters[sourceIndex] = monsters[targetIndex];
+        monsters[targetIndex] = sourceMonster;
+
+        for (int i = 0; i < memberSlots.Length; i++)
+        {
+            if (i < monsters.Count && monsters[i] != null)
+            {
+                memberSlots[i].gameObject.SetActive(true);
+                memberSlots[i].SetData(monsters[i]);
+            }
+            else
+            {
+                memberSlots[i].gameObject.SetActive(false);
+            }
+        }
+
+        UpdateMemberSelection(selectedMember);
+        return true;
     }
 
     public void SetMessageText(string message)

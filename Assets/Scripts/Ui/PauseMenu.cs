@@ -58,6 +58,7 @@ public class PauseMenu : MonoBehaviour
 
                 partyScreenOOB.gameObject.SetActive(false);
                 PartyScreenUI.SetActive(false);
+                partyScreenOOB.SetMemberReorderingEnabled(false);
 
                 // Resume game completely
                 Time.timeScale = 1f;
@@ -117,6 +118,8 @@ public class PauseMenu : MonoBehaviour
         Time.timeScale = 1f;
         GameIsPaused = false;
         inPartyScreen = false;
+        if (partyScreenOOB != null)
+            partyScreenOOB.SetMemberReorderingEnabled(false);
     }
 
     void Pause()
@@ -227,6 +230,7 @@ public class PauseMenu : MonoBehaviour
                 // Close party screen back to Inventory
                 partyScreenOOB.gameObject.SetActive(false);
                 PartyScreenUI.SetActive(false);
+                partyScreenOOB.SetMemberReorderingEnabled(false);
                 inventoryCanvas.SetActive(true);
                 inventoryUI.RefreshUI();
 
@@ -250,6 +254,7 @@ public class PauseMenu : MonoBehaviour
         PartyScreenUI.SetActive(false);
         pauseMenuUI.SetActive(true);
         inPartyScreen = false;
+        partyScreenOOB.SetMemberReorderingEnabled(false);
         HighlightText();
     }
     public void ReturnFromInventory()
@@ -272,6 +277,7 @@ public class PauseMenu : MonoBehaviour
 
         pendingHealingItem = item;
         currentInventory = sourceInventory;
+        partyScreenOOB.SetMemberReorderingEnabled(false);
 
         // Disable other menus
         pauseMenuUI.SetActive(false);
@@ -313,6 +319,7 @@ public class PauseMenu : MonoBehaviour
         partyScreenOOB.SetPartyData(playerParty.Monsters);
         partyScreenOOB.gameObject.SetActive(true);
         partyScreenOOB.HideMonsterDetails();
+        partyScreenOOB.SetMemberReorderingEnabled(true);
 
         currentMember = 0;
         if (playerParty.Monsters.Count > 0)
